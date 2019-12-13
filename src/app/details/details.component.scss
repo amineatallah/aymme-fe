@@ -1,0 +1,13 @@
+.details-component {
+  .mocks-area {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    // transform: translateX(-100%);
+    background-color: #ffffff;
+    width: 50vw;
+    overflow-y: scroll;
+    z-index: 1000;
+  }
+}

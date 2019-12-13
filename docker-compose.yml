@@ -1,0 +1,7 @@
+version: '0.1'
+
+services:
+  app:
+    image: 'amineatallah/my-angular-app:0.2'
+    ports:
+        - 4201:80

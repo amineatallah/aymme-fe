@@ -1,0 +1,125 @@
+  <div class="card details-component">
+    <ng-container *ngIf="test$ | async as endpoint">
+      <h5 class="card-header" (textSelected)="findMocks()">Endpoint: {{endpoint.path}}
+      </h5>
+      <div class="d-flex card-body row no-gutters align-content-stretch">
+        <div class="col-12">
+          <div class=" h-100">
+            <form [formGroup]="form" class="h-100 d-flex flex-column justify-content-between">
+              <!-- <div class="card-header">
+                <h5 class="mb-0">Options</h5>
+              </div> -->
+              <div class="">
+                <div class="form-group row no-gutters justify-content-between">
+
+                  <div class="col-3 px-2">
+                    <div class="row no-gutters">
+                      <label class="col-12 col-form-label" for="statusCode">Status Code</label>
+                      <select class="form-control col-12" formControlName="statusCode">
+                        <option *ngFor="let code of responseCodes" value="{{code}}">{{code}}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-3 px-2">
+
+                    <div class="row no-gutters">
+                      <label class="col-12 col-form-label" for="delay">Delay</label>
+                      <input formControlName="delay" type="text" class="form-control col-12" placeholder="Delay">
+                    </div>
+                  </div>
+
+                  <div class="col-3 px-2">
+                    <div class="row no-gutters">
+                      <label class="col-form-label col-12" for="exampleCheck1">Empty Array</label>
+                      <input class="col-12 form-control" formControlName="noData" type="checkbox" id="noData">
+                    </div>
+                  </div>
+
+                  <div class="col-3 px-2">
+                    <div class="row no-gutters">
+                      <label class="col-form-label col-12" for="forward">Forward</label>
+                      <input class="col-12 form-control" formControlName="forward" type="checkbox" id="forward">
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="col-12 mt-3">
+          <json-editor [options]="options" style="min-height: 500px;"
+            [data]="endpoint.response[form.get('statusCode').value].data.body">
+          </json-editor>
+        </div>
+
+        <div class="col-12 d-flex no-gutters my-2 justify-content-end">
+          <button class="btn py-2 px-4 mr-3 btn-outline-primary" (click)="findMocks()">Feeling lucky</button>
+          <button class="btn py-2 px-4 mr-3 btn-outline-primary" (click)="toggleMocks()"> Find Mocks</button>
+          <button class="btn py-2 px-4 btn-primary" (click)="updateData()">Update</button>
+        </div>
+
+      </div>
+    </ng-container>
+    <ng-container *ngIf="mocksVisible">
+      <div class="mocks-area shadow-lg">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h2>Mocks</h2>
+          <i (click)="toggleMocks()" class="material-icons">close</i>
+        </div>
+        <div class="">
+
+          <div class="card-body">
+          <form class="mb-3" [formGroup]="specForm">
+            <div class="row no-gutters justify-content-between">
+              <div class="col">
+                <input formControlName="name" type="text" class="form-control" placeholder="Spec Name">
+              </div>
+              <div class="pl-4 col-auto">
+                <button type="button" class="btn btn-primary" (click)="createSpec()">Create Spec</button>
+              </div>
+            </div>
+          </form>
+
+            <ng-container *ngIf="specs$ | async as specs">
+              <ngb-accordion activeIds="{{activeId}}">
+                <ngb-panel *ngFor="let spec of specs" id="{{spec._id}}">
+                  <ng-template ngbPanelHeader>
+                    <div class="d-flex align-items-center justify-content-between">
+                      <h5 class="m-0 text-uppercase">{{spec.name}}</h5>
+                      <div>
+                        <i class="material-icons" (click)="deleteSpecs(spec._id)">delete</i>
+                        <button ngbPanelToggle class="btn btn-link p-0"><i class="material-icons">expand_more</i></button>
+                      </div>
+                    </div>
+                  </ng-template>
+
+                  <ng-template ngbPanelContent>
+                    <div class="card">
+                      <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                          <li (click)="useMocks(example.data)"
+                            class="list-group-item row no-gutters d-flex px-0 justify-content-between"
+                            *ngFor="let example of spec.exmpales">
+                            {{example.name}}
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="card-footer d-flex justify-content-between">
+                        <form>
+                          <input class="form-control-file" type="file" multiple accept=".json"
+                            (change)="onFileChange($event)">
+                        </form>
+                        <button class="btn btn-primary" (click)="createExamples(spec._id)">Upload Mocks</button>
+                      </div>
+                    </div>
+                  </ng-template>
+                </ngb-panel>
+              </ngb-accordion>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
