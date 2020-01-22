@@ -1,21 +1,23 @@
   <div class="card details-component">
-    <ng-container *ngIf="test$ | async as endpoint">
+    <ng-container *ngIf="endpoint$ | async as endpoint">
       <h5 class="card-header" (textSelected)="findMocks()">Endpoint: {{endpoint.path}}
       </h5>
       <div class="d-flex card-body row no-gutters align-content-stretch">
         <div class="col-12">
           <div class=" h-100">
+
             <form [formGroup]="form" class="h-100 d-flex flex-column justify-content-between">
               <!-- <div class="card-header">
                 <h5 class="mb-0">Options</h5>
               </div> -->
-              <div class="">
+              <div>
                 <div class="form-group row no-gutters justify-content-between">
 
                   <div class="col-3 px-2">
                     <div class="row no-gutters">
                       <label class="col-12 col-form-label" for="statusCode">Status Code</label>
-                      <select class="form-control col-12" formControlName="statusCode">
+                      <select class="form-control col-12" formControlName="statusCode"
+                        (change)="changeStatusCode($event)">
                         <option *ngFor="let code of responseCodes" value="{{code}}">{{code}}</option>
                       </select>
                     </div>
@@ -42,22 +44,38 @@
                       <input class="col-12 form-control" formControlName="forward" type="checkbox" id="forward">
                     </div>
                   </div>
-                </div>
-
+                  <div class="col-12 px-2">
+                    <p class="d-flex mt-2 p-0 mb-0 justify-content-between">Headers </p>
+                    <div formArrayName="headers"  class="row no-gutters justify-content-between align-items-end">
+                        <div class="col-10" *ngFor="let header of form.get('headers').controls; let i = index;">
+                          <div [formGroupName]="i" class="row mt-2 no-gutters justify-content-between">
+                            <div class="col-6 pr-3">
+                              <input class="form-control" formControlName="name" placeholder="Header name">
+                            </div>
+                            <div class="col-6 pr-3">
+                              <input class="form-control" formControlName="value" placeholder="Header value">
+                            </div>
+                          </div> 
+                        </div>
+                        <div class="col-2">
+                          <button class="btn btn-outline-primary" type="button" (click)="addHeader()">Add Headers</button>
+                        </div>
+                    </div>
+                  </div>
+                </div> 
               </div>
             </form>
           </div>
         </div>
         <div class="col-12 mt-3">
-          <json-editor [options]="options" style="min-height: 500px;"
-            [data]="endpoint.response[form.get('statusCode').value].data.body">
+          <json-editor [options]="options" style="min-height: 500px;" [data]="endpointData">
           </json-editor>
         </div>
 
         <div class="col-12 d-flex no-gutters my-2 justify-content-end">
           <button class="btn py-2 px-4 mr-3 btn-outline-primary" (click)="findMocks()">Feeling lucky</button>
-          <button class="btn py-2 px-4 mr-3 btn-outline-primary" (click)="toggleMocks()"> Find Mocks</button>
-          <button class="btn py-2 px-4 btn-primary" (click)="updateData()">Update</button>
+          <button class="btn py-2 px-4 mr-3 btn-outline-primary" (click)="toggleMocks()"> Search Mocks</button>
+          <button class="btn py-2 px-4 btn-primary" (click)="updateEndpoint()">Update</button>
         </div>
 
       </div>
@@ -71,26 +89,28 @@
         <div class="">
 
           <div class="card-body">
-          <form class="mb-3" [formGroup]="specForm">
-            <div class="row no-gutters justify-content-between">
-              <div class="col">
-                <input formControlName="name" type="text" class="form-control" placeholder="Spec Name">
+            <form class="mb-3">
+              <div class="row no-gutters justify-content-between">
+                <div class="col">
+                  <input [(ngModel)]="searchText" name="spec-name" type="text" class="form-control"
+                    placeholder="Spec Name">
+                </div>
+                <div class="pl-4 col-auto">
+                  <button type="button" class="btn btn-primary" (click)="createSpec()">Create Spec</button>
+                </div>
               </div>
-              <div class="pl-4 col-auto">
-                <button type="button" class="btn btn-primary" (click)="createSpec()">Create Spec</button>
-              </div>
-            </div>
-          </form>
+            </form>
 
             <ng-container *ngIf="specs$ | async as specs">
               <ngb-accordion activeIds="{{activeId}}">
-                <ngb-panel *ngFor="let spec of specs" id="{{spec._id}}">
+                <ngb-panel *ngFor="let spec of specs | filter:searchText" id="{{spec._id}}">
                   <ng-template ngbPanelHeader>
                     <div class="d-flex align-items-center justify-content-between">
                       <h5 class="m-0 text-uppercase">{{spec.name}}</h5>
                       <div>
                         <i class="material-icons" (click)="deleteSpecs(spec._id)">delete</i>
-                        <button ngbPanelToggle class="btn btn-link p-0"><i class="material-icons">expand_more</i></button>
+                        <button ngbPanelToggle class="btn btn-link p-0"><i
+                            class="material-icons">expand_more</i></button>
                       </div>
                     </div>
                   </ng-template>

@@ -1,66 +1,58 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HomeService {
 
+  private readonly url: string = environment.apiUrl;
+
   constructor(private http: HttpClient) { }
 
   getServices() {
-    return this.http.get('http://localhost:3000/api/services');
+    return this.http.get(`${this.url}/services`);
   }
 
   getServiceEndpoints(serviceName: string) {
-    console.log('getservice', serviceName);
-    return this.http.get('http://localhost:3000/api/services/' + serviceName);
-  }
-
-  getEndpoints() {
-    return this.http.get('http://localhost:3000/api/endpoints');
+    return this.http.get(`${this.url}/services/` + serviceName);
   }
 
   getEndpoint(id: string) {
-    return this.http.get('http://localhost:3000/api/endpoints/' + id);
+    return this.http.get(`${this.url}/endpoints/` + id);
   }
 
-  updateData(id: string, data: any) {
-    console.log('updateData', id, data);
-    return this.http.post('http://localhost:3000/api/endpoints/' + id, data, {});
+  updateEndpoint(id: string, data: any) {
+    return this.http.post(`${this.url}/endpoints/` + id, data, {});
   }
 
   updateMocks(data: any) {
-    return this.http.post('http://localhost:3000/api/mocks', data, {});
+    return this.http.post(`${this.url}/mocks`, data, {});
   }
 
-  // getMocks() {
-  //   return this.http.get('http://localhost:3000/api/mocks');
-  // }
-
   deleteSpecs(id: string) {
-    return this.http.delete('http://localhost:3000/api/specs/' + id);
+    return this.http.delete(`${this.url}/specs/` + id);
   }
 
   findMocks(id) {
-    return this.http.get('http://localhost:3000/api/findmocks/' + id);
+    return this.http.get(`${this.url}/findmocks/` + id);
   }
 
   createSpec(data: any) {
-    // console.log('specname', name);
-    return this.http.post('http://localhost:3000/api/createspec', data);
+    return this.http.post(`${this.url}/createspec`, data);
   }
 
   getSpecs() {
-    return this.http.get('http://localhost:3000/api/specs');
+    return this.http.get(`${this.url}/specs`);
   }
 
   deleteService(serviceName: string) {
-    return this.http.delete('http://localhost:3000/api/services/' + serviceName);
+    return this.http.delete(`${this.url}/services/` + serviceName);
   }
 
   deleteEndpointById(id: string) {
-    return this.http.delete('http://localhost:3000/api/endpoints/' + id);
+    return this.http.delete(`${this.url}/endpoints/` + id);
   }
 
 
@@ -68,27 +60,22 @@ export class HomeService {
     const formData: FormData = new FormData();
     for (var prop in files) {
       if (Object.prototype.hasOwnProperty.call(files, prop)) {
-        console.log('filesss', files[prop]);
         formData.append('files[]', files[prop], files[prop].name);
       }
     }
 
-    return this.http
-      .post('http://localhost:3000/api/upload/' + id, formData, {})
+    return this.http.post(`${this.url}/upload/` + id, formData, {})
   }
 
   getPortals(){
-    return this.http.get('http://localhost:3000/api/getportals');
+    return this.http.get(`${this.url}/getportals`);
   }
 
-  getModel(portalName) {
-    return this.http.get('http://localhost:3000/api/getmodel/' + portalName);
-  }
   syncModel(data) {
-    return this.http.post('http://localhost:3000/api/syncmodel', data);
+    return this.http.post(`${this.url}/syncmodel`, data);
   }
 
   updateModel(portalName, data){
-    return this.http.post('http://localhost:3000/api/updatemodel/' + portalName, data);
+    return this.http.post(`${this.url}/updatemodel/` + portalName, data);
   }
 }
