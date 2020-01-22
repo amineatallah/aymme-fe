@@ -16,6 +16,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,6 +28,7 @@ import { FormsModule }   from '@angular/forms';
 import { MocksComponent } from './mocks/mocks.component';
 import { ServiceComponent } from './service/service.component';
 import { ModelComponent } from './model/model.component';
+import { PortalsComponent } from './portals/portals.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,8 @@ import { ModelComponent } from './model/model.component';
     DetailsComponent,
     MocksComponent,
     ServiceComponent,
-    ModelComponent
+    ModelComponent,
+    PortalsComponent
   ],
   imports: [
     BrowserModule,
@@ -46,13 +49,14 @@ import { ModelComponent } from './model/model.component';
     MatListModule,
     MatExpansionModule,
     NgJsonEditorModule,
-    MatButtonModule,
-    MatSelectModule,
-    MatToolbarModule,
-    MatInputModule,
-    MatCheckboxModule,
-    MatIconModule,
-    MatSidenavModule,
+    // MatButtonModule,
+    // MatSelectModule,
+    // MatToolbarModule,
+    // MatInputModule,
+    // MatCheckboxModule,
+    // MatIconModule,
+    // MatSidenavModule,
+    Ng2SearchPipeModule,
     ReactiveFormsModule,
     FormsModule,
     BrowserAnimationsModule
