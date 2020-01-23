@@ -32,8 +32,8 @@ import { PortalsComponent } from './portals/portals.component';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { reducer as servicesReducer } from './home/state/services.reducer';
-import { ServicesEffects } from './home/state/services.effects';
+import { reducer as servicesReducer } from './service/state/services.reducer';
+import { ServicesEffects } from './service/state/services.effects';
 import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
