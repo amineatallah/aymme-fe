@@ -1,17 +1,17 @@
 import { ServicesActions, ServicesActionTypes } from './services.actions';
-//import { Services } from '../Services';
+import { Service } from '../service.interface';
 
-export interface Servicestate {
-  services: any[];
+export interface ServicesState {
+  services: Service[];
   error: string;
 }
 
-export const initialState: Servicestate = {
+export const initialState: ServicesState = {
   services: [],
   error: '',
 };
 
-export function reducer(state = initialState, action: ServicesActions): Servicestate {
+export function reducer(state = initialState, action: ServicesActions): ServicesState {
   switch (action.type) {
     case ServicesActionTypes.LoadServicesSuccess:
       return {

@@ -6,12 +6,14 @@
     <div class="col-6 pr-1">
 
       <ul class="list-group">
-          <li *ngFor="let endpoint of endpoints" 
+          <li *ngFor="let endpoint of endpoints"
             class="list-group-item list-group-item-action d-flex align-items-center justify-content-between">
-            <a [routerLink]="[endpoint._id]">{{endpoint.path}}</a>
-              <i class="material-icons" (click)="deleteEndpoint(endpoint._id)">
+            <a [routerLink]="[endpoint._id]" class="my-auto">{{endpoint.path}}</a>
+            <button class="btn btn-danger">
+              <i class="material-icons align-middle" (click)="deleteEndpoint(endpoint._id)">
                 delete
               </i>
+            </button>
           </li>
         </ul>
     </div>

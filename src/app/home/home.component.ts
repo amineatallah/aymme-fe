@@ -1,10 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { HomeService } from "./home.service";
 import { Observable, of } from "rxjs";
-import { pluck, tap, catchError } from "rxjs/operators";
+import { tap, catchError } from "rxjs/operators";
+import * as fromServices from '../service/state';
 
 //import * as fromServices from './state';
-import * as servicesActions from "./state/services.actions";
+import * as servicesActions from "../service/state/services.actions";
 import { Store, select } from "@ngrx/store";
 import { ToastrService } from 'ngx-toastr';
 
@@ -14,10 +15,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  readonly services$: Observable<any> = this.store.pipe(
-    select("services"),
-    pluck("services")
-  );
+  readonly services$: Observable<any> = this.store.pipe(select(fromServices.getServices));
 
   deleteService$: Observable<any>;
 
@@ -36,7 +34,6 @@ export class HomeComponent implements OnInit {
       }),
       catchError ((errorResponse) => {
         this.store.dispatch(new servicesActions.DeleteServiceFailure(errorResponse));
-        //this.toastr.error(errorResponse, 'Unable to delete successfully!');
         this.toastr.error('Could not delete the service.', errorResponse );
         return errorResponse;
       })
