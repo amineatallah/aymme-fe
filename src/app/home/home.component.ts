@@ -36,7 +36,6 @@ export class HomeComponent implements OnInit {
       }),
       catchError ((errorResponse) => {
         this.store.dispatch(new servicesActions.DeleteServiceFailure(errorResponse));
-        //this.toastr.error(errorResponse, 'Unable to delete successfully!');
         this.toastr.error('Could not delete the service.', errorResponse );
         return errorResponse;
       })
