@@ -35,6 +35,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { reducer as servicesReducer } from './home/state/services.reducer';
 import { ServicesEffects } from './home/state/services.effects';
 import { ToastrModule } from 'ngx-toastr';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { ToastrModule } from 'ngx-toastr';
     MocksComponent,
     ServiceComponent,
     ModelComponent,
-    PortalsComponent
+    PortalsComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
