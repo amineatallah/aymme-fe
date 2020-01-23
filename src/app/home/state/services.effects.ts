@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, Effect, ofType } from "@ngrx/effects";
 
 import * as servicesActions from "./services.actions";
-import { concatMap, map, catchError, switchMap } from "rxjs/operators";
+import { concatMap, map, catchError } from "rxjs/operators";
 import { of } from "rxjs";
 import { HomeService } from "../home.service";
 

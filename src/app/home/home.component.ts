@@ -1,11 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { HomeService } from "./home.service";
 import { Observable, of } from "rxjs";
-import { pluck, tap } from "rxjs/operators";
+import { pluck, tap, catchError } from "rxjs/operators";
 
 //import * as fromServices from './state';
 import * as servicesActions from "./state/services.actions";
 import { Store, select } from "@ngrx/store";
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +21,7 @@ export class HomeComponent implements OnInit {
 
   deleteService$: Observable<any>;
 
-  constructor(private store: Store<any>, private homeService: HomeService) {}
+  constructor(private store: Store<any>, private homeService: HomeService, private toastr: ToastrService) {}
 
   ngOnInit() {
     this.store.dispatch(new servicesActions.LoadServices());
@@ -30,9 +31,14 @@ export class HomeComponent implements OnInit {
     this.deleteService$ = this.homeService.deleteService(serviceName).pipe(
       tap(() => {
         this.store.dispatch(new servicesActions.DeleteServiceSuccess(serviceName));
+
+        this.toastr.success('Deleted successfully!', serviceName);
       }),
-      tap ((errorResponse) => {
+      catchError ((errorResponse) => {
         this.store.dispatch(new servicesActions.DeleteServiceFailure(errorResponse));
+        //this.toastr.error(errorResponse, 'Unable to delete successfully!');
+        this.toastr.error('Could not delete the service.', errorResponse );
+        return errorResponse;
       })
     );
   }

@@ -34,6 +34,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { reducer as servicesReducer } from './home/state/services.reducer';
 import { ServicesEffects } from './home/state/services.effects';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { ServicesEffects } from './home/state/services.effects';
     EffectsModule.forRoot([]),
     StoreModule.forFeature('services', servicesReducer),
     EffectsModule.forFeature([ServicesEffects]),
+    ToastrModule.forRoot(),
   ],
   providers: [
     {provide: Window, useValue: window}
