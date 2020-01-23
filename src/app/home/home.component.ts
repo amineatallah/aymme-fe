@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { HomeService } from "./home.service";
 import { Observable, of } from "rxjs";
-import { pluck, tap, catchError } from "rxjs/operators";
+import { tap, catchError } from "rxjs/operators";
+import * as fromServices from '../service/state';
 
 //import * as fromServices from './state';
 import * as servicesActions from "../service/state/services.actions";
@@ -14,10 +15,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  readonly services$: Observable<any> = this.store.pipe(
-    select("services"),
-    pluck("services")
-  );
+  readonly services$: Observable<any> = this.store.pipe(select(fromServices.getServices));
 
   deleteService$: Observable<any>;
 
