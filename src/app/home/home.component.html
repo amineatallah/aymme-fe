@@ -7,12 +7,16 @@
       <ul class="list-group">
         <li *ngFor="let service of services"
           class="list-group-item list-group-item-action d-flex justify-content-between">
-          <a [routerLink]="['/services', service.serviceName]">{{service.serviceName}}</a>
-            <i class="material-icons" (click)="deleteService(service.serviceName)">
+          <a [routerLink]="['/services', service.serviceName]" class="my-auto">{{service.serviceName}}</a>
+          <button class="btn btn-danger">
+            <i class="material-icons align-middle" (click)="deleteService(service.serviceName)">
               delete
             </i>
+          </button>
         </li>
       </ul>
+      <ng-container *ngIf="deleteService$ | async">
+      </ng-container>
     </ng-container>
   </div>
 </div>

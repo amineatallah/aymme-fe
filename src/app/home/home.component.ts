@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { HomeService } from './home.service';
-import { Observable } from 'rxjs';
-import { tap, switchMap } from 'rxjs/operators';
+import { Component, OnInit } from "@angular/core";
+import { HomeService } from "./home.service";
+import { Observable, of } from "rxjs";
+import { pluck, tap, catchError } from "rxjs/operators";
+
+//import * as fromServices from './state';
+import * as servicesActions from "./state/services.actions";
+import { Store, select } from "@ngrx/store";
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-home',
@@ -9,17 +14,32 @@ import { tap, switchMap } from 'rxjs/operators';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  services$: Observable<any>;
+  readonly services$: Observable<any> = this.store.pipe(
+    select("services"),
+    pluck("services")
+  );
 
-  constructor(private homeService: HomeService, ) { }
+  deleteService$: Observable<any>;
+
+  constructor(private store: Store<any>, private homeService: HomeService, private toastr: ToastrService) {}
 
   ngOnInit() {
-    this.services$ = this.homeService.getServices()
+    this.store.dispatch(new servicesActions.LoadServices());
   }
 
   deleteService(serviceName: string) {
-    this.services$ = this.homeService.deleteService(serviceName).pipe(
-      switchMap(() => this.homeService.getServices())
-    )
+    this.deleteService$ = this.homeService.deleteService(serviceName).pipe(
+      tap(() => {
+        this.store.dispatch(new servicesActions.DeleteServiceSuccess(serviceName));
+
+        this.toastr.success('Deleted successfully!', serviceName);
+      }),
+      catchError ((errorResponse) => {
+        this.store.dispatch(new servicesActions.DeleteServiceFailure(errorResponse));
+        //this.toastr.error(errorResponse, 'Unable to delete successfully!');
+        this.toastr.error('Could not delete the service.', errorResponse );
+        return errorResponse;
+      })
+    );
   }
 }
