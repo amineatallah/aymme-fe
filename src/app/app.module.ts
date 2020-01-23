@@ -30,6 +30,11 @@ import { ServiceComponent } from './service/service.component';
 import { ModelComponent } from './model/model.component';
 import { PortalsComponent } from './portals/portals.component';
 
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { reducer as servicesReducer } from './home/state/services.reducer';
+import { ServicesEffects } from './home/state/services.effects';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -59,7 +64,11 @@ import { PortalsComponent } from './portals/portals.component';
     Ng2SearchPipeModule,
     ReactiveFormsModule,
     FormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    StoreModule.forRoot({}, {}),
+    EffectsModule.forRoot([]),
+    StoreModule.forFeature('services', servicesReducer),
+    EffectsModule.forFeature([ServicesEffects]),
   ],
   providers: [
     {provide: Window, useValue: window}
