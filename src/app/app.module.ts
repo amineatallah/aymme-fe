@@ -70,7 +70,7 @@ import { ToastrModule } from 'ngx-toastr';
     EffectsModule.forRoot([]),
     StoreModule.forFeature('services', servicesReducer),
     EffectsModule.forFeature([ServicesEffects]),
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({progressBar: true}),
   ],
   providers: [
     {provide: Window, useValue: window}
