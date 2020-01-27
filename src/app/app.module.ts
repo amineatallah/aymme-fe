@@ -40,6 +40,7 @@ import { StoreRouterConnectingModule, RouterStateSerializer } from '@ngrx/router
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
 import { ServicesListComponent } from './services-list/services-list.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { ServicesListComponent } from './services-list/services-list.component';
     ServiceComponent,
     ModelComponent,
     PortalsComponent,
-    ServicesListComponent
+    ServicesListComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,
