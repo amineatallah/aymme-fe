@@ -1,23 +1,20 @@
-<div class="card m-2">
-  <div class="card-header">
-    <h2>Services</h2>
-  </div>
-  <div class="card-body">
-    <ng-container *ngIf="services$ | async as services">
-      <ul class="list-group">
-        <li *ngFor="let service of services"
-          class="list-group-item list-group-item-action d-flex justify-content-between">
-          <a [routerLink]="['/services', service.serviceName]" class="my-auto">{{service.serviceName}}</a>
-          <button class="btn btn-danger">
-            <i class="material-icons align-middle" (click)="deleteService(service.serviceName)">
-              delete
-            </i>
-          </button>
-        </li>
-      </ul>
-      <ng-container *ngIf="deleteService$ | async">
-      </ng-container>
+<div>
+  <h2>Services</h2>
+  <ng-container *ngIf="services$ | async as services">
+    <ul class="p-0" *ngIf="services.length else noServices">
+      <li *ngFor="let service of services"
+        class="d-flex justify-content-between">
+        <a [routerLink]="['/services', service.serviceName]" class="my-auto">{{service.serviceName}}</a>
+          <i class="material-icons align-middle" (click)="deleteService(service.serviceName)">
+            delete
+          </i>
+      </li>
+    </ul>
+    <ng-container *ngIf="deleteService$ | async">
     </ng-container>
-  </div>
+  </ng-container>
+
+  <ng-template #noServices>
+    <p>There are currently no services available to display.</p>
+  </ng-template>
 </div>
- 

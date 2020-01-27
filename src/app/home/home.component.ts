@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
 
   deleteService$: Observable<any>;
 
-  constructor(private store: Store<any>, private homeService: HomeService, private toastr: ToastrService) {}
+  constructor(private store: Store<any>, private homeService: HomeService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.store.dispatch(new servicesActions.LoadServices());
@@ -29,12 +29,11 @@ export class HomeComponent implements OnInit {
     this.deleteService$ = this.homeService.deleteService(serviceName).pipe(
       tap(() => {
         this.store.dispatch(new servicesActions.DeleteServiceSuccess(serviceName));
-
         this.toastr.success('Deleted successfully!', serviceName);
       }),
-      catchError ((errorResponse) => {
+      catchError((errorResponse) => {
         this.store.dispatch(new servicesActions.DeleteServiceFailure(errorResponse));
-        this.toastr.error('Could not delete the service.', errorResponse );
+        this.toastr.error('Could not delete the service.', errorResponse);
         return errorResponse;
       })
     );
