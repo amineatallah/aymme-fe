@@ -6,11 +6,12 @@ import { MocksComponent } from './mocks/mocks.component';
 import { ServiceComponent } from './service/service.component';
 import { ModelComponent } from './model/model.component';
 import { PortalsComponent } from './portals/portals.component';
+import { ServicesListComponent } from './services-list/services-list.component';
 
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'home'},
-  {path: 'home', component: HomeComponent},
+  {path: 'home', component: ServicesListComponent},
   {path: 'services/:service', component: ServiceComponent,
     children: [
       {

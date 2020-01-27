@@ -32,9 +32,14 @@ import { PortalsComponent } from './portals/portals.component';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { reducer as servicesReducer } from './service/state/services.reducer';
+import { reducers as rootReducers, CustomSerializer } from './state';
+import { reducer as servicesReducer } from './service/state/services.reducers';
 import { ServicesEffects } from './service/state/services.effects';
 import { ToastrModule } from 'ngx-toastr';
+import { StoreRouterConnectingModule, RouterStateSerializer } from '@ngrx/router-store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from 'src/environments/environment';
+import { ServicesListComponent } from './services-list/services-list.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +49,8 @@ import { ToastrModule } from 'ngx-toastr';
     MocksComponent,
     ServiceComponent,
     ModelComponent,
-    PortalsComponent
+    PortalsComponent,
+    ServicesListComponent
   ],
   imports: [
     BrowserModule,
@@ -66,15 +72,22 @@ import { ToastrModule } from 'ngx-toastr';
     ReactiveFormsModule,
     FormsModule,
     BrowserAnimationsModule,
-    StoreModule.forRoot({}, {}),
+
+    StoreModule.forRoot(rootReducers, {}),
+    StoreRouterConnectingModule.forRoot({serializer: CustomSerializer}),
     EffectsModule.forRoot([]),
     StoreModule.forFeature('services', servicesReducer),
     EffectsModule.forFeature([ServicesEffects]),
-    ToastrModule.forRoot({progressBar: true}),
+    ToastrModule.forRoot({ progressBar: true }),
+    StoreDevtoolsModule.instrument( {
+      name: 'AYMME App',
+      maxAge: 25,
+      logOnly: environment.production
+    }),
   ],
   providers: [
-    {provide: Window, useValue: window}
+    { provide: Window, useValue: window }
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
