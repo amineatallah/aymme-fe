@@ -1,0 +1,23 @@
+<div class="card m-2">
+  <div class="card-header">
+    <h2>Services</h2>
+  </div>
+  <div class="card-body">
+    <ng-container *ngIf="services$ | async as services">
+      <ul class="list-group">
+        <li *ngFor="let service of services; let i = index"
+          class="list-group-item list-group-item-action d-flex justify-content-between" role="button">
+          <span class="my-auto">{{service.serviceName}}</span>
+          <button class="btn btn-danger" (click)="deleteService(service.serviceName)">
+            <i class="material-icons align-middle">
+              delete
+            </i>
+          </button>
+        </li>
+      </ul>
+      <ng-container *ngIf="deleteService$ | async">
+      </ng-container>
+    </ng-container>
+  </div>
+</div>
+

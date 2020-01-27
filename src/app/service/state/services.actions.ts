@@ -1,11 +1,13 @@
 import { Action } from '@ngrx/store';
+import { Service } from '../service.interface';
 
 export enum ServicesActionTypes {
   LoadServices = '[Services] Load',
   LoadServicesSuccess = '[Services] Load Success',
   LoadServicesFailure = '[Services] Load Failure',
   DeleteServiceSuccess = '[Services] Delete Service Success',
-  DeleteServiceFailure = '[Services] Delete Service Failure'
+  DeleteServiceFailure = '[Services] Delete Service Failure',
+  SetSelectedService = '[Services] Set Selected Service'
 }
 
 export class LoadServices implements Action {
@@ -36,4 +38,10 @@ export class DeleteServiceFailure implements Action {
   constructor(public payload: string) {}
 }
 
-export type ServicesActions = LoadServices | LoadServicesSuccess | LoadServicesFailure | DeleteServiceSuccess | DeleteServiceFailure;
+export class SetSelectedService implements Action {
+  readonly type = ServicesActionTypes.SetSelectedService;
+
+  constructor(public payload: Service) {}
+}
+
+export type ServicesActions = LoadServices | LoadServicesSuccess | LoadServicesFailure | DeleteServiceSuccess | DeleteServiceFailure | SetSelectedService;
