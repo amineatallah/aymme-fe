@@ -38,10 +38,10 @@ h5 {
 }
 
 h6 {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   letter-spacing: 1px;
   font-weight: 200;
-  color: $grey;
+  color: #888;
   text-transform: uppercase;
 }
 
@@ -60,4 +60,8 @@ a, a:visited, a:hover, a:active {
 a:hover {
   text-decoration: none;
   color: darken(white, 20%);
+}
+
+pre {
+  color: white;
 }
