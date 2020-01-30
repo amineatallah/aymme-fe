@@ -9,9 +9,9 @@ import { select, Store } from '@ngrx/store';
 import * as servicesSelectors from '../state/services/services.selectors';
 
 @Component({
-  selector: 'app-details',
-  templateUrl: './details.component.html',
-  styleUrls: ['./details.component.scss']
+  selector: "app-details",
+  templateUrl: "./details.component.html",
+  styleUrls: ["./details.component.scss"]
 })
 export class DetailsComponent implements OnInit, OnDestroy {
   endpoint$: Observable<any>;
@@ -23,7 +23,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   filesToUpload: Array<File>;
   activeId: string;
   public selectedStatus: string;
-  public options = new JsonEditorOptions;
+  public options = new JsonEditorOptions();
   private editorHolder: ElementRef;
   mockId: string;
   response: any;
@@ -31,16 +31,22 @@ export class DetailsComponent implements OnInit, OnDestroy {
   headers: FormArray;
   @ViewChildren(JsonEditorComponent) editor: QueryList<JsonEditorComponent>;
 
-  constructor(private store : Store<any>, private window: Window, private formBuilder: FormBuilder, private activeRoute: ActivatedRoute, private service: HomeService) { }
+  constructor(
+    private store: Store<any>,
+    private window: Window,
+    private formBuilder: FormBuilder,
+    private activeRoute: ActivatedRoute,
+    private service: HomeService
+  ) {}
 
   ngOnInit() {
-    this.options.mode = 'code';
-    this.options.modes = ['code', 'text', 'tree', 'view'];
+    this.options.mode = "code";
+    this.options.modes = ["code", "text", "tree", "view"];
     this.options.statusBar = false;
 
     this.form = this.formBuilder.group({
       delay: 0,
-      statusCode: '',
+      statusCode: "",
       noData: false,
       forward: false,
       headers: this.formBuilder.array([this.createHeadersInput()])
@@ -64,60 +70,52 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   createHeadersInput(): FormGroup {
     return this.formBuilder.group({
-      name: '',
-      value: ''
+      name: "",
+      value: ""
     });
   }
 
   addHeader(): void {
-    this.headers = this.form.get('headers') as FormArray;
+    this.headers = this.form.get("headers") as FormArray;
     this.headers.push(this.createHeadersInput());
   }
 
-  updateEndpoint() {
+  updateEndpoint(endpointId: string) {
     let data = {
-      statusCode: this.form.get('statusCode').value,
-      delay: parseInt(this.form.get('delay').value, 10),
-      emptyArray: this.form.get('noData').value,
-      forward: this.form.get('forward').value,
+      statusCode: this.form.get("statusCode").value,
+      delay: parseInt(this.form.get("delay").value, 10),
+      emptyArray: this.form.get("noData").value,
+      forward: this.form.get("forward").value,
       response: this.editor.first.get(),
-      customHeaders: this.arrayToObject(this.form.value.headers),
-    }
+      customHeaders: this.arrayToObject(this.form.value.headers)
+    };
 
-    this.store.pipe(
-      select(servicesSelectors.getSelectedEndpoint),
-      tap(selectedEndpoint => {
-        this.service
-          .updateEndpoint(selectedEndpoint._id, data)
-          .subscribe(data => {
-            this.response.response[
-              this.form.get("statusCode").value
-            ].data.body = this.editor.first.get();
-          });
-      })
-    ).subscribe();
-
+    this.service.updateEndpoint(endpointId, data).subscribe(data => {
+      this.response.response[
+        this.form.get("statusCode").value
+      ].data.body = this.editor.first.get();
+    });
   }
 
   arrayToObject(array) {
     return array.reduce((obj, item) => {
-      if(item.name !== '' && item.value !== ''){
-        obj[item.name] = item.value
+      if (item.name !== "" && item.value !== "") {
+        obj[item.name] = item.value;
       }
-      return obj
+      return obj;
     }, {});
   }
-
 
   findMocks() {
     this.service.findMocks(this.mockId).subscribe(val => {
       this.endpointData = val[0].response;
-    })
+    });
   }
 
-
   changeStatusCode(event) {
-    this.endpointData = this.response.response[this.form.get('statusCode').value].data.body;
+    this.endpointData = this.response.response[
+      this.form.get("statusCode").value
+    ].data.body;
   }
 
   useMocks(data) {
@@ -126,26 +124,23 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   toggleMocks() {
     this.mocksVisible = !this.mocksVisible;
-    console.log('this.resonse', this.response);
+    console.log("this.resonse", this.response);
     this.searchText = this.response.serviceName;
-    this.specs$ = this.service.getSpecs().pipe(
-      shareReplay(),
-    );
+    this.specs$ = this.service.getSpecs().pipe(shareReplay());
   }
 
   createSpec() {
-    console.log('searchTExt', this.searchText);
-    this.specs$ = this.service.createSpec({ name: this.searchText }).pipe(
-      switchMap(() => this.service.getSpecs())
-    )
+    console.log("searchTExt", this.searchText);
+    this.specs$ = this.service
+      .createSpec({ name: this.searchText })
+      .pipe(switchMap(() => this.service.getSpecs()));
   }
 
   createExamples(id) {
-
     this.specs$ = this.service.uploadFile(id, this.filesToUpload).pipe(
       switchMap(() => this.service.getSpecs()),
-      tap(() => this.activeId = id)
-    )
+      tap(() => (this.activeId = id))
+    );
   }
 
   onFileChange(event) {
@@ -153,12 +148,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   deleteSpecs(id: string) {
-    this.specs$ = this.service.deleteSpecs(id).pipe(
-      switchMap(() => this.service.getSpecs())
-    );
+    this.specs$ = this.service
+      .deleteSpecs(id)
+      .pipe(switchMap(() => this.service.getSpecs()));
   }
 
   ngOnDestroy() {
-    console.log('destroy');
+    console.log("destroy");
   }
 }
