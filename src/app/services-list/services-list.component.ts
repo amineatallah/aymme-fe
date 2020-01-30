@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { HomeService } from '../home/home.service';
 import { ToastrService } from 'ngx-toastr';
 import * as servicesSelectors from '../state/services/services.selectors';
-import * as servicesActions from "../state/services/services.actions";
+import * as servicesActions from '../state/services/services.actions';
 import { tap, catchError } from 'rxjs/operators';
 import { Endpoint } from '../service/service.interface';
 
@@ -17,7 +17,7 @@ export class ServicesListComponent implements OnInit {
   readonly services$: Observable<any> = this.store.pipe(select(servicesSelectors.getServices));
   readonly hasServices$: Observable<any> = this.store.pipe(select(servicesSelectors.hasServices));
   deleteService$: Observable<any>;
-  allOpen: boolean = false;
+  allOpen = false;
 
   constructor(
     private store: Store<any>,
@@ -25,7 +25,7 @@ export class ServicesListComponent implements OnInit {
     private toastr: ToastrService) {}
 
   ngOnInit() {
-    this.loadServices()
+    this.loadServices();
   }
 
   loadServices() {
@@ -59,7 +59,7 @@ export class ServicesListComponent implements OnInit {
     );
   }
 
-  setSelectedEndpoint(endpoint : Endpoint) {
+  setSelectedEndpoint(endpoint: Endpoint) {
     this.store.dispatch(new servicesActions.LoadSelectedEndpoint(endpoint));
   }
 }
