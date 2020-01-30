@@ -44,27 +44,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
       noData: false,
       forward: false,
       headers: this.formBuilder.array([this.createHeadersInput()])
-    })
-
-    // this.endpoint$ = this.activeRoute.paramMap.pipe(
-    //   switchMap(params => {
-    //     return this.service.getEndpoint(this.activeRoute.snapshot.params.id).pipe(
-    //       tap((val: any) => {
-    //         this.mockId = val.path.substring(val.path.lastIndexOf('/') + 1);
-    //         this.form.get('statusCode').setValue(val.statusCode);
-    //         this.form.get('delay').setValue(val.delay);
-    //         this.form.get('noData').setValue(val.emptyArray);
-    //         this.response = val;
-    //         this.endpointData = val.response[val.statusCode].data.body;
-    //       })
-    //     );
-    //   })
-    // );
+    });
 
     this.endpoint$ = this.store.pipe(
       select(servicesSelectors.getSelectedEndpoint),
       tap(val => {
-        console.log(val);
         if (!val) {
           return;
         }
@@ -91,8 +75,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   updateEndpoint() {
-
-    console.log('test');
     let data = {
       statusCode: this.form.get('statusCode').value,
       delay: parseInt(this.form.get('delay').value, 10),
@@ -105,7 +87,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.store.pipe(
       select(servicesSelectors.getSelectedEndpoint),
       tap(selectedEndpoint => {
-        console.log(selectedEndpoint);
         this.service
           .updateEndpoint(selectedEndpoint._id, data)
           .subscribe(data => {
