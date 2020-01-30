@@ -1,13 +1,15 @@
 import { ServicesActions, ServicesActionTypes } from './services.actions';
-import { Service } from '../service.interface';
+import { Service, Endpoint } from '../../service/service.interface';
 
 export interface ServicesState {
   services: Service[];
+  selectedEndpoint: any | undefined;
   error: string;
 }
 
 export const initialState: ServicesState = {
   services: [],
+  selectedEndpoint: undefined,
   error: '',
 };
 
@@ -27,6 +29,7 @@ export function reducer(state = initialState, action: ServicesActions): Services
       };
     case ServicesActionTypes.DeleteServiceSuccess:
       return {
+        ...state,
         services: state.services.filter(service => service.serviceName !==  action.payload),
         error: '',
       };
@@ -35,6 +38,18 @@ export function reducer(state = initialState, action: ServicesActions): Services
         ...state,
         error: action.payload,
       };
+      case ServicesActionTypes.LoadEndpointSuccess:
+        return {
+          ...state,
+          selectedEndpoint: action.payload,
+          error: '',
+        };
+      case ServicesActionTypes.LoadEndpointFailure:
+        return {
+          ...state,
+          services: [],
+          error: action.payload,
+        };
     default:
       return state;
   }

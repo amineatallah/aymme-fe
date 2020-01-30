@@ -3,7 +3,7 @@ import { HomeService } from '../home/home.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
-import * as servicesSelectors from './state/services.selectors';
+import * as servicesSelectors from '../state/services/services.selectors';
 import { tap } from 'rxjs/operators';
 
 @Component({
@@ -12,19 +12,9 @@ import { tap } from 'rxjs/operators';
   styleUrls: ["./service.component.scss"]
 })
 export class ServiceComponent implements OnInit {
-  endpoints$: Observable<any> = this.store
-    .pipe(select(servicesSelectors.getEndpointsFromSelectedService))
-    .pipe(
-      tap(endpoints => {
-        if (endpoints.length > 0) {
-          this.router.navigate([endpoints[0].id], {
-            relativeTo: this.activeRoute
-          });
-        }
-      })
-    );
+  endpoints$: Observable<any>;
 
-  selectedService$: Observable<any> = this.store.pipe(select(servicesSelectors.getSelectedService));
+  selectedService$: Observable<any>;
 
   constructor(
     private activeRoute: ActivatedRoute,

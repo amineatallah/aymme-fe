@@ -5,6 +5,8 @@ import { Observable, of } from 'rxjs';
 import { JsonEditorOptions, JsonEditorComponent } from 'ang-jsoneditor';
 import { tap, filter, map, shareReplay, switchMap, throwIfEmpty } from 'rxjs/operators';
 import { FormGroup, FormControl, FormBuilder, FormArray } from '@angular/forms';
+import { select, Store } from '@ngrx/store';
+import * as servicesSelectors from '../state/services/services.selectors';
 
 @Component({
   selector: 'app-details',
@@ -29,7 +31,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   headers: FormArray;
   @ViewChildren(JsonEditorComponent) editor: QueryList<JsonEditorComponent>;
 
-  constructor(private window: Window, private formBuilder: FormBuilder, private activeRoute: ActivatedRoute, private service: HomeService) { }
+  constructor(private store : Store<any>, private window: Window, private formBuilder: FormBuilder, private activeRoute: ActivatedRoute, private service: HomeService) { }
 
   ngOnInit() {
     this.options.mode = 'code';
@@ -44,18 +46,34 @@ export class DetailsComponent implements OnInit, OnDestroy {
       headers: this.formBuilder.array([this.createHeadersInput()])
     })
 
-    this.endpoint$ = this.activeRoute.paramMap.pipe(
-      switchMap(params => {
-        return this.service.getEndpoint(this.activeRoute.snapshot.params.id).pipe(
-          tap((val: any) => {
-            this.mockId = val.path.substring(val.path.lastIndexOf('/') + 1);
-            this.form.get('statusCode').setValue(val.statusCode);
-            this.form.get('delay').setValue(val.delay);
-            this.form.get('noData').setValue(val.emptyArray);
-            this.response = val;
-            this.endpointData = val.response[val.statusCode].data.body;
-          })
-        );
+    // this.endpoint$ = this.activeRoute.paramMap.pipe(
+    //   switchMap(params => {
+    //     return this.service.getEndpoint(this.activeRoute.snapshot.params.id).pipe(
+    //       tap((val: any) => {
+    //         this.mockId = val.path.substring(val.path.lastIndexOf('/') + 1);
+    //         this.form.get('statusCode').setValue(val.statusCode);
+    //         this.form.get('delay').setValue(val.delay);
+    //         this.form.get('noData').setValue(val.emptyArray);
+    //         this.response = val;
+    //         this.endpointData = val.response[val.statusCode].data.body;
+    //       })
+    //     );
+    //   })
+    // );
+
+    this.endpoint$ = this.store.pipe(
+      select(servicesSelectors.getSelectedEndpoint),
+      tap(val => {
+        console.log(val);
+        if (!val) {
+          return;
+        }
+        this.mockId = val.path.substring(val.path.lastIndexOf("/") + 1);
+        this.form.get("statusCode").setValue(val.statusCode);
+        this.form.get("delay").setValue(val.delay);
+        this.form.get("noData").setValue(val.emptyArray);
+        this.response = val;
+        this.endpointData = val.response[val.statusCode].data.body;
       })
     );
   }
@@ -74,6 +92,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   updateEndpoint() {
 
+    console.log('test');
     let data = {
       statusCode: this.form.get('statusCode').value,
       delay: parseInt(this.form.get('delay').value, 10),
@@ -82,9 +101,21 @@ export class DetailsComponent implements OnInit, OnDestroy {
       response: this.editor.first.get(),
       customHeaders: this.arrayToObject(this.form.value.headers),
     }
-    this.service.updateEndpoint(this.activeRoute.snapshot.params.id, data).subscribe(data => {
-      this.response.response[this.form.get('statusCode').value].data.body = this.editor.first.get();
-    });
+
+    this.store.pipe(
+      select(servicesSelectors.getSelectedEndpoint),
+      tap(selectedEndpoint => {
+        console.log(selectedEndpoint);
+        this.service
+          .updateEndpoint(selectedEndpoint._id, data)
+          .subscribe(data => {
+            this.response.response[
+              this.form.get("statusCode").value
+            ].data.body = this.editor.first.get();
+          });
+      })
+    ).subscribe();
+
   }
 
   arrayToObject(array) {

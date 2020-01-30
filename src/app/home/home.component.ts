@@ -2,10 +2,10 @@ import { Component, OnInit } from "@angular/core";
 import { HomeService } from "./home.service";
 import { Observable, of } from "rxjs";
 import { tap, catchError } from "rxjs/operators";
-import * as servicesSelectors from '../service/state/services.selectors';
+import * as servicesSelectors from '../state/services/services.selectors';
 
 //import * as fromServices from './state';
-import * as servicesActions from "../service/state/services.actions";
+import * as servicesActions from "../state/services/services.actions";
 import { Store, select } from "@ngrx/store";
 import { ToastrService } from 'ngx-toastr';
 import { Service } from '../service/service.interface';
@@ -47,7 +47,6 @@ export class HomeComponent implements OnInit {
   }
 
   setSelectedService(service: Service) {
-    this.store.dispatch(new servicesActions.SetSelectedService(service));
     this.router.navigate(['/services', service.serviceName]);
   }
 }

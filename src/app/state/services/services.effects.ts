@@ -22,4 +22,17 @@ export class ServicesEffects {
       )
     )
   );
+
+  @Effect()
+  loadSelectedEndpoint$ = this.actions$.pipe(
+    ofType(servicesActions.ServicesActionTypes.LoadSelectedEndpoint),
+    concatMap((action: servicesActions.LoadSelectedEndpoint) =>
+      this.homeService.getEndpoint(action.payload.id).pipe(
+        map(
+          (endpoint: any) => new servicesActions.LoadEndpointSuccess(endpoint)
+        ),
+        catchError(err => of(new servicesActions.LoadEndpointFailure(err)))
+      )
+    )
+  );
 }

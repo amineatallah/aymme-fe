@@ -4,10 +4,10 @@ import { Store, select } from '@ngrx/store';
 import { HomeService } from '../home/home.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import * as servicesSelectors from '../service/state/services.selectors';
-import * as servicesActions from "../service/state/services.actions";
+import * as servicesSelectors from '../state/services/services.selectors';
+import * as servicesActions from "../state/services/services.actions";
 import { tap, catchError } from 'rxjs/operators';
-import { Service } from '../service/service.interface';
+import { Service, Endpoint } from '../service/service.interface';
 
 import {FlatTreeControl} from '@angular/cdk/tree';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
@@ -56,5 +56,9 @@ export class ServicesListComponent implements OnInit {
         return errorResponse;
       })
     );
+  }
+
+  setSelectedEndpoint(endpoint : Endpoint) {
+    this.store.dispatch(new servicesActions.LoadSelectedEndpoint(endpoint));
   }
 }

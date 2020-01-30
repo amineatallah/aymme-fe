@@ -1,10 +1,10 @@
 export interface Service {
   _id: string;
   serviceName: string;
-  endpoints: Endpoints[];
+  endpoints: Endpoint[];
 }
 
-export interface Endpoints {
+export interface Endpoint {
   path: string;
   id: string;
   statusCode: string;
