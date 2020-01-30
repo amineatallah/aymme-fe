@@ -5,10 +5,10 @@
         <ng-container *ngIf="{ hasServices: hasServices$ | async } as context">
           <section class="d-flex mb-4">
             <h6>Services</h6>
-            <button class="btn btn-primary btn-sm ml-auto"
-            (click)="loadServices()">Refresh</button>
-            <button *ngIf="context.hasServices" class="btn btn-primary btn-sm ml-auto"
-              (click)="toggleAll(services)">Toggle all</button>
+            <button class="btn btn-primary ml-auto px-3"
+            (click)="loadServices()"><i class="fas fa-sync-alt"></i></button>
+            <button *ngIf="context.hasServices" class="btn btn-primary ml-2 px-3"
+              (click)="toggleAll(services)"><i class="fas fa-arrows-alt-v"></i></button>
           </section>
           <!-- <pre>{{services | json}}</pre> -->
           <ul class="services-list p-0" *ngIf="context.hasServices else noServices">
@@ -27,10 +27,11 @@
         </ng-container>
       </ng-container>
     </div>
+
     <div class="col-6">
+      <h6>Details</h6>
       <app-details></app-details>
     </div>
-
 
     <ng-template #noServices>
       <p>There are currently no services available to display.</p>
