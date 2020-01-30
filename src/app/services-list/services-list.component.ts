@@ -3,14 +3,10 @@ import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { HomeService } from '../home/home.service';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
 import * as servicesSelectors from '../state/services/services.selectors';
 import * as servicesActions from "../state/services/services.actions";
 import { tap, catchError } from 'rxjs/operators';
-import { Service, Endpoint } from '../service/service.interface';
-
-import {FlatTreeControl} from '@angular/cdk/tree';
-import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
+import { Endpoint } from '../service/service.interface';
 
 @Component({
   selector: 'app-services-list',
@@ -19,17 +15,22 @@ import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 })
 export class ServicesListComponent implements OnInit {
   readonly services$: Observable<any> = this.store.pipe(select(servicesSelectors.getServices));
+  readonly hasServices$: Observable<any> = this.store.pipe(select(servicesSelectors.hasServices));
   deleteService$: Observable<any>;
   allOpen: boolean = false;
 
   constructor(
     private store: Store<any>,
     private homeService: HomeService,
-    private toastr: ToastrService,
-    private router: Router) {}
+    private toastr: ToastrService) {}
 
   ngOnInit() {
+    this.loadServices()
+  }
+
+  loadServices() {
     this.store.dispatch(new servicesActions.LoadServices());
+    this.allOpen = false;
   }
 
   customFormat(endpoint: string, serviceName: string): string {

@@ -2,32 +2,37 @@
   <div class="row">
     <div class="col-6">
       <ng-container *ngIf="services$ | async as services">
-        <section class="d-flex mb-4">
-          <h6>Services</h6>
-          <button class="btn btn-primary btn-sm ml-auto" (click)="toggleAll(services)">Toggle all</button>
-        </section>
+        <ng-container *ngIf="{ hasServices: hasServices$ | async } as context">
+          <section class="d-flex mb-4">
+            <h6>Services</h6>
+            <button class="btn btn-primary btn-sm ml-auto"
+            (click)="loadServices()">Refresh</button>
+            <button *ngIf="context.hasServices" class="btn btn-primary btn-sm ml-auto"
+              (click)="toggleAll(services)">Toggle all</button>
+          </section>
           <!-- <pre>{{services | json}}</pre> -->
-          <ul class="services-list p-0" *ngIf="services.length else noServices">
+          <ul class="services-list p-0" *ngIf="context.hasServices else noServices">
             <li *ngFor="let service of services" class="mb-2" [ngClass]="{'is-open': service.open}">
-                <!-- <i class="material-icons align-middle" (click)="deleteService(service.serviceName)"> delete </i> -->
-                <h5 class="d-flex align-items-center" (click)="service.open = !service.open">{{service.serviceName}} <i class="ml-auto fas fa-chevron-down"></i></h5>
-                <ul [hidden]="!service.open">
-                  <li *ngFor="let endpoint of service.endpoints" class="mb-1">
-                    <a (click)="setSelectedEndpoint(endpoint)" class="my-auto">{{customFormat(endpoint.path, service.serviceName)}}</a>
-                  </li>
-                </ul>
+              <!-- <i class="material-icons align-middle" (click)="deleteService(service.serviceName)"> delete </i> -->
+              <h5 class="d-flex align-items-center" (click)="service.open = !service.open">{{service.serviceName}} <i
+                  class="ml-auto fas fa-chevron-down"></i></h5>
+              <ul [hidden]="!service.open">
+                <li *ngFor="let endpoint of service.endpoints" class="mb-1">
+                  <a (click)="setSelectedEndpoint(endpoint)"
+                    class="my-auto">{{customFormat(endpoint.path, service.serviceName)}}</a>
+                </li>
+              </ul>
             </li>
           </ul>
         </ng-container>
-        <!-- <ng-container *ngIf="deleteService$ | async">
-        </ng-container> -->
-      </div>
+      </ng-container>
+    </div>
     <div class="col-6">
       <app-details></app-details>
     </div>
 
 
-  <ng-template #noServices>
-    <p>There are currently no services available to display.</p>
-  </ng-template>
-</div>
+    <ng-template #noServices>
+      <p>There are currently no services available to display.</p>
+    </ng-template>
+  </div>
