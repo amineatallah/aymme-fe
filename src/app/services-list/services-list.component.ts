@@ -14,7 +14,15 @@ import { Endpoint } from '../service/service.interface';
   styleUrls: ['./services-list.component.scss']
 })
 export class ServicesListComponent implements OnInit {
-  readonly services$: Observable<any> = this.store.pipe(select(servicesSelectors.getServices));
+  readonly services$: Observable<any> = this.store.pipe(select(servicesSelectors.getServices),
+    tap((services) => {
+
+    // Select the first service and first endpoint (For development of AYMME purpose)
+    // if (services.length) {
+    //   this.setSelectedEndpoint(services[0].endpoints[0]);
+    // }
+
+  }));
   readonly hasServices$: Observable<any> = this.store.pipe(select(servicesSelectors.hasServices));
   deleteService$: Observable<any>;
   allOpen = false;
