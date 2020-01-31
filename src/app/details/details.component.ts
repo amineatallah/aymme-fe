@@ -72,8 +72,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
           for (let [key, value] of Object.entries(val.customHeaders)) {
             this.addHeader(key, value as string);
           }
-          this.addHeader();
         }
+
+        this.addHeader();
       })
     );
   }
