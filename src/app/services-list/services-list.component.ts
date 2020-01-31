@@ -24,6 +24,8 @@ export class ServicesListComponent implements OnInit {
 
   }));
   readonly hasServices$: Observable<any> = this.store.pipe(select(servicesSelectors.hasServices));
+  readonly selectedEndpoint$:  Observable<any> = this.store.pipe(select(servicesSelectors.getSelectedEndpoint));
+
   deleteService$: Observable<any>;
   allOpen = false;
 
