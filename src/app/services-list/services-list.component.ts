@@ -9,22 +9,26 @@ import { tap, catchError } from 'rxjs/operators';
 import { Endpoint } from '../service/service.interface';
 
 @Component({
-  selector: 'app-services-list',
-  templateUrl: './services-list.component.html',
-  styleUrls: ['./services-list.component.scss']
+  selector: "app-services-list",
+  templateUrl: "./services-list.component.html",
+  styleUrls: ["./services-list.component.scss"]
 })
 export class ServicesListComponent implements OnInit {
-  readonly services$: Observable<any> = this.store.pipe(select(servicesSelectors.getServices),
-    tap((services) => {
-
-    // Select the first service and first endpoint (For development of AYMME purpose)
-    if (services.length) {
-      this.setSelectedEndpoint(services[0].endpoints[0]);
-    }
-
-  }));
-  readonly hasServices$: Observable<any> = this.store.pipe(select(servicesSelectors.hasServices));
-  readonly selectedEndpoint$:  Observable<any> = this.store.pipe(select(servicesSelectors.getSelectedEndpoint));
+  readonly services$: Observable<any> = this.store.pipe(
+    select(servicesSelectors.getServices),
+    // tap(services => {
+    //   // Select the first service and first endpoint (For development of AYMME purpose)
+    //   if (services.length) {
+    //     this.setSelectedEndpoint(services[0].endpoints[0]);
+    //   }
+    // })
+  );
+  readonly hasServices$: Observable<any> = this.store.pipe(
+    select(servicesSelectors.hasServices)
+  );
+  readonly selectedEndpoint$: Observable<any> = this.store.pipe(
+    select(servicesSelectors.getSelectedEndpoint)
+  );
 
   deleteService$: Observable<any>;
   allHidden = false;
@@ -32,7 +36,8 @@ export class ServicesListComponent implements OnInit {
   constructor(
     private store: Store<any>,
     private homeService: HomeService,
-    private toastr: ToastrService) {}
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
     this.loadServices();
@@ -46,26 +51,30 @@ export class ServicesListComponent implements OnInit {
 
   customFormat(endpoint: string, serviceName: string): string {
     return endpoint
-      .replace('/gateway/api', '')
-      .replace(serviceName, '')
-      .replace('//client-api/v2', '');
+      .replace("/gateway/api", "")
+      .replace(serviceName, "")
+      .replace("//client-api/v2", "");
   }
 
   toggleAll(services: any[]) {
     this.allHidden = !this.allHidden;
-    services.map(service => service.hidden = this.allHidden);
+    services.map(service => (service.hidden = this.allHidden));
     return false;
   }
 
   deleteService(serviceName: string) {
     this.deleteService$ = this.homeService.deleteService(serviceName).pipe(
       tap(() => {
-        this.store.dispatch(new servicesActions.DeleteServiceSuccess(serviceName));
-        this.toastr.success('Deleted successfully!', serviceName);
+        this.store.dispatch(
+          new servicesActions.DeleteServiceSuccess(serviceName)
+        );
+        this.toastr.success("Deleted successfully!", serviceName);
       }),
-      catchError ((errorResponse) => {
-        this.store.dispatch(new servicesActions.DeleteServiceFailure(errorResponse));
-        this.toastr.error('Could not delete the service.', errorResponse );
+      catchError(errorResponse => {
+        this.store.dispatch(
+          new servicesActions.DeleteServiceFailure(errorResponse)
+        );
+        this.toastr.error("Could not delete the service.", errorResponse);
         return errorResponse;
       })
     );
