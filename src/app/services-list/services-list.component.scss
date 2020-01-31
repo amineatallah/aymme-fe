@@ -1,6 +1,7 @@
+@import "../../styles/partials/vars.scss";
 
 .services-list {
-  > li {
+  >li {
     border-radius: 2px;
     display: inline-block;
     width: 100%;
@@ -28,11 +29,14 @@
       }
     }
 
-    li a {
-      color: #888;
+    li {
+      &.active a { color: $primary-blue; font-weight: 700; }
+      a {
+        color: #888;
 
-      &:hover {
-        color: white;
+        &:hover {
+          color: white;
+        }
       }
     }
   }

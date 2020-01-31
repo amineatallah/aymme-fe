@@ -3,48 +3,46 @@
     <div class="d-flex row">
       <div class="col-12">
         <form [formGroup]="form" class="h-100 d-flex flex-column">
-          <div class="row form-group">
+          <div class="row form-group mb-4">
             <div class="col-4">
               <label for="statusCode">Status Code</label>
-              <app-dropdown [defaultHeader]="'Select one'" [items]="responseCodes"  formControlName="statusCode"
+              <app-dropdown [defaultHeader]="'Select one'" [items]="responseCodes" formControlName="statusCode"
               (setSelectedValue)="changeStatusCode($event)"></app-dropdown>
             </div>
 
             <div class="col-4">
               <div class="row no-gutters">
                 <label for="delay">Delay</label>
-                <input formControlName="delay" type="text" class="form-control col-12" placeholder="Delay">
+                <input formControlName="delay" type="text" class="form-control" placeholder="Delay">
               </div>
             </div>
 
             <div class="col-2">
               <div class="row no-gutters">
                 <label for="exampleCheck1">Empty</label>
-                <input class="col-12 form-control" formControlName="noData" type="checkbox" id="noData">
+                <input class="form-control" formControlName="noData" type="checkbox" id="noData">
               </div>
             </div>
 
             <div class="col-2">
               <div class="row no-gutters">
                 <label for="forward">Forward</label>
-                <input class="col-12 form-control" formControlName="forward" type="checkbox" id="forward">
+                <input class="form-control" formControlName="forward" type="checkbox" id="forward">
               </div>
             </div>
-            <div class="col-12">
-              <p class="d-flex mt-2 p-0 mb-0 justify-content-between">Headers </p>
-              <div formArrayName="headers" class="row no-gutters justify-content-between align-items-end">
-                <div class="col-10" *ngFor="let header of form.get('headers').controls; let i = index;">
-                  <div [formGroupName]="i" class="row mt-2 no-gutters justify-content-between">
-                    <div class="col-6 pr-3">
+            <div class="col-12 mt-4">
+              <label for="headers">Headers</label>
+              <div formArrayName="headers">
+                <div *ngFor="let header of form.get('headers').controls; let i = index;">
+                  <div [formGroupName]="i" class="d-flex justify-content-between mb-2">
+                    <div class="form-group m-0">
                       <input class="form-control" formControlName="name" placeholder="Header name">
                     </div>
-                    <div class="col-6 pr-3">
+                    <div class="form-group m-0">
                       <input class="form-control" formControlName="value" placeholder="Header value">
                     </div>
+                    <button class="btn btn-outline-primary" type="button" (click)="addHeader()">Add Headers</button>
                   </div>
-                </div>
-                <div class="col-2">
-                  <button class="btn btn-outline-primary" type="button" (click)="addHeader()">Add Headers</button>
                 </div>
               </div>
             </div>

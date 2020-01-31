@@ -1,4 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChanges, SimpleChanges, forwardRef } from '@angular/core';
+import {
+  Component, OnInit, Input, Output, EventEmitter,
+  ChangeDetectionStrategy, OnChanges, SimpleChanges, forwardRef
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -23,10 +26,10 @@ export class DropdownComponent implements OnInit, OnChanges, ControlValueAccesso
   selectedValue: string;
   isOpen = false;
 
-  constructor() {}
+  constructor() { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if ( changes.defaultValue && changes.defaultValue.currentValue ) {
+    if (changes.defaultValue && changes.defaultValue.currentValue) {
       this.selectedValue = changes.defaultValue.currentValue.length ? changes.defaultValue.currentValue : this.defaultHeader;
     }
   }
@@ -35,19 +38,18 @@ export class DropdownComponent implements OnInit, OnChanges, ControlValueAccesso
     this.selectedValue = this.defaultValue || this.defaultHeader;
   }
 
-
-  onChanged: any = () => {}
-  onTouched: any = () => {}
+  onChanged: any = () => { };
+  onTouched: any = () => { };
 
   writeValue(val) {
     this.selectedValue = val;
   }
 
-  registerOnChange(fn: any){
-    this.onChanged = fn
+  registerOnChange(fn: any) {
+    this.onChanged = fn;
   }
-  registerOnTouched(fn: any){
-    this.onTouched = fn
+  registerOnTouched(fn: any) {
+    this.onTouched = fn;
   }
 
   setSelectedValueOnParent(item: string): void {
