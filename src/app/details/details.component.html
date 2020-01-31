@@ -6,7 +6,7 @@
           <div class="row form-group">
             <div class="col-4">
               <label for="statusCode">Status Code</label>
-              <app-dropdown [defaultHeader]="'Select one'" [items]="responseCodes" [defaultValue]="statusCode"
+              <app-dropdown [defaultHeader]="'Select one'" [items]="responseCodes"  formControlName="statusCode"
               (setSelectedValue)="changeStatusCode($event)"></app-dropdown>
             </div>
 
