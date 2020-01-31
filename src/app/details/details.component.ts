@@ -46,7 +46,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
     this.form = this.formBuilder.group({
       delay: 0,
-      statusCode: '',
+      statusCode: "",
       noData: false,
       forward: false,
       headers: this.formBuilder.array([this.createHeadersInput()])
@@ -64,20 +64,30 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.form.get("noData").setValue(val.emptyArray);
         this.response = val;
         this.endpointData = val.response[val.statusCode].data.body;
+
+        this.headers = this.form.get("headers") as FormArray;
+        this.headers.clear();
+
+        if (val.customHeaders) {
+          for (let [key, value] of Object.entries(val.customHeaders)) {
+            this.addHeader(key, value as string);
+          }
+        }
       })
     );
   }
 
-  createHeadersInput(): FormGroup {
+  createHeadersInput(headerName: string = '', headerValue: string = ''): FormGroup {
     return this.formBuilder.group({
-      name: "",
-      value: ""
+      name: headerName,
+      value: headerValue
     });
   }
 
-  addHeader(): void {
+  addHeader(headerName: string = '', headerValue: string = ''): boolean {
     this.headers = this.form.get("headers") as FormArray;
-    this.headers.push(this.createHeadersInput());
+    this.headers.push(this.createHeadersInput(headerName, headerValue));
+
     return false;
   }
 
