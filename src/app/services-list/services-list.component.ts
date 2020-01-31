@@ -27,7 +27,7 @@ export class ServicesListComponent implements OnInit {
   readonly selectedEndpoint$:  Observable<any> = this.store.pipe(select(servicesSelectors.getSelectedEndpoint));
 
   deleteService$: Observable<any>;
-  allOpen = false;
+  allHidden = false;
 
   constructor(
     private store: Store<any>,
@@ -40,7 +40,7 @@ export class ServicesListComponent implements OnInit {
 
   loadServices() {
     this.store.dispatch(new servicesActions.LoadServices());
-    this.allOpen = false;
+    this.allHidden = false;
     return false;
   }
 
@@ -52,8 +52,8 @@ export class ServicesListComponent implements OnInit {
   }
 
   toggleAll(services: any[]) {
-    this.allOpen = !this.allOpen;
-    services.map(service => service.open = this.allOpen);
+    this.allHidden = !this.allHidden;
+    services.map(service => service.hidden = this.allHidden);
     return false;
   }
 
