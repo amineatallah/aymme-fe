@@ -46,7 +46,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
     this.form = this.formBuilder.group({
       delay: 0,
-      statusCode: "",
+      statusCode: '',
       noData: false,
       forward: false,
       headers: this.formBuilder.array([this.createHeadersInput()])
@@ -106,11 +106,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }, {});
   }
 
-  findMocks() {
-    this.service.findMocks(this.mockId).subscribe(val => {
-      this.endpointData = val[0].response;
-    });
-  }
+  // findMocks() {
+  //   this.service.findMocks(this.mockId).subscribe(val => {
+  //     this.endpointData = val[0].response;
+  //   });
+  // }
 
   changeStatusCode(event) {
     this.endpointData = this.response.response[

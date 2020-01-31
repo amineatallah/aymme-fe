@@ -1,0 +1,22 @@
+
+.btn {
+  &.btn-primary {
+    background-color: $primary-blue;
+    border-color: darken($primary-blue, 10%);
+    border-radius: 2px;
+
+    &:hover {
+      background-color: darken($primary-blue, 5%);
+    }
+  }
+
+  &.btn-outline-primary {
+    border-color: darken($primary-blue, 10%);
+    color: $primary-blue;
+
+    &:hover {
+      background-color: $primary-blue;
+      color: white;
+    }
+  }
+}

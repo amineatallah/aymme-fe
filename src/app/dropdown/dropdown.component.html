@@ -1,0 +1,11 @@
+<div class="dropdown" [class.is-open]="isOpen">
+  <header class="d-flex align-items-center">
+    <span class="text-small px-2">{{selectedValue}}</span>
+    <a href="#">
+      <i class="fas fa-angle-down"></i>
+    </a>
+  </header>
+  <ul class="list-unstyled">
+    <li *ngFor="let item of items" (click)="setSelectedValueOnParent(item); isOpen = false">{{item}}</li>
+  </ul>
+</div>

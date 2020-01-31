@@ -18,9 +18,9 @@ export class ServicesListComponent implements OnInit {
     tap((services) => {
 
     // Select the first service and first endpoint (For development of AYMME purpose)
-    // if (services.length) {
-    //   this.setSelectedEndpoint(services[0].endpoints[0]);
-    // }
+    if (services.length) {
+      this.setSelectedEndpoint(services[0].endpoints[0]);
+    }
 
   }));
   readonly hasServices$: Observable<any> = this.store.pipe(select(servicesSelectors.hasServices));
@@ -39,6 +39,7 @@ export class ServicesListComponent implements OnInit {
   loadServices() {
     this.store.dispatch(new servicesActions.LoadServices());
     this.allOpen = false;
+    return false;
   }
 
   customFormat(endpoint: string, serviceName: string): string {
@@ -51,6 +52,7 @@ export class ServicesListComponent implements OnInit {
   toggleAll(services: any[]) {
     this.allOpen = !this.allOpen;
     services.map(service => service.open = this.allOpen);
+    return false;
   }
 
   deleteService(serviceName: string) {

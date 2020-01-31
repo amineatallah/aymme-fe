@@ -2,16 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
-import {MatListModule} from '@angular/material/list';
-import {MatExpansionModule} from '@angular/material/expansion';
-import {MatButtonModule} from '@angular/material/button';
-import {MatSelectModule} from '@angular/material/select';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatInputModule} from '@angular/material';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatIconModule} from '@angular/material/icon';
-import {MatSidenavModule} from '@angular/material/sidenav';
-
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -24,11 +14,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
 import { DetailsComponent } from './details/details.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormsModule }   from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MocksComponent } from './mocks/mocks.component';
 import { ServiceComponent } from './service/service.component';
 import { ModelComponent } from './model/model.component';
 import { PortalsComponent } from './portals/portals.component';
+import { DropdownComponent } from './dropdown/dropdown.component';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -53,6 +44,7 @@ import { HeaderComponent } from './header/header.component';
     PortalsComponent,
     ServicesListComponent,
     HeaderComponent,
+    DropdownComponent
   ],
   imports: [
     BrowserModule,
@@ -60,16 +52,7 @@ import { HeaderComponent } from './header/header.component';
     NgbModule,
     AppRoutingModule,
     HttpClientModule,
-    MatListModule,
-    MatExpansionModule,
     NgJsonEditorModule,
-    // MatButtonModule,
-    // MatSelectModule,
-    // MatToolbarModule,
-    // MatInputModule,
-    // MatCheckboxModule,
-    // MatIconModule,
-    // MatSidenavModule,
     Ng2SearchPipeModule,
     ReactiveFormsModule,
     FormsModule,
