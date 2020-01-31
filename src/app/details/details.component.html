@@ -31,7 +31,7 @@
               </div>
             </div>
             <div class="col-12 mt-4">
-              <label for="headers">Headers</label>
+              <label for="headers">Headers <a href="#"><i (click)="addHeader()" class="fas fa-plus"></i></a></label>
               <div formArrayName="headers">
                 <div *ngFor="let header of form.get('headers').controls; let i = index;">
                   <div [formGroupName]="i" class="d-flex justify-content-between mb-2">
@@ -41,7 +41,6 @@
                     <div class="form-group m-0">
                       <input class="form-control" formControlName="value" placeholder="Header value">
                     </div>
-                    <button class="btn btn-outline-primary" type="button" (click)="addHeader()">Add Headers</button>
                   </div>
                 </div>
               </div>

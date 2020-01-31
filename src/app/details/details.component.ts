@@ -78,6 +78,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   addHeader(): void {
     this.headers = this.form.get("headers") as FormArray;
     this.headers.push(this.createHeadersInput());
+    return false;
   }
 
   updateEndpoint(endpointId: string) {
