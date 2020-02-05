@@ -4,7 +4,7 @@ import { Actions, Effect, ofType } from "@ngrx/effects";
 import * as servicesActions from "./services.actions";
 import { concatMap, map, catchError } from "rxjs/operators";
 import { of } from "rxjs";
-import { HomeService } from "../home.service";
+import { HomeService } from "../../home/home.service";
 
 @Injectable()
 export class ServicesEffects {
@@ -19,6 +19,19 @@ export class ServicesEffects {
           (services: any[]) => new servicesActions.LoadServicesSuccess(services)
         ),
         catchError(err => of(new servicesActions.LoadServicesFailure(err)))
+      )
+    )
+  );
+
+  @Effect()
+  loadSelectedEndpoint$ = this.actions$.pipe(
+    ofType(servicesActions.ServicesActionTypes.LoadSelectedEndpoint),
+    concatMap((action: servicesActions.LoadSelectedEndpoint) =>
+      this.homeService.getEndpoint(action.payload.id).pipe(
+        map(
+          (endpoint: any) => new servicesActions.LoadEndpointSuccess(endpoint)
+        ),
+        catchError(err => of(new servicesActions.LoadEndpointFailure(err)))
       )
     )
   );

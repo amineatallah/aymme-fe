@@ -1,0 +1,46 @@
+form {
+  .form-check {
+    padding: 0;
+    input {
+      display: none;
+    }
+  }
+
+  label {
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+
+  .description {
+    font-size: 13px;
+    color: #999;
+    margin-bottom: 5px;
+
+    strong {
+      font-weight: 700;
+    }
+  }
+
+  input.form-control {
+    background-color: rgba(255,255,255,.1);
+    border-radius: 2px;
+    border: 1px solid #222;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 10px 16px;
+    color: #eee;
+    height: auto;
+
+    &::placeholder {
+      color: #888;
+    }
+
+    &:focus {
+      background-color: rgba(255,255,255,.1);
+      border-color: #222;
+      color: #eee;
+      outline: none;
+      box-shadow: none;
+    }
+  }
+}

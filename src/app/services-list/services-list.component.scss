@@ -1,0 +1,43 @@
+@import "../../styles/partials/vars.scss";
+
+.services-list {
+  >li {
+    border-radius: 2px;
+    display: inline-block;
+    width: 100%;
+    font-size: 14px;
+    border: 1px dashed #555;
+    cursor: pointer;
+
+    &.is-open {
+      h5 {
+        margin-bottom: 10px;
+        border-bottom: 1px solid #444;
+
+        i {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    h5 {
+      padding: 10px 20px;
+      margin-bottom: 0;
+
+      i {
+        font-size: 1rem;
+      }
+    }
+
+    li {
+      &.active a { color: $primary-blue; font-weight: 700; }
+      a {
+        color: #888;
+
+        &:hover {
+          color: white;
+        }
+      }
+    }
+  }
+}
