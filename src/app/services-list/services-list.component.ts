@@ -16,12 +16,12 @@ import { Endpoint } from '../service/service.interface';
 export class ServicesListComponent implements OnInit {
   readonly services$: Observable<any> = this.store.pipe(
     select(servicesSelectors.getServices),
-    // tap(services => {
-    //   // Select the first service and first endpoint (For development of AYMME purpose)
-    //   if (services.length) {
-    //     this.setSelectedEndpoint(services[0].endpoints[0]);
-    //   }
-    // })
+    tap(services => {
+      // Select the first service and first endpoint (For development of AYMME purpose)
+      if (services.length) {
+        this.setSelectedEndpoint(services[0].endpoints[0]);
+      }
+    })
   );
   readonly hasServices$: Observable<any> = this.store.pipe(
     select(servicesSelectors.hasServices)

@@ -1,9 +1,15 @@
 <ng-container *ngIf="endpoint$ | async as endpoint">
   <div class="details-component">
+    <div class="details-header d-flex align-items-center mb-2">
+      <h6 class="mb-0">Details</h6>
+      <!-- <button class="btn py-2 px-4 mr-3 btn-outline-primary" (click)="findMocks()">Feeling lucky</button> -->
+      <button class="btn btn-sm mr-3 ml-auto btn-outline-primary" (click)="toggleMocks()"> Toggle Mocks</button>
+      <button class="btn btn-sm btn-primary" (click)="updateEndpoint(endpoint._id)">Update</button>
+    </div>
     <div class="d-flex row">
       <div class="col-12">
         <form [formGroup]="form" class="h-100 d-flex flex-column">
-          <div class="row form-group mb-4">
+          <div class="row form-group">
             <div class="col-4">
               <label for="statusCode">Status Code</label>
               <app-dropdown [defaultHeader]="'Select one'" [items]="responseCodes" formControlName="statusCode"
@@ -20,26 +26,38 @@
             <div class="col-2">
               <div class="row no-gutters">
                 <label for="exampleCheck1">Empty</label>
-                <input class="form-control" formControlName="noData" type="checkbox" id="noData">
+                <input class="form-control form-check" formControlName="noData" type="checkbox" id="noData">
               </div>
             </div>
 
             <div class="col-2">
               <div class="row no-gutters">
                 <label for="forward">Forward</label>
-                <input class="form-control" formControlName="forward" type="checkbox" id="forward">
+                <input class="form-control form-check" formControlName="forward" type="checkbox" id="forward">
               </div>
             </div>
-            <div class="col-12 mt-4">
-              <label for="headers">Headers <a href="#"><i (click)="addHeader()" class="fas fa-plus"></i></a></label>
-              <div formArrayName="headers">
+            <div class="headers col-12 mt-4">
+              <header class="d-flex justify-content-between mb-2" (click)="showHeaders = !showHeaders">
+                <label for="headers">Headers <span class="badge badge-dark">{{form.get('headers').length}}</span>
+                </label>
+                <div class="header-controls">
+                  <a href="#"><i (click)="addHeader()" class="fas fa-plus"></i></a>
+                  <i class="fas fa-chevron-down ml-3" [ngClass]="{'fa-chevron-up': !showHeaders}"></i>
+                </div>
+              </header>
+              <div formArrayName="headers" [hidden]="showHeaders">
                 <div *ngFor="let header of form.get('headers').controls; let i = index;">
-                  <div [formGroupName]="i" class="d-flex justify-content-between mb-2">
-                    <div class="form-group m-0">
+                  <div [formGroupName]="i" class="d-flex mb-2">
+                    <div class="form-group flex-fill m-0 mr-2">
                       <input class="form-control" formControlName="name" placeholder="Header name">
                     </div>
-                    <div class="form-group m-0">
+                    <div class="form-group m-0 flex-fill mr-2">
                       <input class="form-control" formControlName="value" placeholder="Header value">
+                    </div>
+                    <div class="d-flex align-items-center">
+                      <a href="#" (click)="removeHeader(header)">
+                        <i class="fas fa-times"></i>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -53,75 +71,68 @@
         <json-editor [options]="options" style="min-height: 500px;" [data]="endpointData">
         </json-editor>
       </div>
-
-      <div class="col-12 d-flex no-gutters my-2 justify-content-end">
-        <!-- <button class="btn py-2 px-4 mr-3 btn-outline-primary" (click)="findMocks()">Feeling lucky</button> -->
-        <button class="btn py-2 px-4 mr-3 btn-outline-primary" (click)="toggleMocks()"> Search Mocks</button>
-        <button class="btn py-2 px-4 btn-primary" (click)="updateEndpoint(endpoint._id)">Update</button>
-      </div>
-
     </div>
 
     <ng-container *ngIf="mocksVisible">
-      <div class="mocks-area shadow-lg">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <h2>Mocks</h2>
-          <i (click)="toggleMocks()" class="material-icons">close</i>
-        </div>
-        <div class="">
-
-          <div class="card-body">
-            <form class="mb-3">
-              <div class="row no-gutters justify-content-between">
-                <div class="col">
-                  <input [(ngModel)]="searchText" name="spec-name" type="text" class="form-control"
-                    placeholder="Spec Name">
-                </div>
-                <div class="pl-4 col-auto">
-                  <button type="button" class="btn btn-primary" (click)="createSpec()">Create Spec</button>
-                </div>
-              </div>
-            </form>
-
-            <ng-container *ngIf="specs$ | async as specs">
-              <ngb-accordion activeIds="{{activeId}}">
-                <ngb-panel *ngFor="let spec of specs | filter:searchText" id="{{spec._id}}">
-                  <ng-template ngbPanelHeader>
-                    <div class="d-flex align-items-center justify-content-between">
-                      <h5 class="m-0 text-uppercase">{{spec.name}}</h5>
-                      <div>
-                        <i class="material-icons" (click)="deleteSpecs(spec._id)">delete</i>
-                        <button ngbPanelToggle class="btn btn-link p-0"><i
-                            class="material-icons">expand_more</i></button>
-                      </div>
-                    </div>
-                  </ng-template>
-
-                  <ng-template ngbPanelContent>
-                    <div class="card">
-                      <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                          <li (click)="useMocks(example.data)"
-                            class="list-group-item row no-gutters d-flex px-0 justify-content-between"
-                            *ngFor="let example of spec.exmpales">
-                            {{example.name}}
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="card-footer d-flex justify-content-between">
-                        <form>
-                          <input class="form-control-file" type="file" multiple accept=".json"
-                            (change)="onFileChange($event)">
-                        </form>
-                        <button class="btn btn-primary" (click)="createExamples(spec._id)">Upload Mocks</button>
-                      </div>
-                    </div>
-                  </ng-template>
-                </ngb-panel>
-              </ngb-accordion>
-            </ng-container>
+      <div class="mocks-area pt-2">
+        <div class="col-12">
+          <div class="details-header d-flex justify-content-between align-items-center mb-3">
+            <h6 class=mb-0>Configure Mocks</h6>
+            <a href="#" class="p-1" (click)="toggleMocks()" >
+              <i class="fas fa-times"></i>
+            </a>
           </div>
         </div>
+
+        <div class="col-12">
+          <form class="mb-3">
+            <div class="form-group">
+              <label for="spec-name">Spec Name</label>
+              <div class="d-flex">
+                <input [(ngModel)]="searchText" name="spec-name" type="text" class="form-control mr-2"
+                placeholder="Spec Name">
+                <button type="button" class="btn btn-primary w-25" (click)="createSpec()">Create Spec</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <ng-container *ngIf="specs$ | async as specs">
+          <ngb-accordion activeIds="{{activeId}}">
+            <ngb-panel *ngFor="let spec of specs | filter:searchText" id="{{spec._id}}">
+              <ng-template ngbPanelHeader>
+                <div class="d-flex align-items-center justify-content-between">
+                  <h5 class="m-0 text-uppercase">{{spec.name}}</h5>
+                  <div>
+                    <a href="#" (click)="deleteSpecs(spec._id)"><i class="fas fa-trash"></i></a>
+                    <a href="#" ngbPanelToggle class="p-0"><i class="fa fa-chevron-down"></i></a>
+                  </div>
+                </div>
+              </ng-template>
+
+              <ng-template ngbPanelContent>
+                <div class="">
+                  <div class="">
+                    <ul class="list-group list-group-flush">
+                      <li (click)="useMocks(example.data)"
+                        class="list-group-item row no-gutters d-flex px-0 justify-content-between"
+                        *ngFor="let example of spec.exmpales">
+                        {{example.name}}
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <form>
+                      <input class="form-control-file" type="file" multiple accept=".json"
+                        (change)="onFileChange($event)">
+                    </form>
+                    <button class="btn btn-primary" (click)="createExamples(spec._id)">Upload Mocks</button>
+                  </div>
+                </div>
+              </ng-template>
+            </ngb-panel>
+          </ngb-accordion>
+        </ng-container>
       </div>
     </ng-container>
   </div>

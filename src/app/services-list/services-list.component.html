@@ -3,11 +3,11 @@
     <div class="col-6">
       <ng-container *ngIf="services$ | async as services">
         <ng-container *ngIf="{ hasServices: hasServices$ | async, selectedEndpoint: selectedEndpoint$ | async } as context">
-          <section class="d-flex mb-4">
-            <h6>Services</h6>
-            <a href="#" class="p-2 ml-auto"
+          <section class="services-header d-flex align-items-center mb-4">
+            <h6 class="mb-0">Services</h6>
+            <a href="#" class="p-1 ml-auto"
             (click)="loadServices()"><i class="fas fa-sync-alt"></i></a>
-            <a href="#" *ngIf="context.hasServices" class="p-2 ml-2"
+            <a href="#" *ngIf="context.hasServices" class="p-1 ml-2"
               (click)="toggleAll(services);"><i class="fas fa-arrows-alt-v"></i></a>
           </section>
           <!-- <pre>{{services | json}}</pre> -->
@@ -29,7 +29,6 @@
     </div>
 
     <div class="col-6">
-      <h6>Details</h6>
       <app-details></app-details>
     </div>
 

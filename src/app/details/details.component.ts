@@ -9,15 +9,15 @@ import { select, Store } from '@ngrx/store';
 import * as servicesSelectors from '../state/services/services.selectors';
 
 @Component({
-  selector: "app-details",
-  templateUrl: "./details.component.html",
-  styleUrls: ["./details.component.scss"]
+  selector: 'app-details',
+  templateUrl: './details.component.html',
+  styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent implements OnInit, OnDestroy {
   endpoint$: Observable<any>;
   endpointData: any;
   specs$: Observable<any>;
-  responseCodes: string[] = ["200", "401", "404", "500"];
+  responseCodes: string[] = ['200', '401', '404', '500'];
   form: FormGroup;
   mocksVisible: boolean = false;
   filesToUpload: Array<File>;
@@ -40,13 +40,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.options.mode = "code";
-    this.options.modes = ["code", "text", "tree", "view"];
+    this.options.mode = 'code';
+    this.options.modes = ['code', 'text', 'tree', 'view'];
     this.options.statusBar = false;
 
     this.form = this.formBuilder.group({
       delay: 0,
-      statusCode: "",
+      statusCode: '',
       noData: false,
       forward: false,
       headers: this.formBuilder.array([this.createHeadersInput()])
@@ -58,14 +58,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
         if (!val) {
           return;
         }
-        this.mockId = val.path.substring(val.path.lastIndexOf("/") + 1);
-        this.form.get("statusCode").setValue(val.statusCode);
-        this.form.get("delay").setValue(val.delay);
-        this.form.get("noData").setValue(val.emptyArray);
+        this.mockId = val.path.substring(val.path.lastIndexOf('/') + 1);
+        this.form.get('statusCode').setValue(val.statusCode);
+        this.form.get('delay').setValue(val.delay);
+        this.form.get('noData').setValue(val.emptyArray);
         this.response = val;
         this.endpointData = val.response[val.statusCode].data.body;
 
-        this.headers = this.form.get("headers") as FormArray;
+        this.headers = this.form.get('headers') as FormArray;
         this.headers.clear();
 
         if (val.customHeaders) {
@@ -73,8 +73,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
             this.addHeader(key, value as string);
           }
         }
-
-        this.addHeader();
       })
     );
   }
@@ -87,32 +85,36 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   addHeader(headerName: string = '', headerValue: string = ''): boolean {
-    this.headers = this.form.get("headers") as FormArray;
+    this.headers = this.form.get('headers') as FormArray;
     this.headers.push(this.createHeadersInput(headerName, headerValue));
+    return false;
+  }
 
+  removeHeader(header: FormArray): boolean {
+    this.headers.removeAt(this.headers.value.findIndex(_header => _header === header));
     return false;
   }
 
   updateEndpoint(endpointId: string) {
     let data = {
-      statusCode: this.form.get("statusCode").value,
-      delay: parseInt(this.form.get("delay").value, 10),
-      emptyArray: this.form.get("noData").value,
-      forward: this.form.get("forward").value,
+      statusCode: this.form.get('statusCode').value,
+      delay: parseInt(this.form.get('delay').value, 10),
+      emptyArray: this.form.get('noData').value,
+      forward: this.form.get('forward').value,
       response: this.editor.first.get(),
       customHeaders: this.arrayToObject(this.form.value.headers)
     };
 
     this.service.updateEndpoint(endpointId, data).subscribe(data => {
       this.response.response[
-        this.form.get("statusCode").value
+        this.form.get('statusCode').value
       ].data.body = this.editor.first.get();
     });
   }
 
   arrayToObject(array) {
     return array.reduce((obj, item) => {
-      if (item.name !== "" && item.value !== "") {
+      if (item.name !== '' && item.value !== '') {
         obj[item.name] = item.value;
       }
       return obj;
@@ -127,7 +129,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   changeStatusCode(event) {
     this.endpointData = this.response.response[
-      this.form.get("statusCode").value
+      this.form.get('statusCode').value
     ].data.body;
   }
 
@@ -137,13 +139,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   toggleMocks() {
     this.mocksVisible = !this.mocksVisible;
-    console.log("this.resonse", this.response);
     this.searchText = this.response.serviceName;
     this.specs$ = this.service.getSpecs().pipe(shareReplay());
+    return false;
   }
 
   createSpec() {
-    console.log("searchTExt", this.searchText);
+    console.log('searchTExt', this.searchText);
     this.specs$ = this.service
       .createSpec({ name: this.searchText })
       .pipe(switchMap(() => this.service.getSpecs()));
@@ -167,6 +169,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log("destroy");
+    console.log('destroy');
   }
 }
