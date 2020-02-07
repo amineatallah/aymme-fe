@@ -27,7 +27,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   private editorHolder: ElementRef;
   mockId: string;
   response: any;
-  searchText: any;
+  filterText: any;
   headers: FormArray;
   @ViewChildren(JsonEditorComponent) editor: QueryList<JsonEditorComponent>;
 
@@ -135,19 +135,19 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   useMocks(data) {
     this.endpointData = data;
+    return false;
   }
 
   toggleMocks() {
     this.mocksVisible = !this.mocksVisible;
-    this.searchText = this.response.serviceName;
+    this.filterText = this.response.serviceName;
     this.specs$ = this.service.getSpecs().pipe(shareReplay());
     return false;
   }
 
   createSpec() {
-    console.log('searchTExt', this.searchText);
     this.specs$ = this.service
-      .createSpec({ name: this.searchText })
+      .createSpec({ name: this.filterText })
       .pipe(switchMap(() => this.service.getSpecs()));
   }
 
@@ -166,6 +166,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.specs$ = this.service
       .deleteSpecs(id)
       .pipe(switchMap(() => this.service.getSpecs()));
+    return false;
   }
 
   ngOnDestroy() {

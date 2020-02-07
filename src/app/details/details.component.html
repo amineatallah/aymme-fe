@@ -13,7 +13,7 @@
             <div class="col-4">
               <label for="statusCode">Status Code</label>
               <app-dropdown [defaultHeader]="'Select one'" [items]="responseCodes" formControlName="statusCode"
-              (setSelectedValue)="changeStatusCode($event)"></app-dropdown>
+                (setSelectedValue)="changeStatusCode($event)"></app-dropdown>
             </div>
 
             <div class="col-4">
@@ -38,7 +38,7 @@
             </div>
             <div class="headers col-12 mt-4">
               <header class="d-flex justify-content-between mb-2" (click)="showHeaders = !showHeaders">
-                <label for="headers">Headers <span class="badge badge-dark">{{form.get('headers').length}}</span>
+                <label for="headers" class="cursor-pointer">Headers <span class="badge badge-dark">{{form.get('headers').length}}</span>
                 </label>
                 <div class="header-controls">
                   <a href="#"><i (click)="addHeader()" class="fas fa-plus"></i></a>
@@ -78,7 +78,7 @@
         <div class="col-12">
           <div class="details-header d-flex justify-content-between align-items-center mb-3">
             <h6 class=mb-0>Configure Mocks</h6>
-            <a href="#" class="p-1" (click)="toggleMocks()" >
+            <a href="#" class="p-1" (click)="toggleMocks()">
               <i class="fas fa-times"></i>
             </a>
           </div>
@@ -89,50 +89,60 @@
             <div class="form-group">
               <label for="spec-name">Spec Name</label>
               <div class="d-flex">
-                <input [(ngModel)]="searchText" name="spec-name" type="text" class="form-control mr-2"
-                placeholder="Spec Name">
+                <div class="input-group mr-2">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="fas fa-filter"></i></div>
+                  </div>
+                  <input [(ngModel)]="filterText" name="spec-name" autocomplete="off" spellcheck="false" type="text"
+                    class="form-control" placeholder="Spec Name">
+                </div>
                 <button type="button" class="btn btn-primary w-25" (click)="createSpec()">Create Spec</button>
               </div>
             </div>
           </form>
         </div>
 
-        <ng-container *ngIf="specs$ | async as specs">
-          <ngb-accordion activeIds="{{activeId}}">
-            <ngb-panel *ngFor="let spec of specs | filter:searchText" id="{{spec._id}}">
-              <ng-template ngbPanelHeader>
-                <div class="d-flex align-items-center justify-content-between">
-                  <h5 class="m-0 text-uppercase">{{spec.name}}</h5>
-                  <div>
-                    <a href="#" (click)="deleteSpecs(spec._id)"><i class="fas fa-trash"></i></a>
-                    <a href="#" ngbPanelToggle class="p-0"><i class="fa fa-chevron-down"></i></a>
+        <div class="col-12">
+          <ng-container *ngIf="specs$ | async as specs">
+            <ul class="list-unstyled dotted-list">
+              <li *ngFor="let spec of specs | filter:filterText" [ngClass]="{'is-open': spec.isOpen}">
+                <div class="dotted-list-header p-2 d-flex align-items-center justify-content-between">
+                  <label (click)="spec.isOpen = !spec.isOpen" class="m-0 cursor-pointer"><strong>{{spec.name}}</strong></label>
+                  <div class="controls">
+                    <a href="#" class="mr-3" (click)="deleteSpecs(spec._id)"><i class="fas fa-trash"></i></a>
+                    <i class="fa fa-chevron-down"></i>
                   </div>
                 </div>
-              </ng-template>
 
-              <ng-template ngbPanelContent>
-                <div class="">
-                  <div class="">
-                    <ul class="list-group list-group-flush">
-                      <li (click)="useMocks(example.data)"
-                        class="list-group-item row no-gutters d-flex px-0 justify-content-between"
-                        *ngFor="let example of spec.exmpales">
-                        {{example.name}}
+                <section class="dotted-list-container" [hidden]="!spec.isOpen">
+                  <ng-container *ngIf="spec.exmpales?.length">
+                    <ul class="p-3 list-group">
+                      <p class="description text-muted"><em>Click on an example to add the data to the endpoint.</em></p>
+                      <li *ngFor="let example of spec.exmpales">
+                        <a (click)="useMocks(example.data)" href="#">{{example.name}}</a>
                       </li>
                     </ul>
-                  </div>
-                  <div class="d-flex justify-content-between">
-                    <form>
-                      <input class="form-control-file" type="file" multiple accept=".json"
-                        (change)="onFileChange($event)">
-                    </form>
-                    <button class="btn btn-primary" (click)="createExamples(spec._id)">Upload Mocks</button>
-                  </div>
-                </div>
-              </ng-template>
-            </ngb-panel>
-          </ngb-accordion>
-        </ng-container>
+                  </ng-container>
+
+                  <footer class="dotted-list-footer p-2">
+                    <div class="d-flex">
+                      <form>
+                        <div class="btn btn-secondary btn-sm btn-file-upload">
+                          <span>Choose a file</span>
+                          <input type="file" multiple accept=".json" (change)="onFileChange($event)">
+                        </div>
+                      </form>
+                      <button class="btn btn-primary btn-sm ml-auto" (click)="createExamples(spec._id)">Upload Mocks</button>
+                    </div>
+                  </footer>
+                </section>
+              </li>
+            </ul>
+          </ng-container>
+        </div>
+
+
+
       </div>
     </ng-container>
   </div>

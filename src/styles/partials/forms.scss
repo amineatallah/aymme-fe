@@ -21,6 +21,13 @@ form {
     }
   }
 
+  .input-group-text {
+    background-color: rgba(255,255,255,.1);
+    border-radius: 2px;
+    border: 1px solid #222;
+    color: white;
+  }
+
   input.form-control {
     background-color: rgba(255,255,255,.1);
     border-radius: 2px;
