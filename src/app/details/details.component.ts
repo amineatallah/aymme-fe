@@ -7,6 +7,8 @@ import { tap, filter, map, shareReplay, switchMap, throwIfEmpty } from 'rxjs/ope
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import * as servicesSelectors from '../state/services/services.selectors';
+import * as specificationsSelectors from '../state/specifications/specifications.selectors';
+import * as specificationsActions from '../state/specifications/specifications.actions';
 
 @Component({
   selector: 'app-details',
@@ -82,6 +84,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
       name: new FormControl('', [Validators.required]),
     });
 
+    this.store.dispatch(new specificationsActions.LoadSpecifications());
+    this.specs$ = this.store.pipe(select(specificationsSelectors.getSpecifications));
+
     this.filterText$ = this.specForm.get('name').valueChanges;
 
   }
@@ -150,7 +155,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   toggleMocks() {
     this.mocksVisible = !this.mocksVisible;
 
-    this.specs$ = this.service.getSpecs().pipe(shareReplay());
+
 
     this.specForm.patchValue({
       name: this.response.serviceName
@@ -160,9 +165,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   createSpec() {
-    this.specs$ = this.service
-      .createSpec(this.specForm.value)
-      .pipe(switchMap(() => this.service.getSpecs()));
+    this.store.dispatch(new specificationsActions.CreateSpecification(this.specForm.value));    
   }
 
   createExamples(id) {
@@ -177,9 +180,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   deleteSpecs(id: string) {
-    this.specs$ = this.service
-      .deleteSpecs(id)
-      .pipe(switchMap(() => this.service.getSpecs()));
+    this.store.dispatch(new specificationsActions.DeleteSpecification(id));    
     return false;
   }
 
