@@ -4,7 +4,7 @@ import { HomeService } from '../home/home.service';
 import { Observable, of } from 'rxjs';
 import { JsonEditorOptions, JsonEditorComponent } from 'ang-jsoneditor';
 import { tap, filter, map, shareReplay, switchMap, throwIfEmpty } from 'rxjs/operators';
-import { FormGroup, FormControl, FormBuilder, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import * as servicesSelectors from '../state/services/services.selectors';
 
@@ -27,7 +27,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
   private editorHolder: ElementRef;
   mockId: string;
   response: any;
-  filterText: any;
+  specForm: FormGroup;
+  filterText$: Observable<string> = of('');
+  defaultFilterText: string;
   headers: FormArray;
   @ViewChildren(JsonEditorComponent) editor: QueryList<JsonEditorComponent>;
 
@@ -37,7 +39,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private activeRoute: ActivatedRoute,
     private service: HomeService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.options.mode = 'code';
@@ -75,6 +77,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
         }
       })
     );
+
+    this.specForm = new FormGroup({
+      name: new FormControl('', [Validators.required]),
+    });
+
+    this.filterText$ = this.specForm.get('name').valueChanges;
+
   }
 
   createHeadersInput(headerName: string = '', headerValue: string = ''): FormGroup {
@@ -140,14 +149,19 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   toggleMocks() {
     this.mocksVisible = !this.mocksVisible;
-    this.filterText = this.response.serviceName;
+
     this.specs$ = this.service.getSpecs().pipe(shareReplay());
+
+    this.specForm.patchValue({
+      name: this.response.serviceName
+    });
+
     return false;
   }
 
   createSpec() {
     this.specs$ = this.service
-      .createSpec({ name: this.filterText })
+      .createSpec(this.specForm.value)
       .pipe(switchMap(() => this.service.getSpecs()));
   }
 

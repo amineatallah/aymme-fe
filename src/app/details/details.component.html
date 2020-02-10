@@ -1,5 +1,5 @@
 <ng-container *ngIf="endpoint$ | async as endpoint">
-  <div class="details-component">
+  <div class="details-component"  *ngIf="{ filterText: filterText$ | async} as context">
     <div class="details-header d-flex align-items-center mb-2">
       <h6 class="mb-0">Details</h6>
       <!-- <button class="btn py-2 px-4 mr-3 btn-outline-primary" (click)="findMocks()">Feeling lucky</button> -->
@@ -74,6 +74,7 @@
     </div>
 
     <ng-container *ngIf="mocksVisible">
+      
       <div class="mocks-area pt-2">
         <div class="col-12">
           <div class="details-header d-flex justify-content-between align-items-center mb-3">
@@ -86,17 +87,17 @@
 
         <div class="col-12">
           <form class="mb-3">
-            <div class="form-group">
+            <div class="form-group" [formGroup]="specForm">
               <label for="spec-name">Spec Name</label>
               <div class="d-flex">
                 <div class="input-group mr-2">
                   <div class="input-group-prepend">
                     <div class="input-group-text"><i class="fas fa-filter"></i></div>
                   </div>
-                  <input [(ngModel)]="filterText" name="spec-name" autocomplete="off" spellcheck="false" type="text"
+                  <input formControlName="name" name="spec-name" autocomplete="off" spellcheck="false" type="text"
                     class="form-control" placeholder="Spec Name">
                 </div>
-                <button type="button" class="btn btn-primary w-25" (click)="createSpec()">Create Spec</button>
+                <button [disabled]="specForm.invalid && (specForm.dirty || specForm.touched)"type="button" class="btn btn-primary w-25" (click)="createSpec()">Create Spec</button>
               </div>
             </div>
           </form>
@@ -104,8 +105,8 @@
 
         <div class="col-12">
           <ng-container *ngIf="specs$ | async as specs">
-            <ul class="list-unstyled dotted-list">
-              <li *ngFor="let spec of specs | filter:filterText" [ngClass]="{'is-open': spec.isOpen}">
+            <ul class="list-unstyled dotted-list" >
+              <li *ngFor="let spec of specs | filter : context.filterText" [ngClass]="{'is-open': spec.isOpen}">
                 <div class="dotted-list-header p-2 d-flex align-items-center justify-content-between">
                   <label (click)="spec.isOpen = !spec.isOpen" class="m-0 cursor-pointer"><strong>{{spec.name}}</strong></label>
                   <div class="controls">
@@ -144,6 +145,7 @@
 
 
       </div>
+    
     </ng-container>
   </div>
 
