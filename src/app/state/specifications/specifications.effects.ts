@@ -27,7 +27,7 @@ export class SpecificationsEffects {
   createSpecification$ = this.actions$.pipe(
     ofType(specificationsActions.SpecificationsActionTypes.CreateSpecification),
     concatMap((action: specificationsActions.CreateSpecification) => 
-      this.homeService.createSpec(action.payload).pipe(
+      this.homeService.createSpec({name: action.payload.specName}).pipe(
         map(
           (specifications: any[]) => new specificationsActions.CreateSpecificationSuccess(specifications)
         ),
@@ -37,7 +37,7 @@ export class SpecificationsEffects {
   );
 
   @Effect()
-  deleteSpecifications$ = this.actions$.pipe(
+  deleteSpecification$ = this.actions$.pipe(
     ofType(specificationsActions.SpecificationsActionTypes.DeleteSpecification),
     concatMap((action: specificationsActions.DeleteSpecification) =>
       this.homeService.deleteSpecs(action.payload).pipe(
@@ -45,6 +45,19 @@ export class SpecificationsEffects {
           (specifications: any) => new specificationsActions.DeleteSpecificationSuccess(action.payload)
         ),
         catchError(err => of(new specificationsActions.DeleteSpecificationFailure(err)))
+      )
+    )
+  );
+
+  @Effect()
+  createExample$ = this.actions$.pipe(
+    ofType(specificationsActions.SpecificationsActionTypes.CreateExample),
+    concatMap((action: specificationsActions.CreateExample) =>
+      this.homeService.uploadFile(action.payload.id, action.payload.filesToUpload).pipe(
+        map(
+          (specifications: any) => new specificationsActions.CreateExampleSuccess(specifications)
+        ),
+        catchError(err => of(new specificationsActions.CreateExampleFailure(err)))
       )
     )
   );

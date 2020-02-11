@@ -1,14 +1,14 @@
-import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, ViewChildren, QueryList, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ElementRef, ViewChildren, QueryList, OnDestroy } from '@angular/core';
 import { HomeService } from '../home/home.service';
 import { Observable, of } from 'rxjs';
 import { JsonEditorOptions, JsonEditorComponent } from 'ang-jsoneditor';
-import { tap, filter, map, shareReplay, switchMap, throwIfEmpty } from 'rxjs/operators';
-import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
+import { tap } from 'rxjs/operators';
+import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import * as servicesSelectors from '../state/services/services.selectors';
 import * as specificationsSelectors from '../state/specifications/specifications.selectors';
 import * as specificationsActions from '../state/specifications/specifications.actions';
+import { SpecNameValidator } from './specNameValidator';
 
 @Component({
   selector: 'app-details',
@@ -37,10 +37,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<any>,
-    private window: Window,
     private formBuilder: FormBuilder,
-    private activeRoute: ActivatedRoute,
-    private service: HomeService
+    private service: HomeService,
+    private specNameValidator: SpecNameValidator,
   ) { }
 
   ngOnInit() {
@@ -80,15 +79,24 @@ export class DetailsComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.specForm = new FormGroup({
-      name: new FormControl('', [Validators.required]),
+
+    this.specForm = this.formBuilder.group({
+      specName: [null,
+      {
+        validators: [Validators.required],
+        asyncValidators: [this.specNameValidator.existingSpecNameValidator()]
+      }]
     });
 
     this.store.dispatch(new specificationsActions.LoadSpecifications());
     this.specs$ = this.store.pipe(select(specificationsSelectors.getSpecifications));
 
-    this.filterText$ = this.specForm.get('name').valueChanges;
+    this.filterText$ = this.specForm.get('specName').valueChanges;
 
+  }
+
+  get specName() {
+    return this.specForm.get('specName');
   }
 
   createHeadersInput(headerName: string = '', headerValue: string = ''): FormGroup {
@@ -135,12 +143,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }, {});
   }
 
-  // findMocks() {
-  //   this.service.findMocks(this.mockId).subscribe(val => {
-  //     this.endpointData = val[0].response;
-  //   });
-  // }
-
   changeStatusCode(event) {
     this.endpointData = this.response.response[
       this.form.get('statusCode').value
@@ -155,24 +157,20 @@ export class DetailsComponent implements OnInit, OnDestroy {
   toggleMocks() {
     this.mocksVisible = !this.mocksVisible;
 
-
-
     this.specForm.patchValue({
-      name: this.response.serviceName
+      specName: this.response.serviceName
     });
 
     return false;
   }
 
   createSpec() {
-    this.store.dispatch(new specificationsActions.CreateSpecification(this.specForm.value));    
+    this.store.dispatch(new specificationsActions.CreateSpecification(this.specForm.value));
+    this.specName.updateValueAndValidity();
   }
 
   createExamples(id) {
-    this.specs$ = this.service.uploadFile(id, this.filesToUpload).pipe(
-      switchMap(() => this.service.getSpecs()),
-      tap(() => (this.activeId = id))
-    );
+    this.store.dispatch(new specificationsActions.CreateExample({ id: id, filesToUpload: this.filesToUpload}));
   }
 
   onFileChange(event) {
@@ -180,7 +178,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   deleteSpecs(id: string) {
-    this.store.dispatch(new specificationsActions.DeleteSpecification(id));    
+    this.store.dispatch(new specificationsActions.DeleteSpecification(id));
     return false;
   }
 

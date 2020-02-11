@@ -1,4 +1,4 @@
-import { SpecificationsActions, SpecificationsActionTypes, DeleteSpecification } from './specifications.actions';
+import { SpecificationsActions, SpecificationsActionTypes } from './specifications.actions';
 
 export interface SpecificationsState {
     specifications: any[];
@@ -35,7 +35,6 @@ export function reducer(state = initialState, action: SpecificationsActions): Sp
                 ...state,
                 error: action.payload,
             };
-
         case SpecificationsActionTypes.DeleteSpecificationSuccess:
             return {
                 ...state,
@@ -43,6 +42,25 @@ export function reducer(state = initialState, action: SpecificationsActions): Sp
                 error: '',
             };
         case SpecificationsActionTypes.DeleteSpecificationFailure:
+            return {
+                ...state,
+                error: action.payload,
+            };
+        case SpecificationsActionTypes.CreateExampleSuccess:
+            return {
+                ...state,
+                specifications: [...state.specifications.map((specification) => {
+                    if (specification._id === action.payload._id) {
+                        let updatedSpec = action.payload;
+                        updatedSpec.isOpen = true;
+                        return updatedSpec;
+                    }
+                    return specification;
+                }
+                )],
+                error: '',
+            };
+        case SpecificationsActionTypes.CreateExampleFailure:
             return {
                 ...state,
                 error: action.payload,

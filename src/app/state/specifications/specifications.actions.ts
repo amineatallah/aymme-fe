@@ -10,6 +10,9 @@ export enum SpecificationsActionTypes {
     DeleteSpecification = "[Specifications] Delete",
     DeleteSpecificationSuccess = "[Specifications] Delete Specification Success",
     DeleteSpecificationFailure = "[Specifications] Delete Specification Failure",
+    CreateExample = "[Specifications] Create Example",
+    CreateExampleSuccess = "[Specifications] Create Example Success",
+    CreateExampleFailure = "[Specifications] Create Example Failure",
 }
 
 export class LoadSpecifications implements Action {
@@ -30,7 +33,7 @@ export class LoadSpecificationsFailure implements Action {
 
 export class CreateSpecification implements Action {
     readonly type = SpecificationsActionTypes.CreateSpecification;
-    constructor(public payload: object) { }
+    constructor(public payload: any) { }
 }
 
 export class CreateSpecificationSuccess implements Action {
@@ -63,6 +66,24 @@ export class DeleteSpecificationFailure implements Action {
     constructor(public payload: string) { }
 }
 
+export class CreateExample implements Action {
+    readonly type = SpecificationsActionTypes.CreateExample;
+
+    constructor(public payload: any) { }
+}
+
+export class CreateExampleSuccess implements Action {
+    readonly type = SpecificationsActionTypes.CreateExampleSuccess;
+
+    constructor(public payload: any) { }
+}
+
+export class CreateExampleFailure implements Action {
+    readonly type = SpecificationsActionTypes.CreateExampleFailure;
+
+    constructor(public payload: string) { }
+}
+
 export type SpecificationsActions =
     | LoadSpecifications
     | LoadSpecificationsSuccess
@@ -72,4 +93,7 @@ export type SpecificationsActions =
     | CreateSpecificationFailure
     | DeleteSpecification
     | DeleteSpecificationSuccess
-    | DeleteSpecificationFailure;
+    | DeleteSpecificationFailure
+    | CreateExample
+    | CreateExampleSuccess
+    | CreateExampleFailure;

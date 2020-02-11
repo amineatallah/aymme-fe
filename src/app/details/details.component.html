@@ -94,10 +94,12 @@
                   <div class="input-group-prepend">
                     <div class="input-group-text"><i class="fas fa-filter"></i></div>
                   </div>
-                  <input formControlName="name" name="spec-name" autocomplete="off" spellcheck="false" type="text"
-                    class="form-control" placeholder="Spec Name">
+                  <input formControlName="specName" name="spec-name" autocomplete="off" spellcheck="false" type="text"
+                    class="form-control" placeholder="Spec Name" id="specName" for="specName">
                 </div>
-                <button [disabled]="specForm.invalid && (specForm.dirty || specForm.touched)"type="button" class="btn btn-primary w-25" (click)="createSpec()">Create Spec</button>
+        
+                <button [disabled]="specForm.invalid"type="button" class="btn btn-primary w-25" (click)="createSpec()">Create Spec</button>
+               
               </div>
             </div>
           </form>
