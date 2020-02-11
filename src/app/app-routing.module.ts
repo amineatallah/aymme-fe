@@ -5,8 +5,8 @@ import { ServicesListComponent } from './services-list/services-list.component';
 
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', redirectTo: 'home'},
-  {path: 'home', component: ServicesListComponent},
+  {path: '', pathMatch: 'full', redirectTo: 'services'},
+  {path: 'services', component: ServicesListComponent},
   {path: 'portals', component: ModelComponent}
 ];
 
