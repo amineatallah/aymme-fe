@@ -33,6 +33,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   filterText$: Observable<string> = of('');
   defaultFilterText: string;
   headers: FormArray;
+  showHeaders: boolean;
   @ViewChildren(JsonEditorComponent) editor: QueryList<JsonEditorComponent>;
 
   constructor(
