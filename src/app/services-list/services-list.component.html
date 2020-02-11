@@ -13,7 +13,7 @@
           <!-- <pre>{{services | json}}</pre> -->
           <ul class="services-list p-0" *ngIf="context.hasServices else noServices">
             <li *ngFor="let service of services" class="mb-2" [ngClass]="{'is-open': !service.hidden}">
-              <h5 class="d-flex align-items-center" (click)="service.open = !service.open">{{service.serviceName}}
+              <h5 class="d-flex align-items-center" (click)="service.hidden = !service.hidden">{{service.serviceName}}
 
                 <i class="fas fa-trash ml-auto" (click)="deleteService(service.serviceName)"></i>
                 <i class="fas fa-chevron-down ml-3"></i></h5>

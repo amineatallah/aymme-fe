@@ -9,12 +9,13 @@ import { tap, catchError } from 'rxjs/operators';
 import { Endpoint } from '../shared/service.interface';
 
 @Component({
-  selector: "app-services-list",
-  templateUrl: "./services-list.component.html",
-  styleUrls: ["./services-list.component.scss"]
+  selector: 'app-services-list',
+  templateUrl: './services-list.component.html',
+  styleUrls: ['./services-list.component.scss']
 })
 export class ServicesListComponent implements OnInit {
-  isInitializing: boolean = true;
+  isInitializing = true;
+  allHidden = false;
 
   readonly services$: Observable<any> = this.store.pipe(
     select(servicesSelectors.getServices),
@@ -34,8 +35,6 @@ export class ServicesListComponent implements OnInit {
     select(servicesSelectors.getSelectedEndpoint)
   );
 
-  allHidden = false;
-
   constructor(
     private store: Store<any>,
     private homeService: HomeService,
@@ -54,9 +53,9 @@ export class ServicesListComponent implements OnInit {
 
   customFormat(endpoint: string, serviceName: string): string {
     return endpoint
-      .replace("/gateway/api", "")
-      .replace(serviceName, "")
-      .replace("//client-api/v2", "");
+      .replace('/gateway/api', '')
+      .replace(serviceName, '')
+      .replace('//client-api/v2', '');
   }
 
   toggleAll(services: any[]) {
@@ -71,13 +70,13 @@ export class ServicesListComponent implements OnInit {
         this.store.dispatch(
           new servicesActions.DeleteServiceSuccess(serviceName)
         );
-        this.toastr.success("Deleted successfully!", serviceName);
+        this.toastr.success('Deleted successfully!', serviceName);
       }),
       catchError(errorResponse => {
         this.store.dispatch(
           new servicesActions.DeleteServiceFailure(errorResponse)
         );
-        this.toastr.error("Could not delete the service.", errorResponse);
+        this.toastr.error('Could not delete the service.', errorResponse);
         return errorResponse;
       })
     ).subscribe();
