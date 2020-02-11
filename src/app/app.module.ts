@@ -31,6 +31,7 @@ import { environment } from 'src/environments/environment';
 import { ServicesListComponent } from './services-list/services-list.component';
 import { HeaderComponent } from './header/header.component';
 import { SpecificationsEffects } from './state/specifications/specifications.effects';
+import { HowToComponent } from './how-to/how-to.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { SpecificationsEffects } from './state/specifications/specifications.eff
     PortalsComponent,
     ServicesListComponent,
     HeaderComponent,
-    DropdownComponent
+    DropdownComponent,
+    HowToComponent
   ],
   imports: [
     BrowserModule,

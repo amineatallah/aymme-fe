@@ -2,12 +2,13 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ModelComponent } from './model/model.component';
 import { ServicesListComponent } from './services-list/services-list.component';
-
+import { HowToComponent } from './how-to/how-to.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'services'},
   {path: 'services', component: ServicesListComponent},
-  {path: 'portals', component: ModelComponent}
+  {path: 'portals', component: ModelComponent},
+  {path: 'howto', component: HowToComponent}
 ];
 
 @NgModule({
