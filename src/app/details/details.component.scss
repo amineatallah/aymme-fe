@@ -3,9 +3,9 @@
     position: absolute;
     top: 90px;
     left: 0;
-    height: 100vh;
+    height: calc(100vh - 90px);
     width: 50vw;
-    overflow-y: scroll;
+    overflow-y: auto;
     z-index: 1000;
     background-color: #333;
     border-right: 1px solid #444;
