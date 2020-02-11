@@ -86,8 +86,8 @@
         </div>
 
         <div class="col-12">
-          <form class="mb-3">
-            <div class="form-group" [formGroup]="specForm">
+          <form class="mb-3" [formGroup]="specForm" (ngSubmit)="createSpec()">
+            <div class="form-group">
               <label for="spec-name">Spec Name</label>
               <div class="d-flex">
                 <div class="input-group mr-2">
@@ -98,7 +98,7 @@
                     class="form-control" placeholder="Spec Name" id="specName" for="specName">
                 </div>
         
-                <button [disabled]="specForm.invalid"type="button" class="btn btn-primary w-25" (click)="createSpec()">Create Spec</button>
+                <button [disabled]="specForm.invalid" type="submit" class="btn btn-primary w-25" >Create Spec</button>
                
               </div>
             </div>
