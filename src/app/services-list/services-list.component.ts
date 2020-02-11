@@ -34,7 +34,6 @@ export class ServicesListComponent implements OnInit {
     select(servicesSelectors.getSelectedEndpoint)
   );
 
-  deleteService$: Observable<any>;
   allHidden = false;
 
   constructor(
@@ -67,7 +66,7 @@ export class ServicesListComponent implements OnInit {
   }
 
   deleteService(serviceName: string) {
-    this.deleteService$ = this.homeService.deleteService(serviceName).pipe(
+    this.homeService.deleteService(serviceName).pipe(
       tap(() => {
         this.store.dispatch(
           new servicesActions.DeleteServiceSuccess(serviceName)
@@ -81,7 +80,7 @@ export class ServicesListComponent implements OnInit {
         this.toastr.error("Could not delete the service.", errorResponse);
         return errorResponse;
       })
-    );
+    ).subscribe();
   }
 
   setSelectedEndpoint(endpoint: Endpoint) {

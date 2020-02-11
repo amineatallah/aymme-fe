@@ -13,9 +13,10 @@
           <!-- <pre>{{services | json}}</pre> -->
           <ul class="services-list p-0" *ngIf="context.hasServices else noServices">
             <li *ngFor="let service of services" class="mb-2" [ngClass]="{'is-open': !service.hidden}">
-              <!-- <i class="material-icons align-middle" (click)="deleteService(service.serviceName)"> delete </i> -->
-              <h5 class="d-flex align-items-center" (click)="service.open = !service.open">{{service.serviceName}} <i
-                  class="ml-auto fas fa-chevron-down"></i></h5>
+              <h5 class="d-flex align-items-center" (click)="service.open = !service.open">{{service.serviceName}}
+
+                <i class="fas fa-trash ml-auto" (click)="deleteService(service.serviceName)"></i>
+                <i class="fas fa-chevron-down ml-3"></i></h5>
               <ul [hidden]="service.hidden">
                 <li *ngFor="let endpoint of service.endpoints" class="mb-1" [ngClass]="{'active' : context.selectedEndpoint ? endpoint.id === context.selectedEndpoint._id : false}">
                   <a (click)="setSelectedEndpoint(endpoint)"
