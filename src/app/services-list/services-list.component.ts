@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
-import { HomeService } from '../home/home.service';
+import { HomeService } from '../shared/home.service';
 import { ToastrService } from 'ngx-toastr';
 import * as servicesSelectors from '../state/services/services.selectors';
 import * as servicesActions from '../state/services/services.actions';
 import { tap, catchError } from 'rxjs/operators';
-import { Endpoint } from '../service/service.interface';
+import { Endpoint } from '../shared/service.interface';
 
 @Component({
   selector: "app-services-list",

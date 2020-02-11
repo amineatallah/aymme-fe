@@ -4,7 +4,7 @@ import { Actions, Effect, ofType } from "@ngrx/effects";
 import * as specificationsActions from "./specifications.actions";
 import { concatMap, map, catchError } from "rxjs/operators";
 import { of } from "rxjs";
-import { HomeService } from "../../home/home.service";
+import { HomeService } from "../../shared/home.service";
 
 @Injectable()
 export class SpecificationsEffects {

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChildren, ElementRef, QueryList } from '@angular/core';
-import { HomeService } from '../home/home.service';
+import { HomeService } from '../shared/home.service';
 import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 import { FormGroup, FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';

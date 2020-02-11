@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HomeService } from '../home/home.service';
+import { HomeService } from '../shared/home.service';
 import { tap } from 'rxjs/operators';
 
 @Component({

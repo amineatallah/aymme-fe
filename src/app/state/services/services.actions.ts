@@ -1,5 +1,5 @@
 import { Action } from "@ngrx/store";
-import { Service, Endpoint } from "../../service/service.interface";
+import { Service, Endpoint } from "../../shared/service.interface";
 
 export enum ServicesActionTypes {
   LoadServices = "[Services] Load",
