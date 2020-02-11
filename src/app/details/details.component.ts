@@ -89,7 +89,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     });
 
     this.store.dispatch(new specificationsActions.LoadSpecifications());
-    this.specs$ = this.store.pipe(select(specificationsSelectors.getSpecifications));
+    this.specs$ = this.store.pipe(select(specificationsSelectors.getSpecifications)).pipe(tap(_ => this.specName.updateValueAndValidity()));
 
     this.filterText$ = this.specForm.get('specName').valueChanges;
 
@@ -166,7 +166,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   createSpec() {
     this.store.dispatch(new specificationsActions.CreateSpecification(this.specForm.value));
-    this.specName.updateValueAndValidity();
   }
 
   createExamples(id) {
