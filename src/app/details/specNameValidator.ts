@@ -16,7 +16,7 @@ export class SpecNameValidator {
         ):
             Observable<ValidationErrors | null> => {
             return this.store.select(specificationsSelectors.hasExistingSpecification, { specName: control.value }).pipe(
-                debounceTime(250),
+                //debounceTime(200), // Only needed if performance is an issue
                 take(1),
                 map(hasExistingSpecification => hasExistingSpecification ? { existingSpecName: control.value } : null)
             )
