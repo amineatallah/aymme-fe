@@ -1,15 +1,16 @@
-import { Action } from "@ngrx/store";
-import { Service, Endpoint } from "../../shared/service.interface";
+import { Action } from '@ngrx/store';
+import { Service, Endpoint } from '../../shared/service.interface';
 
 export enum ServicesActionTypes {
-  LoadServices = "[Services] Load",
-  LoadServicesSuccess = "[Services] Load Success",
-  LoadServicesFailure = "[Services] Load Failure",
-  DeleteServiceSuccess = "[Services] Delete Service Success",
-  DeleteServiceFailure = "[Services] Delete Service Failure",
-  LoadSelectedEndpoint = "[Services] Set Selected Endpoint",
-  LoadEndpointSuccess = "[Services] Load Endpoint Success",
-  LoadEndpointFailure = "[Services] Load Endpoint Failure"
+  LoadServices = '[Services] Load',
+  LoadServicesSuccess = '[Services] Load Success',
+  LoadServicesFailure = '[Services] Load Failure',
+  DeleteService = '[Services] Delete Service',
+  DeleteServiceSuccess = '[Services] Delete Service Success',
+  DeleteServiceFailure = '[Services] Delete Service Failure',
+  LoadSelectedEndpoint = '[Services] Set Selected Endpoint',
+  LoadEndpointSuccess = '[Services] Load Endpoint Success',
+  LoadEndpointFailure = '[Services] Load Endpoint Failure'
 }
 
 export class LoadServices implements Action {
@@ -24,7 +25,11 @@ export class LoadServicesSuccess implements Action {
 
 export class LoadServicesFailure implements Action {
   readonly type = ServicesActionTypes.LoadServicesFailure;
+  constructor(public payload: string) {}
+}
 
+export class DeleteService implements Action {
+  readonly type = ServicesActionTypes.DeleteService;
   constructor(public payload: string) {}
 }
 
@@ -62,6 +67,7 @@ export type ServicesActions =
   | LoadServices
   | LoadServicesSuccess
   | LoadServicesFailure
+  | DeleteService
   | DeleteServiceSuccess
   | DeleteServiceFailure
   | LoadSelectedEndpoint

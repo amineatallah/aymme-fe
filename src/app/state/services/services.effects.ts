@@ -35,4 +35,17 @@ export class ServicesEffects {
       )
     )
   );
+
+  @Effect()
+  deleteService$ = this.actions$.pipe(
+    ofType(servicesActions.ServicesActionTypes.DeleteService),
+    concatMap((action: servicesActions.DeleteService) =>
+      this.homeService.deleteService(action.payload).pipe(
+        map(
+          (result: any) => new servicesActions.DeleteServiceSuccess(action.payload)
+        ),
+        catchError(err => of(new servicesActions.DeleteServiceFailure(err)))
+      )
+    )
+  );
 }

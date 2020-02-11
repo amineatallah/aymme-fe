@@ -65,21 +65,8 @@ export class ServicesListComponent implements OnInit {
   }
 
   deleteService(serviceName: string) {
-    this.homeService.deleteService(serviceName).pipe(
-      tap(() => {
-        this.store.dispatch(
-          new servicesActions.DeleteServiceSuccess(serviceName)
-        );
-        this.toastr.success('Deleted successfully!', serviceName);
-      }),
-      catchError(errorResponse => {
-        this.store.dispatch(
-          new servicesActions.DeleteServiceFailure(errorResponse)
-        );
-        this.toastr.error('Could not delete the service.', errorResponse);
-        return errorResponse;
-      })
-    ).subscribe();
+    this.store.dispatch(new servicesActions.DeleteService(serviceName));
+    return false;
   }
 
   setSelectedEndpoint(endpoint: Endpoint) {
