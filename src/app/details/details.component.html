@@ -1,154 +1,157 @@
 <ng-container *ngIf="endpoint$ | async as endpoint">
-  <div class="details-component" *ngIf="{ filterText: filterText$ | async} as context">
-    <div class="details-header d-flex align-items-center mb-2">
-      <h6 class="mb-0">Details</h6>
-      <!-- <button class="btn py-2 px-4 mr-3 btn-outline-primary" (click)="findMocks()">Feeling lucky</button> -->
-      <button class="btn btn-sm mr-3 ml-auto btn-outline-primary" (click)="toggleMocks()"> Manage Mocks</button>
-      <button class="btn btn-sm btn-primary" (click)="updateEndpoint(endpoint._id)">Update</button>
-    </div>
-    <div class="d-flex row">
-      <div class="col-12">
-        <form [formGroup]="form" class="h-100 d-flex flex-column">
-          <div class="row form-group">
-            <div class="col-4">
-              <label for="statusCode">Status Code</label>
-              <app-dropdown [defaultHeader]="'Select one'" [items]="responseCodes" formControlName="statusCode"
-                (setSelectedValue)="changeStatusCode($event)"></app-dropdown>
-            </div>
-
-            <div class="col-4">
-              <div class="row no-gutters">
-                <label for="delay">Delay</label>
-                <input formControlName="delay" type="text" class="form-control" placeholder="Delay">
+  <div *ngIf="listStaggerAnimation" [@fadeIn]>
+    <div class="details-component" *ngIf="{ filterText: filterText$ | async} as context">
+      <div class="details-header d-flex align-items-center mb-2">
+        <h6 class="mb-0">Details</h6>
+        <!-- <button class="btn py-2 px-4 mr-3 btn-outline-primary" (click)="findMocks()">Feeling lucky</button> -->
+        <button class="btn btn-sm mr-3 ml-auto btn-outline-primary" (click)="toggleMocks()"> Manage Mocks</button>
+        <button class="btn btn-sm btn-primary" (click)="updateEndpoint(endpoint._id)">Update</button>
+      </div>
+      <div class="d-flex row">
+        <div class="col-12">
+          <form [formGroup]="form" class="h-100 d-flex flex-column">
+            <div class="row form-group">
+              <div class="col-4">
+                <label for="statusCode">Status Code</label>
+                <app-dropdown [defaultHeader]="'Select one'" [items]="responseCodes" formControlName="statusCode"
+                  (setSelectedValue)="changeStatusCode($event)"></app-dropdown>
               </div>
-            </div>
 
-            <div class="col-2">
-              <div class="row no-gutters">
-                <label for="exampleCheck1">Empty</label>
-                <input class="form-control form-check" formControlName="noData" type="checkbox" id="noData">
-              </div>
-            </div>
-
-            <div class="col-2">
-              <div class="row no-gutters">
-                <label for="forward">Forward</label>
-                <input class="form-control form-check" formControlName="forward" type="checkbox" id="forward">
-              </div>
-            </div>
-            <div class="headers col-12 mt-4">
-              <header class="d-flex justify-content-between mb-2" (click)="showHeaders = !showHeaders">
-                <label for="headers" class="cursor-pointer">Headers <span
-                    class="badge badge-dark">{{form.get('headers').get('length')}}</span></label>
-                <div class="header-controls">
-                  <a href="#"><i (click)="addHeader()" class="fas fa-plus"></i></a>
-                  <i class="fas fa-chevron-down ml-3" [ngClass]="{'fa-chevron-up': !showHeaders}"></i>
+              <div class="col-4">
+                <div class="row no-gutters">
+                  <label for="delay">Delay</label>
+                  <input formControlName="delay" type="text" class="form-control" placeholder="Delay">
                 </div>
-              </header>
-              <div formArrayName="headers" [hidden]="showHeaders">
-                <div *ngFor="let header of form.get('headers')['controls'] let i = index;">
-                  <div [formGroupName]="i" class="d-flex mb-2">
-                    <div class="form-group flex-fill m-0 mr-2">
-                      <input class="form-control" formControlName="name" placeholder="Header name">
-                    </div>
-                    <div class="form-group m-0 flex-fill mr-2">
-                      <input class="form-control" formControlName="value" placeholder="Header value">
-                    </div>
-                    <div class="d-flex align-items-center">
-                      <a href="#" (click)="removeHeader(header)">
-                        <i class="fas fa-times"></i>
-                      </a>
+              </div>
+
+              <div class="col-2">
+                <div class="row no-gutters">
+                  <label for="exampleCheck1">Empty</label>
+                  <input class="form-control form-check" formControlName="noData" type="checkbox" id="noData">
+                </div>
+              </div>
+
+              <div class="col-2">
+                <div class="row no-gutters">
+                  <label for="forward">Forward</label>
+                  <input class="form-control form-check" formControlName="forward" type="checkbox" id="forward">
+                </div>
+              </div>
+              <div class="headers col-12 mt-4">
+                <header class="d-flex justify-content-between mb-2" (click)="showHeaders = !showHeaders">
+                  <label for="headers" class="cursor-pointer">Headers <span
+                      class="badge badge-dark">{{form.get('headers').get('length')}}</span></label>
+                  <div class="header-controls">
+                    <a href="#"><i (click)="addHeader()" class="fas fa-plus"></i></a>
+                    <i class="fas fa-chevron-down ml-3" [ngClass]="{'fa-chevron-up': !showHeaders}"></i>
+                  </div>
+                </header>
+                <div formArrayName="headers" [hidden]="showHeaders">
+                  <div *ngFor="let header of form.get('headers')['controls'] let i = index;">
+                    <div [formGroupName]="i" class="d-flex mb-2">
+                      <div class="form-group flex-fill m-0 mr-2">
+                        <input class="form-control" formControlName="name" placeholder="Header name">
+                      </div>
+                      <div class="form-group m-0 flex-fill mr-2">
+                        <input class="form-control" formControlName="value" placeholder="Header value">
+                      </div>
+                      <div class="d-flex align-items-center">
+                        <a href="#" (click)="removeHeader(header)">
+                          <i class="fas fa-times"></i>
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </form>
-      </div>
+          </form>
+        </div>
 
-      <div class="col-12 mt-3">
-        <json-editor [options]="options" style="min-height: 500px;" [data]="endpointData">
-        </json-editor>
-      </div>
-    </div>
-
-
-
-    <div [@slideInOut]="mocksVisible ? 'open' : 'closed'" class="mocks-area pt-2">
-      <div class="col-12">
-        <div class="details-header d-flex justify-content-between align-items-center mb-3">
-          <h6 class=mb-0>Manage Mocks</h6>
-          <a href="#" class="p-1" (click)="toggleMocks()">
-            <i class="fas fa-times"></i>
-          </a>
+        <div class="col-12 mt-3">
+          <json-editor [options]="options" style="min-height: 500px;" [data]="endpointData">
+          </json-editor>
         </div>
       </div>
 
-      <div class="col-12">
-        <form class="mb-3" [formGroup]="specForm" (ngSubmit)="createSpec()">
-          <div class="form-group">
-            <label for="spec-name">Specification Name</label>
-            <div class="d-flex">
-              <div class="input-group mr-2">
-                <div class="input-group-prepend">
-                  <div class="input-group-text"><i class="fas fa-filter"></i></div>
-                </div>
-                <input formControlName="specName" name="spec-name" autocomplete="off" spellcheck="false" type="text"
-                  class="form-control" placeholder="Specification Name" id="specName" for="specName">
-              </div>
 
-              <button [disabled]="specForm.invalid" type="submit" class="btn btn-primary w-25">Create
-                Specification</button>
 
-            </div>
+      <div *ngIf="mocksVisible" [@slideInOut] class="mocks-area pt-2">
+        <div class="col-12">
+          <div class="details-header d-flex justify-content-between align-items-center mb-3">
+            <h6 class=mb-0>Manage Mocks</h6>
+            <a href="#" class="p-1" (click)="toggleMocks()">
+              <i class="fas fa-times"></i>
+            </a>
           </div>
-        </form>
-      </div>
+        </div>
 
-      <div class="col-12">
-        <ng-container *ngIf="specs$ | async as specs">
-          <ul class="list-unstyled dotted-list">
-            <li *ngFor="let spec of specs | filter : context.filterText" [ngClass]="{'is-open': spec.isOpen}">
-              <div class="dotted-list-header p-2 d-flex align-items-center justify-content-between">
-                <label (click)="spec.isOpen = !spec.isOpen"
-                  class="m-0 cursor-pointer"><strong>{{spec.name}}</strong></label>
-                <div class="controls">
-                  <a href="#" class="mr-3" (click)="deleteSpecs(spec._id)"><i class="fas fa-trash"></i></a>
-                  <i class="fa fa-chevron-down"></i>
-                </div>
-              </div>
-
-              <section class="dotted-list-container" [hidden]="!spec.isOpen">
-                <ng-container *ngIf="spec.exmpales?.length">
-                  <ul class="p-3 list-group">
-                    <p class="description text-muted"><em>Click on an example to add the data to the endpoint.</em></p>
-                    <li *ngFor="let example of spec.exmpales">
-                      <a (click)="useMocks(example.data)" href="#">{{example.name}}</a>
-                    </li>
-                  </ul>
-                </ng-container>
-
-                <footer class="dotted-list-footer p-2">
-                  <div class="d-flex">
-                    <form>
-                      <div class="btn btn-secondary btn-sm btn-file-upload">
-                        <span>Choose a file</span>
-                        <input type="file" multiple accept=".json" (change)="onFileChange($event)">
-                      </div>
-                    </form>
-                    <button class="btn btn-primary btn-sm ml-auto" (click)="createExamples(spec._id)">Upload
-                      Mocks</button>
+        <div class="col-12">
+          <form class="mb-3" [formGroup]="specForm" (ngSubmit)="createSpec()">
+            <div class="form-group">
+              <label for="spec-name">Specification Name</label>
+              <div class="d-flex">
+                <div class="input-group mr-2">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="fas fa-filter"></i></div>
                   </div>
-                </footer>
-              </section>
-            </li>
-          </ul>
-        </ng-container>
+                  <input formControlName="specName" name="spec-name" autocomplete="off" spellcheck="false" type="text"
+                    class="form-control" placeholder="Specification Name" id="specName" for="specName">
+                </div>
+
+                <button [disabled]="specForm.invalid" type="submit" class="btn btn-primary w-25">Create
+                  Specification</button>
+
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="col-12">
+          <ng-container *ngIf="specs$ | async as specs">
+            <ul class="list-unstyled dotted-list">
+              <li *ngFor="let spec of specs | filter : context.filterText" [ngClass]="{'is-open': spec.isOpen}">
+                <div class="dotted-list-header p-2 d-flex align-items-center justify-content-between">
+                  <label (click)="spec.isOpen = !spec.isOpen"
+                    class="m-0 cursor-pointer"><strong>{{spec.name}}</strong></label>
+                  <div class="controls">
+                    <a href="#" class="mr-3" (click)="deleteSpecs(spec._id)"><i class="fas fa-trash"></i></a>
+                    <i class="fa fa-chevron-down"></i>
+                  </div>
+                </div>
+
+                <section class="dotted-list-container" [hidden]="!spec.isOpen">
+                  <ng-container *ngIf="spec.exmpales?.length">
+                    <ul class="p-3 list-group">
+                      <p class="description text-muted"><em>Click on an example to add the data to the endpoint.</em>
+                      </p>
+                      <li *ngFor="let example of spec.exmpales">
+                        <a (click)="useMocks(example.data)" href="#">{{example.name}}</a>
+                      </li>
+                    </ul>
+                  </ng-container>
+
+                  <footer class="dotted-list-footer p-2">
+                    <div class="d-flex">
+                      <form>
+                        <div class="btn btn-secondary btn-sm btn-file-upload">
+                          <span>Choose a file</span>
+                          <input type="file" multiple accept=".json" (change)="onFileChange($event)">
+                        </div>
+                      </form>
+                      <button class="btn btn-primary btn-sm ml-auto" (click)="createExamples(spec._id)">Upload
+                        Mocks</button>
+                    </div>
+                  </footer>
+                </section>
+              </li>
+            </ul>
+          </ng-container>
+        </div>
+
       </div>
 
     </div>
-
   </div>
 
 </ng-container>
