@@ -6,9 +6,9 @@ import { HowToComponent } from './how-to/how-to.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'services'},
-  {path: 'services', component: ServicesListComponent},
-  {path: 'portals', component: ModelComponent},
-  {path: 'howto', component: HowToComponent}
+  {path: 'services', component: ServicesListComponent, data: {animation: 'ServicePage'} },
+  {path: 'portals', component: ModelComponent, data: {animation: 'PortalsPage'} },
+  {path: 'howto', component: HowToComponent, data: {animation: 'HowToPage'} }
 ];
 
 @NgModule({
