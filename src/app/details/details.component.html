@@ -120,7 +120,7 @@
                 </div>
 
                 <section class="dotted-list-container" [hidden]="!spec.isOpen">
-                  <ng-container *ngIf="spec.exmpales?.length">
+                  <ng-container *ngIf="spec.exmpales?.length else noExamples">
                     <ul class="p-3 list-group">
                       <p class="description text-muted"><em>Click on an example JSON file to add the data to the endpoint.</em>
                       </p>
@@ -129,6 +129,10 @@
                       </li>
                     </ul>
                   </ng-container>
+
+                  <ng-template #noExamples>
+                    <p class="p-3 m-0"><em>No examples uploaded so far.</em></p>
+                  </ng-template>
 
                   <footer class="dotted-list-footer p-2">
                     <div class="d-flex">
