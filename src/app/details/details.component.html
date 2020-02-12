@@ -122,7 +122,7 @@
                 <section class="dotted-list-container" [hidden]="!spec.isOpen">
                   <ng-container *ngIf="spec.exmpales?.length">
                     <ul class="p-3 list-group">
-                      <p class="description text-muted"><em>Click on an example to add the data to the endpoint.</em>
+                      <p class="description text-muted"><em>Click on an example JSON file to add the data to the endpoint.</em>
                       </p>
                       <li *ngFor="let example of spec.exmpales">
                         <a (click)="useMocks(example.data)" href="#">{{example.name}}</a>
