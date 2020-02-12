@@ -108,6 +108,9 @@
 
         <div class="col-12">
           <ng-container *ngIf="specs$ | async as specs">
+            <p *ngIf="!(specs | filter : context.filterText)?.length">
+              <em>Filter returned no specifications.</em>
+            </p>
             <ul class="list-unstyled dotted-list">
               <li *ngFor="let spec of specs | filter : context.filterText" [ngClass]="{'is-open': spec.isOpen}">
                 <div class="dotted-list-header p-2 d-flex align-items-center justify-content-between">
