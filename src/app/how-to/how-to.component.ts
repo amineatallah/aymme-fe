@@ -7,7 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HowToComponent implements OnInit {
 
-  public code = `{
+  public code =
+    `{
     "/gateway/api//*": {
       "target": "http://0.0.0.0:3000/gateway/api",
       "secure": false,
@@ -17,16 +18,22 @@ export class HowToComponent implements OnInit {
         "^/gateway/api": ""
       }
     }
-  }`;
+}`;
+
+  public scriptsCode = `"start:aymme": "ng serve --proxy-config=proxy.conf.aymme.json"`;
+
+  public terminalCode = `npm run start:aymme`;
+
+  public disableMockCode = `localStorage.setItem("enableMocks", false)`;
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  copyCode(): boolean {
+  copyCode(copyText: string): boolean {
     const textArea = document.createElement('textarea');
-    textArea.textContent = this.code;
+    textArea.textContent = copyText;
     textArea.style.position = 'absolute';
     textArea.style.left = '-100%';
     document.body.append(textArea);
