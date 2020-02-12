@@ -197,7 +197,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   createExamples(id): void {
-    this.store.dispatch(new specificationsActions.CreateExample({ id: id, filesToUpload: this.filesToUpload }));
+    this.store.dispatch(new specificationsActions.CreateExample({id, filesToUpload: this.filesToUpload }));
+    this.filesToUpload = null;
   }
 
   onFileChange(event): void {
