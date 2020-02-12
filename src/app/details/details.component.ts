@@ -15,16 +15,11 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
   selector: 'app-details',
   animations: [
     trigger('slideInOut', [
-      // ...
-      state('open', style({        
-        opacity: 1,
-      })),
       state('closed', style({
-        opacity: 0,
         transform: 'translateX(-100%)'
       })),
       transition('open => closed', [
-        style({transform: 'translateX(0%)'}),        
+        style({transform: 'translateX(0%)'}),
         animate('0.15s', style({transform: 'translateX(-100%)'}))
       ]),
       transition('closed => open', [
@@ -36,7 +31,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss']
 })
-export class DetailsComponent implements OnInit, OnDestroy {
+export class DetailsComponent implements OnInit {
   endpoint$: Observable<any>;
   endpointData: any;
   specs$: Observable<any>;
@@ -201,9 +196,5 @@ export class DetailsComponent implements OnInit, OnDestroy {
   deleteSpecs(id: string) {
     this.store.dispatch(new specificationsActions.DeleteSpecification(id));
     return false;
-  }
-
-  ngOnDestroy() {
-    console.log('destroy');
   }
 }
