@@ -4,7 +4,11 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `npm install` to install the dependencies. Then run `npm run start` for a dev server. Navigate to `http://localhost:4201/` to use the application.
+
+## Redux DevTools
+
+This application is using NgRx and injected with the `StoreDevtoolsModule`. Therefore, you can make use of the Redux DevTools Chrome Extension, to keep track of the state, actions. It also allows you to replay the actions to track bugs easily.
 
 ## Code scaffolding
 
