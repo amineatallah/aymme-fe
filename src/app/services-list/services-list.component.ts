@@ -1,27 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
-import { HomeService } from '../home/home.service';
+import { HomeService } from '../shared/home.service';
 import { ToastrService } from 'ngx-toastr';
 import * as servicesSelectors from '../state/services/services.selectors';
 import * as servicesActions from '../state/services/services.actions';
 import { tap, catchError } from 'rxjs/operators';
-import { Endpoint } from '../service/service.interface';
+import { Endpoint } from '../shared/service.interface';
 
 @Component({
-  selector: "app-services-list",
-  templateUrl: "./services-list.component.html",
-  styleUrls: ["./services-list.component.scss"]
+  selector: 'app-services-list',
+  templateUrl: './services-list.component.html',
+  styleUrls: ['./services-list.component.scss']
 })
 export class ServicesListComponent implements OnInit {
+  isInitializing = true;
+  allHidden = false;
+
   readonly services$: Observable<any> = this.store.pipe(
     select(servicesSelectors.getServices),
-    // tap(services => {
-    //   // Select the first service and first endpoint (For development of AYMME purpose)
-    //   if (services.length) {
-    //     this.setSelectedEndpoint(services[0].endpoints[0]);
-    //   }
-    // })
+    tap(services => {
+      if (!this.isInitializing || services.length <= 0) {
+        return;
+      }
+      // Select the first service and first endpoint (For development of AYMME purpose)
+      this.setSelectedEndpoint(services[0].endpoints[0]);
+      this.isInitializing = false;
+    })
   );
   readonly hasServices$: Observable<any> = this.store.pipe(
     select(servicesSelectors.hasServices)
@@ -30,14 +35,11 @@ export class ServicesListComponent implements OnInit {
     select(servicesSelectors.getSelectedEndpoint)
   );
 
-  deleteService$: Observable<any>;
-  allHidden = false;
-
   constructor(
     private store: Store<any>,
     private homeService: HomeService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadServices();
@@ -51,9 +53,9 @@ export class ServicesListComponent implements OnInit {
 
   customFormat(endpoint: string, serviceName: string): string {
     return endpoint
-      .replace("/gateway/api", "")
-      .replace(serviceName, "")
-      .replace("//client-api/v2", "");
+      .replace('/gateway/api', '')
+      .replace(serviceName, '')
+      .replace('//client-api/v2', '');
   }
 
   toggleAll(services: any[]) {
@@ -63,21 +65,8 @@ export class ServicesListComponent implements OnInit {
   }
 
   deleteService(serviceName: string) {
-    this.deleteService$ = this.homeService.deleteService(serviceName).pipe(
-      tap(() => {
-        this.store.dispatch(
-          new servicesActions.DeleteServiceSuccess(serviceName)
-        );
-        this.toastr.success("Deleted successfully!", serviceName);
-      }),
-      catchError(errorResponse => {
-        this.store.dispatch(
-          new servicesActions.DeleteServiceFailure(errorResponse)
-        );
-        this.toastr.error("Could not delete the service.", errorResponse);
-        return errorResponse;
-      })
-    );
+    this.store.dispatch(new servicesActions.DeleteService(serviceName));
+    return false;
   }
 
   setSelectedEndpoint(endpoint: Endpoint) {

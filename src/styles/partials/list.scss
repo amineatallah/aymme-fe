@@ -1,0 +1,20 @@
+.dotted-list {
+  border-radius: 2px;
+  display: inline-block;
+  width: 100%;
+  border: 1px dashed #555;
+
+  .dotted-list-header {
+    width: 100%;
+  }
+
+  .dotted-list-footer {
+    border-top: 1px solid #444;
+  }
+
+  .is-open {
+    .dotted-list-header {
+      border-bottom: 1px solid #444;
+    }
+  }
+}

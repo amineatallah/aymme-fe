@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HomeService } from '../home/home.service';
+import { HomeService } from '../shared/home.service';
 import { tap } from 'rxjs/operators';
 
 @Component({
@@ -9,7 +9,7 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./portals.component.scss']
 })
 export class PortalsComponent implements OnInit {
-  portals$: Observable<any>
+  portals$: Observable<any>;
 
   constructor(private service: HomeService) { }
 
@@ -18,6 +18,10 @@ export class PortalsComponent implements OnInit {
     this.portals$ = this.service.getPortals().pipe(
       tap(console.log)
     );
+  }
+
+  deletePortal(portalName: string): void {
+
   }
 
 }

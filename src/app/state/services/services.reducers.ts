@@ -1,5 +1,5 @@
 import { ServicesActions, ServicesActionTypes } from './services.actions';
-import { Service, Endpoint } from '../../service/service.interface';
+import { Service, Endpoint } from '../../shared/service.interface';
 
 export interface ServicesState {
   services: Service[];

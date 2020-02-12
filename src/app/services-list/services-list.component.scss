@@ -1,5 +1,11 @@
 @import "../../styles/partials/vars.scss";
 
+.services-header {
+  border-bottom: 1px solid #444;
+  padding-bottom: 10px;
+  min-height: 42px;
+}
+
 .services-list {
   >li {
     border-radius: 2px;
@@ -14,7 +20,7 @@
         margin-bottom: 10px;
         border-bottom: 1px solid #444;
 
-        i {
+        i.fa-chevron-down {
           transform: rotate(180deg);
         }
       }

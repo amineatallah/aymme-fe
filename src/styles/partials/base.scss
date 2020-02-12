@@ -66,3 +66,20 @@ a:hover {
 pre {
   color: white;
 }
+
+/*
+* Helpers:
+*/
+.cursor-pointer { cursor: pointer; }
+
+// resets position relative
+.no-relative { position: static; }
+
+pre {
+  border: 1px dashed #555;
+  line-height: 20px;
+  padding: 20px;
+  white-space: pre-wrap;
+  color: #d3d3d3;
+  overflow: visible;
+}

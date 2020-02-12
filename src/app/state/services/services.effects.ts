@@ -4,7 +4,7 @@ import { Actions, Effect, ofType } from "@ngrx/effects";
 import * as servicesActions from "./services.actions";
 import { concatMap, map, catchError } from "rxjs/operators";
 import { of } from "rxjs";
-import { HomeService } from "../../home/home.service";
+import { HomeService } from "../../shared/home.service";
 
 @Injectable()
 export class ServicesEffects {
@@ -32,6 +32,19 @@ export class ServicesEffects {
           (endpoint: any) => new servicesActions.LoadEndpointSuccess(endpoint)
         ),
         catchError(err => of(new servicesActions.LoadEndpointFailure(err)))
+      )
+    )
+  );
+
+  @Effect()
+  deleteService$ = this.actions$.pipe(
+    ofType(servicesActions.ServicesActionTypes.DeleteService),
+    concatMap((action: servicesActions.DeleteService) =>
+      this.homeService.deleteService(action.payload).pipe(
+        map(
+          (result: any) => new servicesActions.DeleteServiceSuccess(action.payload)
+        ),
+        catchError(err => of(new servicesActions.DeleteServiceFailure(err)))
       )
     )
   );
