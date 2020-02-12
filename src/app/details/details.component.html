@@ -99,9 +99,8 @@
                     class="form-control" placeholder="Specification Name" id="specName" for="specName">
                 </div>
 
-                <button [disabled]="specForm.invalid" type="submit" class="btn btn-primary w-25">Create
+                <button [disabled]="specForm.invalid" type="submit" class="btn btn-primary w-50">Create
                   Specification</button>
-
               </div>
             </div>
           </form>
@@ -138,6 +137,7 @@
                           <span>Choose a file</span>
                           <input type="file" multiple accept=".json" (change)="onFileChange($event)">
                         </div>
+                        <em class="ml-2">{{getFileNames()}}</em>
                       </form>
                       <button class="btn btn-primary btn-sm ml-auto" (click)="createExamples(spec._id)">Upload
                         Mocks</button>

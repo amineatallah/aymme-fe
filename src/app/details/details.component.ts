@@ -196,12 +196,20 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.store.dispatch(new specificationsActions.CreateSpecification(this.specForm.value));
   }
 
-  createExamples(id) {
+  createExamples(id): void {
     this.store.dispatch(new specificationsActions.CreateExample({ id: id, filesToUpload: this.filesToUpload }));
   }
 
-  onFileChange(event) {
+  onFileChange(event): void {
     this.filesToUpload = event.target.files;
+  }
+
+  getFileNames(): string {
+    const retVal = [];
+    for (let i = 0; i <= this.filesToUpload?.length - 1; i++) {
+      retVal.push(this.filesToUpload[i].name);
+    }
+    return retVal.join(', ');
   }
 
   deleteSpecs(id: string) {
