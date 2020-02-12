@@ -9,9 +9,34 @@ import * as servicesSelectors from '../state/services/services.selectors';
 import * as specificationsSelectors from '../state/specifications/specifications.selectors';
 import * as specificationsActions from '../state/specifications/specifications.actions';
 import { SpecNameValidator } from './specNameValidator';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-details',
+  animations: [
+    trigger('slideInOut', [
+      // ...
+      state('open', style({
+        //height: '200px',
+        
+        opacity: 1,
+        //backgroundColor: 'yellow'
+      })),
+      state('closed', style({
+        //height: '100px',
+        opacity: 0,
+        //backgroundColor: 'green'
+      })),
+      transition('open => closed', [
+        style({transform: 'translateX(0%)'}),        
+        animate('0.15s', style({transform: 'translateX(-100%)'}))
+      ]),
+      transition('closed => open', [
+        style({transform: 'translateX(-100%)'}),
+        animate('0.25s')
+      ]),
+    ]),
+  ],
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss']
 })
