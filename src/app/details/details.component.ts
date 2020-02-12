@@ -16,16 +16,12 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
   animations: [
     trigger('slideInOut', [
       // ...
-      state('open', style({
-        //height: '200px',
-        
+      state('open', style({        
         opacity: 1,
-        //backgroundColor: 'yellow'
       })),
       state('closed', style({
-        //height: '100px',
         opacity: 0,
-        //backgroundColor: 'green'
+        transform: 'translateX(-100%)'
       })),
       transition('open => closed', [
         style({transform: 'translateX(0%)'}),        
