@@ -1,8 +1,8 @@
 import { Component, OnInit, ElementRef, ViewChildren, QueryList, OnDestroy } from '@angular/core';
 import { HomeService } from '../shared/home.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { JsonEditorOptions, JsonEditorComponent } from 'ang-jsoneditor';
-import { tap } from 'rxjs/operators';
+import { tap, takeUntil } from 'rxjs/operators';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import * as servicesSelectors from '../state/services/services.selectors';
@@ -10,6 +10,9 @@ import * as specificationsSelectors from '../state/specifications/specifications
 import * as specificationsActions from '../state/specifications/specifications.actions';
 import { SpecNameValidator } from './specNameValidator';
 import { collapseExpandAnimation, slideInOutAnimation, fadeInStaggerAnimation } from '../shared/animation';
+import { ToastrService } from 'ngx-toastr';
+import * as ServicesActions from '../state/services/services.actions';
+import { Actions, ofType } from '@ngrx/effects';
 
 @Component({
   selector: 'app-details',
@@ -22,6 +25,7 @@ import { collapseExpandAnimation, slideInOutAnimation, fadeInStaggerAnimation } 
   styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent implements OnInit, OnDestroy {
+  destroyed$ = new Subject<boolean>();
   endpoint$: Observable<any>;
   endpointData: any;
   specs$: Observable<any>;
@@ -46,8 +50,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store<any>,
     private formBuilder: FormBuilder,
-    private service: HomeService,
     private specNameValidator: SpecNameValidator,
+    private toastr: ToastrService,
+    private actions$: Actions,
   ) { }
 
   ngOnInit() {
@@ -107,6 +112,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
     this.filterText$ = this.specForm.get('specName').valueChanges;
 
+    this.actions$.pipe(
+      ofType(ServicesActions.ServicesActionTypes.UpdateEndpointSuccess),
+      takeUntil(this.destroyed$),
+      tap(() => this.toastr.success('Mocks updated successfully!', '', { 'progressBar': false, 'easing': 'ease-in-out' })
+      )
+    ).subscribe();
+
   }
 
   get specName() {
@@ -132,7 +144,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   updateEndpoint(endpointId: string) {
-    let data = {
+    const data = {
+      id: endpointId,
       statusCode: this.form.get('statusCode').value,
       delay: parseInt(this.form.get('delay').value, 10),
       emptyArray: this.form.get('noData').value,
@@ -141,11 +154,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
       customHeaders: this.arrayToObject(this.form.value.headers)
     };
 
-    this.service.updateEndpoint(endpointId, data).subscribe(data => {
-      this.response.response[
-        this.form.get('statusCode').value
-      ].data.body = this.editor.first.get();
-    });
+    // this.service.updateEndpoint(endpointId, data).subscribe(data => {
+    //   this.response.response[
+    //     this.form.get('statusCode').value
+    //   ].data.body = this.editor.first.get();
+    //   this.showSuccess();
+    // });
+
+    this.store.dispatch(new ServicesActions.UpdateEndpoint(data));
   }
 
   arrayToObject(array) {
@@ -204,7 +220,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
     return false;
   }
 
+  showSuccess() {
+    // this.notificationService.show('Mocks updated successfully!', { classname: 'bg-success text-light', delay: 3000 });
+    this.toastr.success('Mocks updated successfully!', '', { 'progressBar': false, 'easing': 'ease-in-out' });
+  }
+
   ngOnDestroy() {
     console.log('destroy');
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 }
