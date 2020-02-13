@@ -120,7 +120,7 @@
                   </div>
                 </div>
 
-                <section class="dotted-list-container" [hidden]="!spec.isOpen">
+                <section class="dotted-list-container" [@collapseExpand] *ngIf="spec.isOpen">
                   <ng-container *ngIf="spec.exmpales?.length">
                     <ul class="p-3 list-group">
                       <p class="description text-muted"><em>Click on an example to add the data to the endpoint.</em>

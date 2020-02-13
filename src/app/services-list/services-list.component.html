@@ -17,7 +17,7 @@
 
                 <i class="fas fa-trash ml-auto" (click)="deleteService(service.serviceName)"></i>
                 <i class="fas fa-chevron-down ml-3"></i></h5>
-              <ul [hidden]="service.hidden">
+              <ul *ngIf="!service.hidden" [@collapseExpand]>
                 <li *ngFor="let endpoint of service.endpoints" class="mb-1" [ngClass]="{'active' : context.selectedEndpoint ? endpoint.id === context.selectedEndpoint._id : false}">
                   <a (click)="setSelectedEndpoint(endpoint)"
                     class="my-auto">{{customFormat(endpoint.path, service.serviceName)}}</a>
