@@ -10,6 +10,7 @@ import * as specificationsSelectors from '../state/specifications/specifications
 import * as specificationsActions from '../state/specifications/specifications.actions';
 import { SpecNameValidator } from './specNameValidator';
 import { trigger, state, style, transition, animate, query, stagger } from '@angular/animations';
+import { collapseExpandAnimation } from '../animation';
 
 @Component({
   selector: 'app-details',
@@ -31,6 +32,7 @@ import { trigger, state, style, transition, animate, query, stagger } from '@ang
       transition(':leave', [
       ])
     ])
+    ,collapseExpandAnimation
   ],
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss']

@@ -1,7 +1,7 @@
 <div class="container-fluid p-0">
   <app-header></app-header>
 
-  <section [@routeAnimations]="prepareRoute(outlet)" class="content container-fluid">
+  <section [@routeFadeInAnimation]="prepareRoute(outlet)" class="content container-fluid">
     <router-outlet #outlet="outlet"></router-outlet>
   </section>
 
