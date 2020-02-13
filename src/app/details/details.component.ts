@@ -1,8 +1,8 @@
 import { Component, OnInit, ElementRef, ViewChildren, QueryList, OnDestroy } from '@angular/core';
 import { HomeService } from '../shared/home.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { JsonEditorOptions, JsonEditorComponent } from 'ang-jsoneditor';
-import { tap } from 'rxjs/operators';
+import { tap, takeUntil } from 'rxjs/operators';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import * as servicesSelectors from '../state/services/services.selectors';
@@ -12,6 +12,7 @@ import { SpecNameValidator } from './specNameValidator';
 import { collapseExpandAnimation, slideInOutAnimation, fadeInStaggerAnimation } from '../shared/animation';
 import { ToastrService } from 'ngx-toastr';
 import * as ServicesActions from '../state/services/services.actions';
+import { Actions, ofType } from '@ngrx/effects';
 
 @Component({
   selector: 'app-details',
@@ -24,6 +25,7 @@ import * as ServicesActions from '../state/services/services.actions';
   styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent implements OnInit, OnDestroy {
+  destroyed$ = new Subject<boolean>();
   endpoint$: Observable<any>;
   endpointData: any;
   specs$: Observable<any>;
@@ -49,7 +51,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private store: Store<any>,
     private formBuilder: FormBuilder,
     private specNameValidator: SpecNameValidator,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private actions$: Actions,
   ) { }
 
   ngOnInit() {
@@ -108,6 +111,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.specs$ = this.store.pipe(select(specificationsSelectors.getSpecifications)).pipe(tap(_ => this.specName.updateValueAndValidity()));
 
     this.filterText$ = this.specForm.get('specName').valueChanges;
+
+    this.actions$.pipe(
+      ofType(ServicesActions.ServicesActionTypes.UpdateEndpointSuccess),
+      takeUntil(this.destroyed$),
+      tap(() => this.toastr.success('Mocks updated successfully!', '', { 'progressBar': false, 'easing': 'ease-in-out' })
+      )
+    ).subscribe();
 
   }
 
@@ -217,5 +227,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     console.log('destroy');
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 }
