@@ -65,11 +65,14 @@ export class ServicesListComponent implements OnInit {
   }
 
   deleteService(serviceName: string) {
-    this.store.dispatch(new servicesActions.DeleteService(serviceName));
-    return false;
+    if (confirm('Are you sure to delete')) {
+      this.store.dispatch(new servicesActions.DeleteService(serviceName));
+      return false;
+    }
   }
 
   setSelectedEndpoint(endpoint: Endpoint) {
     this.store.dispatch(new servicesActions.LoadSelectedEndpoint(endpoint));
   }
+
 }

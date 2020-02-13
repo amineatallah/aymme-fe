@@ -2,13 +2,13 @@
   <div class="row">
     <div class="col-6">
       <ng-container *ngIf="services$ | async as services">
-        <ng-container *ngIf="{ hasServices: hasServices$ | async, selectedEndpoint: selectedEndpoint$ | async } as context">
+        <ng-container
+          *ngIf="{ hasServices: hasServices$ | async, selectedEndpoint: selectedEndpoint$ | async } as context">
           <section class="services-header d-flex align-items-center mb-4">
             <h6 class="mb-0">Services</h6>
-            <a href="#" class="p-1 ml-auto"
-            (click)="loadServices()"><i class="fas fa-sync-alt"></i></a>
-            <a href="#" *ngIf="context.hasServices" class="p-1 ml-2"
-              (click)="toggleAll(services);"><i class="fas fa-arrows-alt-v"></i></a>
+            <a href="#" class="p-1 ml-auto" (click)="loadServices()"><i class="fas fa-sync-alt"></i></a>
+            <a href="#" *ngIf="context.hasServices" class="p-1 ml-2" (click)="toggleAll(services);"><i
+                class="fas fa-arrows-alt-v"></i></a>
           </section>
           <!-- <pre>{{services | json}}</pre> -->
           <ul class="services-list p-0" *ngIf="context.hasServices else noServices">
@@ -18,7 +18,8 @@
                 <i class="fas fa-trash ml-auto" (click)="deleteService(service.serviceName)"></i>
                 <i class="fas fa-chevron-down ml-3"></i></h5>
               <ul [hidden]="service.hidden">
-                <li *ngFor="let endpoint of service.endpoints" class="mb-1" [ngClass]="{'active' : context.selectedEndpoint ? endpoint.id === context.selectedEndpoint._id : false}">
+                <li *ngFor="let endpoint of service.endpoints" class="mb-1"
+                  [ngClass]="{'active' : context.selectedEndpoint ? endpoint.id === context.selectedEndpoint._id : false}">
                   <a (click)="setSelectedEndpoint(endpoint)"
                     class="my-auto">{{customFormat(endpoint.path, service.serviceName)}}</a>
                 </li>

@@ -9,6 +9,7 @@ import * as servicesSelectors from '../state/services/services.selectors';
 import * as specificationsSelectors from '../state/specifications/specifications.selectors';
 import * as specificationsActions from '../state/specifications/specifications.actions';
 import { SpecNameValidator } from './specNameValidator';
+import { NotificationService } from '../shared/notification.service';
 
 @Component({
   selector: 'app-details',
@@ -41,6 +42,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private service: HomeService,
     private specNameValidator: SpecNameValidator,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit() {
@@ -83,10 +85,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
     this.specForm = this.formBuilder.group({
       specName: [null,
-      {
-        validators: [Validators.required],
-        asyncValidators: [this.specNameValidator.existingSpecNameValidator()]
-      }]
+        {
+          validators: [Validators.required],
+          asyncValidators: [this.specNameValidator.existingSpecNameValidator()]
+        }]
     });
 
     this.store.dispatch(new specificationsActions.LoadSpecifications());
@@ -119,7 +121,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   updateEndpoint(endpointId: string) {
-    let data = {
+    const data = {
       statusCode: this.form.get('statusCode').value,
       delay: parseInt(this.form.get('delay').value, 10),
       emptyArray: this.form.get('noData').value,
@@ -132,6 +134,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.response.response[
         this.form.get('statusCode').value
       ].data.body = this.editor.first.get();
+      this.showSuccess();
     });
   }
 
@@ -170,7 +173,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   createExamples(id) {
-    this.store.dispatch(new specificationsActions.CreateExample({ id: id, filesToUpload: this.filesToUpload}));
+    this.store.dispatch(new specificationsActions.CreateExample({ id: id, filesToUpload: this.filesToUpload }));
   }
 
   onFileChange(event) {
@@ -180,6 +183,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
   deleteSpecs(id: string) {
     this.store.dispatch(new specificationsActions.DeleteSpecification(id));
     return false;
+  }
+
+  showSuccess() {
+    this.notificationService.show('Mocks updated successfully!', { classname: 'bg-success text-light', delay: 3000 });
   }
 
   ngOnDestroy() {
