@@ -27,7 +27,6 @@ import { collapseExpandAnimation } from '../animation';
     ]),
     trigger('fadeIn', [
       transition(':enter', [
-        style({ opacity:0 ,  }),
         animate('0.5s', style({ opacity: 1 }))
       ]),
       transition(':leave', [
@@ -106,7 +105,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           this.listStaggerAnimation = true;
         })
-        
+
       })
     );
 
@@ -199,12 +198,21 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.store.dispatch(new specificationsActions.CreateSpecification(this.specForm.value));
   }
 
-  createExamples(id) {
-    this.store.dispatch(new specificationsActions.CreateExample({ id: id, filesToUpload: this.filesToUpload }));
+  createExamples(id): void {
+    this.store.dispatch(new specificationsActions.CreateExample({id, filesToUpload: this.filesToUpload }));
+    this.filesToUpload = null;
   }
 
-  onFileChange(event) {
+  onFileChange(event): void {
     this.filesToUpload = event.target.files;
+  }
+
+  getFileNames(): string {
+    const retVal = [];
+    for (let i = 0; i <= this.filesToUpload?.length - 1; i++) {
+      retVal.push(this.filesToUpload[i].name);
+    }
+    return retVal.join(', ');
   }
 
   deleteSpecs(id: string) {
