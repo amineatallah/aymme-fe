@@ -1,5 +1,5 @@
 <ng-container *ngIf="endpoint$ | async as endpoint">
-  <div *ngIf="listStaggerAnimation" [@fadeIn]>
+  <div *ngIf="listStaggerAnimation" [@fadeInStagger]>
     <div class="details-component" *ngIf="{ filterText: filterText$ | async} as context">
       <div class="details-header d-flex align-items-center mb-2">
         <h6 class="mb-0">Details</h6>
@@ -112,7 +112,7 @@
               <em>Filter returned no specifications.</em>
             </p>
             <ul class="list-unstyled dotted-list">
-              <li *ngFor="let spec of specs | filter : context.filterText" [ngClass]="{'is-open': spec.isOpen}">
+              <li *ngFor="let spec of specs | filter : context.filterText" [@fadeInStagger] [ngClass]="{'is-open': spec.isOpen}">
                 <div class="dotted-list-header p-2 d-flex align-items-center justify-content-between">
                   <label (click)="spec.isOpen = !spec.isOpen"
                     class="m-0 cursor-pointer"><strong>{{spec.name}}</strong></label>
