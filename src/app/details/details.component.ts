@@ -27,8 +27,8 @@ import { collapseExpandAnimation } from '../animation';
     ]),
     trigger('fadeIn', [
       transition(':enter', [
-        style({ opacity:0 ,  }),
-        animate('0.5s', style({ opacity: 1 }))
+        style({ opacity:0 , transform: 'translateY(-8px)' }),
+        animate('0.3s', style({ opacity: 1, transform: 'translateY(0)' }))
       ]),
       transition(':leave', [
       ])
