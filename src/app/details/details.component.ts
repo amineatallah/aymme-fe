@@ -9,31 +9,14 @@ import * as servicesSelectors from '../state/services/services.selectors';
 import * as specificationsSelectors from '../state/specifications/specifications.selectors';
 import * as specificationsActions from '../state/specifications/specifications.actions';
 import { SpecNameValidator } from './specNameValidator';
-import { trigger, state, style, transition, animate, query, stagger } from '@angular/animations';
-import { collapseExpandAnimation } from '../animation';
+import { collapseExpandAnimation, slideInOutAnimation, fadeInStaggerAnimation } from '../shared/animation';
 
 @Component({
   selector: 'app-details',
   animations: [
-    trigger('slideInOut', [
-      transition(':leave', [
-        style({ transform: 'translateX(0%)' }),
-        animate('0.15s', style({ transform: 'translateX(-100%)' }))
-      ]),
-      transition(':enter', [
-        style({ transform: 'translateX(-100%)' }),
-        animate('0.25s')
-      ]),
-    ]),
-    trigger('fadeInStagger', [
-      transition(':enter', [
-        style({ opacity:0 , transform: 'translateY(-8px)' }),
-        animate('0.3s', style({ opacity: 1, transform: 'translateY(0)' }))
-      ]),
-      transition(':leave', [
-      ])
-    ])
-    ,collapseExpandAnimation
+    fadeInStaggerAnimation,
+    slideInOutAnimation,
+    collapseExpandAnimation,
   ],
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss']
@@ -200,7 +183,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   createExamples(id): void {
-    this.store.dispatch(new specificationsActions.CreateExample({id, filesToUpload: this.filesToUpload }));
+    this.store.dispatch(new specificationsActions.CreateExample({ id, filesToUpload: this.filesToUpload }));
     this.filesToUpload = null;
   }
 
