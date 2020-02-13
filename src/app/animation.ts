@@ -1,7 +1,7 @@
-import { trigger, transition, style, query, animateChild, group, animate } from '@angular/animations';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 export const routeFadeInAnimation =
-  trigger('routeAnimations', [
+  trigger('routeFadeInAnimation', [
     transition('*<=>*', [
 
       style({ opacity: 0 }),
