@@ -2,20 +2,48 @@
   <div class="row">
     <div class="col-12">
       <h4>How to use AYMME?</h4>
-      <p><strong>Its simple.</strong> In order to use this tool you first need to update your current project with some
-        proxy settings.
-        You can do this by using the default Angular Proxy configuartion using NPM. Make sure you paste the following
-        snippet in the proxy.conf.json file.</p>
+      <p><strong>Its simple.</strong> In order to use this tool you first need to add a proxy configuration in your
+        current project.
+        You can do this by using the default Angular Proxy Configuration when running "ng serve".
+        Create the a file in the project folder together with your package.json and name this "proxy.conf.aymme.json" to
+        avoid conflicts with other configurations. Then use the following snippet in this file:</p>
       <code><pre innerHTML="{{code}}"></pre>
-      <a href="#" (click)="copyCode()" ><i class="far fa-copy"></i></a>
+      <a href="#" (click)="copyCode(code)" ><i class="far fa-copy"></i></a>
       </code>
+      <p>For convenience, add the following to the "scripts" in package.json:</p>
+      <code><pre innerHTML="{{scriptsCode}}"></pre>
+        <a href="#" (click)="copyCode(scriptsCode)" ><i class="far fa-copy"></i></a>
+        </code>
+
       <p></p>
-      <p></p>
-      <h4>After configuration</h4>
-      <p>Head back to this tool and navigation to the <strong>Services</strong> page. You will see the service calls
-        made by the running app presented here. Or you can choose to manually refresh the list. Click on a service in order to see the services endpoints.
-        Once you selected a endpoint you will be able to adjust the configuration of the endpoint in the panel on the right.
+      <h4>Run your project application</h4>
+      <p>Now run the app using the created scripts using the command: </p>
+
+      <code><pre innerHTML="{{terminalCode}}"></pre>
+        <a href="#" (click)="copyCode(terminalCode)" ><i class="far fa-copy"></i></a>
+        </code>
+      <p>
+        When your project application is running, disable the mocks to allow the requests to be directed to AYMME. Use
+        this command in the console of your browser:
       </p>
+
+      <code><pre innerHTML="{{disableMockCode}}"></pre>
+        <a href="#" (click)="copyCode(disableMockCode)" ><i class="far fa-copy"></i></a>
+        </code>
+        <p></p>
+      <h4>Start Mocking Me!</h4>
+      <p>
+        The widgets in your project should be making HTTP requests to AYMME now. To check this, navigate to <a href="#" routerLink="/services"><strong>Services</strong></a> page in AYMME web application page. 
+        This will list all the requests made by your project application on the left side. When your application is performing new requests, simply hit the refresh button to fetch the latest 
+        endpoints. Now you can start mocking each requests by clicking on the endpoint and configure the response on the right bar.
+      </p>
+      <p></p>
+      <h4>Managing Your Mocks</h4>
+      <p>When configuring the response data, it might be handy to switch between multiple response. In order to manage this, use the "Manage Mocks" button open the panel on the left. 
+        By default, it will filter the specifications list by the selected service. To create a specifications, simply click "Create Specification" button. Now expand the created specification 
+        and start uploading JSON files to save your example data. These examples are found in the RAML specifications.
+      </p>
+
     </div>
   </div>
 </div>

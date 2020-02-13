@@ -8,7 +8,7 @@ import { HomeService } from "../../shared/home.service";
 
 @Injectable()
 export class ServicesEffects {
-  constructor(private actions$: Actions, private homeService: HomeService) {}
+  constructor(private actions$: Actions, private homeService: HomeService) { }
 
   @Effect()
   loadServices$ = this.actions$.pipe(
@@ -45,6 +45,19 @@ export class ServicesEffects {
           (result: any) => new servicesActions.DeleteServiceSuccess(action.payload)
         ),
         catchError(err => of(new servicesActions.DeleteServiceFailure(err)))
+      )
+    )
+  );
+
+  @Effect()
+  updateEndpoint$ = this.actions$.pipe(
+    ofType(servicesActions.ServicesActionTypes.UpdateEndpoint),
+    concatMap((action: servicesActions.UpdateEndpoint) =>
+      this.homeService.updateEndpoint(action.payload.id, action.payload).pipe(
+        map(
+          (result: any) => new servicesActions.UpdateEndpointSuccess(result)
+        ),
+        catchError(err => of(new servicesActions.UpdateEndpointFailure(err)))
       )
     )
   );

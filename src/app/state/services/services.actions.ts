@@ -10,7 +10,10 @@ export enum ServicesActionTypes {
   DeleteServiceFailure = '[Services] Delete Service Failure',
   LoadSelectedEndpoint = '[Services] Set Selected Endpoint',
   LoadEndpointSuccess = '[Services] Load Endpoint Success',
-  LoadEndpointFailure = '[Services] Load Endpoint Failure'
+  LoadEndpointFailure = '[Services] Load Endpoint Failure',
+  UpdateEndpoint = '[Services] Update Endpoint',
+  UpdateEndpointSuccess = '[Services] Update Endpoint Success',
+  UpdateEndpointFailure = '[Services] Update Endpoint Failure',
 }
 
 export class LoadServices implements Action {
@@ -20,47 +23,64 @@ export class LoadServices implements Action {
 export class LoadServicesSuccess implements Action {
   readonly type = ServicesActionTypes.LoadServicesSuccess;
 
-  constructor(public payload: any[]) {}
+  constructor(public payload: any[]) { }
 }
 
 export class LoadServicesFailure implements Action {
   readonly type = ServicesActionTypes.LoadServicesFailure;
-  constructor(public payload: string) {}
+  constructor(public payload: string) { }
 }
 
 export class DeleteService implements Action {
   readonly type = ServicesActionTypes.DeleteService;
-  constructor(public payload: string) {}
+  constructor(public payload: string) { }
 }
 
 export class DeleteServiceSuccess implements Action {
   readonly type = ServicesActionTypes.DeleteServiceSuccess;
 
-  constructor(public payload: string) {}
+  constructor(public payload: string) { }
 }
 
 export class DeleteServiceFailure implements Action {
   readonly type = ServicesActionTypes.DeleteServiceFailure;
 
-  constructor(public payload: string) {}
+  constructor(public payload: string) { }
 }
 
 export class LoadSelectedEndpoint implements Action {
   readonly type = ServicesActionTypes.LoadSelectedEndpoint;
 
-  constructor(public payload: Endpoint) {}
+  constructor(public payload: Endpoint) { }
 }
 
 export class LoadEndpointSuccess implements Action {
   readonly type = ServicesActionTypes.LoadEndpointSuccess;
 
-  constructor(public payload: any[]) {}
+  constructor(public payload: any[]) { }
 }
 
 export class LoadEndpointFailure implements Action {
   readonly type = ServicesActionTypes.LoadEndpointFailure;
 
-  constructor(public payload: string) {}
+  constructor(public payload: string) { }
+}
+
+export class UpdateEndpoint implements Action {
+  readonly type = ServicesActionTypes.UpdateEndpoint;
+  constructor(public payload: any) { }
+}
+
+export class UpdateEndpointSuccess implements Action {
+  readonly type = ServicesActionTypes.UpdateEndpointSuccess;
+
+  constructor(public payload: string) { }
+}
+
+export class UpdateEndpointFailure implements Action {
+  readonly type = ServicesActionTypes.UpdateEndpointFailure;
+
+  constructor(public payload: string) { }
 }
 
 export type ServicesActions =
@@ -72,4 +92,7 @@ export type ServicesActions =
   | DeleteServiceFailure
   | LoadSelectedEndpoint
   | LoadEndpointSuccess
-  | LoadEndpointFailure;
+  | LoadEndpointFailure
+  | UpdateEndpoint
+  | UpdateEndpointSuccess
+  | UpdateEndpointFailure;

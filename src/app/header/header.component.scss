@@ -10,6 +10,18 @@
   border-bottom: 1px solid $grey;
   height: 80px;
 
+  &.scrolling {
+    height: 60px;
+    -webkit-transition: all 150ms linear;
+    -ms-transition: all 150ms linear;
+    transition: all 150ms linear;
+    box-shadow: 0 4px 6px 0 rgba(0,0,0,0.12);
+
+      .navbar-brand-logo {
+        display: inline-block;
+      }
+  }
+
   .navbar-brand-text {
     font-size: 18px;
     color: #d3d3d3;
@@ -26,6 +38,10 @@
     &:hover {
       color: darken(white, 20%)
     }
+  }
+
+  .nav-item {
+    margin-right: 20px;
   }
 
   .navbar-nav {

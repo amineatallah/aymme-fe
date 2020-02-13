@@ -2,7 +2,12 @@
   border-radius: 2px;
   display: inline-block;
   width: 100%;
-  border: 1px dashed #555;
+
+  > li {
+    background-color: #333;
+    border: 1px dashed #555;
+    margin-bottom: 20px;
+  }
 
   .dotted-list-header {
     width: 100%;

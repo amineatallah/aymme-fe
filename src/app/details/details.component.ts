@@ -9,10 +9,17 @@ import * as servicesSelectors from '../state/services/services.selectors';
 import * as specificationsSelectors from '../state/specifications/specifications.selectors';
 import * as specificationsActions from '../state/specifications/specifications.actions';
 import { SpecNameValidator } from './specNameValidator';
-import { NotificationService } from '../shared/notification.service';
+import { collapseExpandAnimation, slideInOutAnimation, fadeInStaggerAnimation } from '../shared/animation';
+import { ToastrService } from 'ngx-toastr';
+import * as ServicesActions from '../state/services/services.actions';
 
 @Component({
   selector: 'app-details',
+  animations: [
+    fadeInStaggerAnimation,
+    slideInOutAnimation,
+    collapseExpandAnimation,
+  ],
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss']
 })
@@ -25,6 +32,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   mocksVisible: boolean = false;
   filesToUpload: Array<File>;
   activeId: string;
+  listStaggerAnimation: boolean = false;
   public selectedStatus: string;
   public options = new JsonEditorOptions();
   private editorHolder: ElementRef;
@@ -40,9 +48,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store<any>,
     private formBuilder: FormBuilder,
-    private service: HomeService,
     private specNameValidator: SpecNameValidator,
-    private notificationService: NotificationService
+    private toastr: ToastrService
   ) { }
 
   ngOnInit() {
@@ -79,6 +86,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
             this.addHeader(key, value as string);
           }
         }
+
+        this.listStaggerAnimation = false;
+        setTimeout(() => {
+          this.listStaggerAnimation = true;
+        })
+
       })
     );
 
@@ -122,6 +135,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   updateEndpoint(endpointId: string) {
     const data = {
+      id: endpointId,
       statusCode: this.form.get('statusCode').value,
       delay: parseInt(this.form.get('delay').value, 10),
       emptyArray: this.form.get('noData').value,
@@ -130,12 +144,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
       customHeaders: this.arrayToObject(this.form.value.headers)
     };
 
-    this.service.updateEndpoint(endpointId, data).subscribe(data => {
-      this.response.response[
-        this.form.get('statusCode').value
-      ].data.body = this.editor.first.get();
-      this.showSuccess();
-    });
+    // this.service.updateEndpoint(endpointId, data).subscribe(data => {
+    //   this.response.response[
+    //     this.form.get('statusCode').value
+    //   ].data.body = this.editor.first.get();
+    //   this.showSuccess();
+    // });
+
+    this.store.dispatch(new ServicesActions.UpdateEndpoint(data));
   }
 
   arrayToObject(array) {
@@ -172,12 +188,21 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.store.dispatch(new specificationsActions.CreateSpecification(this.specForm.value));
   }
 
-  createExamples(id) {
-    this.store.dispatch(new specificationsActions.CreateExample({ id: id, filesToUpload: this.filesToUpload }));
+  createExamples(id): void {
+    this.store.dispatch(new specificationsActions.CreateExample({ id, filesToUpload: this.filesToUpload }));
+    this.filesToUpload = null;
   }
 
-  onFileChange(event) {
+  onFileChange(event): void {
     this.filesToUpload = event.target.files;
+  }
+
+  getFileNames(): string {
+    const retVal = [];
+    for (let i = 0; i <= this.filesToUpload?.length - 1; i++) {
+      retVal.push(this.filesToUpload[i].name);
+    }
+    return retVal.join(', ');
   }
 
   deleteSpecs(id: string) {
@@ -186,7 +211,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   showSuccess() {
-    this.notificationService.show('Mocks updated successfully!', { classname: 'bg-success text-light', delay: 3000 });
+    // this.notificationService.show('Mocks updated successfully!', { classname: 'bg-success text-light', delay: 3000 });
+    this.toastr.success('Mocks updated successfully!', '', { 'progressBar': false, 'easing': 'ease-in-out' });
   }
 
   ngOnDestroy() {

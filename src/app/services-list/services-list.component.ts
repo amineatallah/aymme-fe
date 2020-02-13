@@ -5,13 +5,17 @@ import { HomeService } from '../shared/home.service';
 import { ToastrService } from 'ngx-toastr';
 import * as servicesSelectors from '../state/services/services.selectors';
 import * as servicesActions from '../state/services/services.actions';
-import { tap, catchError } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { Endpoint } from '../shared/service.interface';
+import { collapseExpandAnimation } from '../shared/animation';
 
 @Component({
   selector: 'app-services-list',
   templateUrl: './services-list.component.html',
-  styleUrls: ['./services-list.component.scss']
+  styleUrls: ['./services-list.component.scss'],
+  animations: [
+    collapseExpandAnimation
+  ]
 })
 export class ServicesListComponent implements OnInit {
   isInitializing = true;
