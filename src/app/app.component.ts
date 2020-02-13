@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { slideInAnimation } from './animation';
+import { routeFadeInAnimation } from './animation';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -7,7 +7,7 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   animations: [
-    slideInAnimation
+    routeFadeInAnimation
   ]
 })
 export class AppComponent {
