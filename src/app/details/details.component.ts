@@ -9,31 +9,14 @@ import * as servicesSelectors from '../state/services/services.selectors';
 import * as specificationsSelectors from '../state/specifications/specifications.selectors';
 import * as specificationsActions from '../state/specifications/specifications.actions';
 import { SpecNameValidator } from './specNameValidator';
-import { trigger, state, style, transition, animate, query, stagger } from '@angular/animations';
-import { collapseExpandAnimation } from '../animation';
+import { collapseExpandAnimation, slideInOutAnimation, fadeInStaggerAnimation } from '../shared/animation';
 
 @Component({
   selector: 'app-details',
   animations: [
-    trigger('slideInOut', [
-      transition(':leave', [
-        style({ transform: 'translateX(0%)' }),
-        animate('0.15s', style({ transform: 'translateX(-100%)' }))
-      ]),
-      transition(':enter', [
-        style({ transform: 'translateX(-100%)' }),
-        animate('0.25s')
-      ]),
-    ]),
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({ opacity:0 ,  }),
-        animate('0.5s', style({ opacity: 1 }))
-      ]),
-      transition(':leave', [
-      ])
-    ])
-    ,collapseExpandAnimation
+    fadeInStaggerAnimation,
+    slideInOutAnimation,
+    collapseExpandAnimation,
   ],
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss']
@@ -106,7 +89,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           this.listStaggerAnimation = true;
         })
-        
+
       })
     );
 
@@ -199,12 +182,21 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.store.dispatch(new specificationsActions.CreateSpecification(this.specForm.value));
   }
 
-  createExamples(id) {
-    this.store.dispatch(new specificationsActions.CreateExample({ id: id, filesToUpload: this.filesToUpload }));
+  createExamples(id): void {
+    this.store.dispatch(new specificationsActions.CreateExample({ id, filesToUpload: this.filesToUpload }));
+    this.filesToUpload = null;
   }
 
-  onFileChange(event) {
+  onFileChange(event): void {
     this.filesToUpload = event.target.files;
+  }
+
+  getFileNames(): string {
+    const retVal = [];
+    for (let i = 0; i <= this.filesToUpload?.length - 1; i++) {
+      retVal.push(this.filesToUpload[i].name);
+    }
+    return retVal.join(', ');
   }
 
   deleteSpecs(id: string) {

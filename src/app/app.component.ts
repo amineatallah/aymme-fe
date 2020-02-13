@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { routeFadeInAnimation } from './animation';
+import { routeFadeInAnimation } from './shared/animation';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
