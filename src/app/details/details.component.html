@@ -99,9 +99,8 @@
                     class="form-control" placeholder="Specification Name" id="specName" for="specName">
                 </div>
 
-                <button [disabled]="specForm.invalid" type="submit" class="btn btn-primary w-25">Create
+                <button [disabled]="specForm.invalid" type="submit" class="btn btn-primary w-50">Create
                   Specification</button>
-
               </div>
             </div>
           </form>
@@ -109,6 +108,9 @@
 
         <div class="col-12">
           <ng-container *ngIf="specs$ | async as specs">
+            <p *ngIf="!(specs | filter : context.filterText)?.length">
+              <em>Filter returned no specifications.</em>
+            </p>
             <ul class="list-unstyled dotted-list">
               <li *ngFor="let spec of specs | filter : context.filterText" [ngClass]="{'is-open': spec.isOpen}">
                 <div class="dotted-list-header p-2 d-flex align-items-center justify-content-between">
@@ -121,9 +123,9 @@
                 </div>
 
                 <section class="dotted-list-container" [@collapseExpand] *ngIf="spec.isOpen">
-                  <ng-container *ngIf="spec.exmpales?.length">
+                  <ng-container *ngIf="spec.exmpales?.length else noExamples">
                     <ul class="p-3 list-group">
-                      <p class="description text-muted"><em>Click on an example to add the data to the endpoint.</em>
+                      <p class="description text-muted"><em>Click on an example JSON file to add the data to the endpoint.</em>
                       </p>
                       <li *ngFor="let example of spec.exmpales">
                         <a (click)="useMocks(example.data)" href="#">{{example.name}}</a>
@@ -131,13 +133,18 @@
                     </ul>
                   </ng-container>
 
+                  <ng-template #noExamples>
+                    <p class="p-3 m-0"><em>No examples uploaded so far.</em></p>
+                  </ng-template>
+
                   <footer class="dotted-list-footer p-2">
                     <div class="d-flex">
                       <form>
                         <div class="btn btn-secondary btn-sm btn-file-upload">
-                          <span>Choose a file</span>
                           <input type="file" multiple accept=".json" (change)="onFileChange($event)">
+                          <span>Choose a file</span>
                         </div>
+                        <em class="ml-2">{{getFileNames()}}</em>
                       </form>
                       <button class="btn btn-primary btn-sm ml-auto" (click)="createExamples(spec._id)">Upload
                         Mocks</button>
