@@ -113,7 +113,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.filterText$ = this.specForm.get('specName').valueChanges;
 
     this.actions$.pipe(
-      ofType(ServicesActions.ServicesActionTypes.UpdateEndpointSuccess),
+      ofType(ServicesActions.ServicesActionTypes.UPDATE_ENDPOINT_SUCCESS),
       takeUntil(this.destroyed$),
       tap(() => this.toastr.success('Mocks updated successfully!', '', { 'progressBar': false, 'easing': 'ease-in-out' })
       )

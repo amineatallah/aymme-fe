@@ -47,3 +47,11 @@
     }
   }
 }
+
+.show-on-hover-item {
+  visibility: hidden;
+}
+
+.show-on-hover-trigger:hover .show-on-hover-item  {
+  visibility: visible;
+}
