@@ -12,41 +12,41 @@ export const initialState: SpecificationsState = {
 
 export function reducer(state = initialState, action: SpecificationsActions): SpecificationsState {
     switch (action.type) {
-        case SpecificationsActionTypes.LoadSpecificationsSuccess:
+        case SpecificationsActionTypes.LOAD_SPECIFICATIONS_SUCCESS:
             return {
                 ...state,
                 specifications: [...action.payload],
             };
-        case SpecificationsActionTypes.LoadSpecificationsFailure:
+        case SpecificationsActionTypes.LOAD_SPECIFICATIONS_FAILURE:
             return {
                 ...state,
                 specifications: [],
                 error: action.payload,
             };
 
-        case SpecificationsActionTypes.CreateSpecificationSuccess:
+        case SpecificationsActionTypes.CREATE_SPECIFICATION_SUCCESS:
             return {
                 ...state,
                 specifications: [...state.specifications, ...action.payload],
                 error: '',
             };
-        case SpecificationsActionTypes.CreateSpecificationFailure:
+        case SpecificationsActionTypes.CREATE_SPECIFICATION_SUCCESS:
             return {
                 ...state,
                 error: action.payload,
             };
-        case SpecificationsActionTypes.DeleteSpecificationSuccess:
+        case SpecificationsActionTypes.DELETE_SPECIFICATION_SUCCESS:
             return {
                 ...state,
                 specifications: state.specifications.filter(specification => specification._id !== action.payload),
                 error: '',
             };
-        case SpecificationsActionTypes.DeleteSpecificationFailure:
+        case SpecificationsActionTypes.DELETE_SPECIFICATION_FAILURE:
             return {
                 ...state,
                 error: action.payload,
             };
-        case SpecificationsActionTypes.CreateExampleSuccess:
+        case SpecificationsActionTypes.CREATE_EXAMPLE_SUCCESS:
             return {
                 ...state,
                 specifications: [...state.specifications.map((specification) => {
@@ -60,7 +60,7 @@ export function reducer(state = initialState, action: SpecificationsActions): Sp
                 )],
                 error: '',
             };
-        case SpecificationsActionTypes.CreateExampleFailure:
+        case SpecificationsActionTypes.CREATE_EXAMPLE_FAILURE:
             return {
                 ...state,
                 error: action.payload,

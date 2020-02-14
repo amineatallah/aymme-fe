@@ -12,7 +12,7 @@ export class SpecificationsEffects {
 
   @Effect()
   loadSpecifications$ = this.actions$.pipe(
-    ofType(specificationsActions.SpecificationsActionTypes.LoadSpecifications),
+    ofType(specificationsActions.SpecificationsActionTypes.LOAD_SPECIFICATIONS),
     concatMap((action: specificationsActions.LoadSpecifications) =>
       this.homeService.getSpecs().pipe(
         map(
@@ -25,7 +25,7 @@ export class SpecificationsEffects {
 
   @Effect()
   createSpecification$ = this.actions$.pipe(
-    ofType(specificationsActions.SpecificationsActionTypes.CreateSpecification),
+    ofType(specificationsActions.SpecificationsActionTypes.CREATE_SPECIFICATION),
     concatMap((action: specificationsActions.CreateSpecification) => 
       this.homeService.createSpec({name: action.payload.specName}).pipe(
         map(
@@ -38,7 +38,7 @@ export class SpecificationsEffects {
 
   @Effect()
   deleteSpecification$ = this.actions$.pipe(
-    ofType(specificationsActions.SpecificationsActionTypes.DeleteSpecification),
+    ofType(specificationsActions.SpecificationsActionTypes.DELETE_SPECIFICATION),
     concatMap((action: specificationsActions.DeleteSpecification) =>
       this.homeService.deleteSpecs(action.payload).pipe(
         map(
@@ -51,7 +51,7 @@ export class SpecificationsEffects {
 
   @Effect()
   createExample$ = this.actions$.pipe(
-    ofType(specificationsActions.SpecificationsActionTypes.CreateExample),
+    ofType(specificationsActions.SpecificationsActionTypes.CREATE_EXAMPLE),
     concatMap((action: specificationsActions.CreateExample) =>
       this.homeService.uploadFile(action.payload.id, action.payload.filesToUpload).pipe(
         map(
