@@ -7,4 +7,4 @@ export const getExperiences = createSelector(getServicesFeatureState, state => s
 
 export const hasExperiences = createSelector(getServicesFeatureState, state => state.experiences.length > 0);
 
-export const getSelectedExperience = createSelector(getServicesFeatureState, (state) : any => state.selectedExperience);
+export const getExperienceByName = createSelector(getServicesFeatureState, (state, prop) : any => state.experiences.find((experience) => experience.name === prop.name));

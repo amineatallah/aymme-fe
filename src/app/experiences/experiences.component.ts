@@ -52,4 +52,8 @@ export class ExperiencesComponent implements OnInit {
     //this.service.syncModel(this.portalForm.value)
   }
 
+  setSelectedExperience (selectedExperience) {
+    this.store.dispatch(new experiencesActions.SelectExperience(selectedExperience));
+  }
+
 }

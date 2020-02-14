@@ -9,6 +9,7 @@ const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'services' },
   { path: 'services', component: ServicesListComponent, data: { animation: 'ServicesPage' } },
   { path: 'experiences', component: ExperiencesComponent, data: { animation: 'ExperiencesPage' } },
+  { path: 'experiences/:experienceName', component: ModelComponent, data: { animation: 'ExperiencesPage' } },
   { path: 'howto', component: HowToComponent, data: { animation: 'HowToPage' } }
 ];
 

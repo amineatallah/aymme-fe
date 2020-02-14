@@ -12,6 +12,8 @@ export enum ExperiencesActionTypes {
   DELETE_EXPERIENCE = '[Experiences] Delete',
   DELETE_EXPERIENCE_SUCCESS = '[Experiences] Delete Success',
   DELETE_EXPERIENCE_FAILURE = '[Experiences] Delete Failure',
+
+  SELECT_EXPERIENCE = '[Experiences] Select Experience',
 }
 
 export class LoadExperiences implements Action {
@@ -61,6 +63,11 @@ export class DeleteExperienceFailure implements Action {
   constructor(public payload: string) { }
 }
 
+export class SelectExperience implements Action {
+  readonly type = ExperiencesActionTypes.SELECT_EXPERIENCE;
+  constructor(public payload: any) { }
+}
+
 export type ExperiencesActions =
   | LoadExperiences
   | LoadExperiencesSuccess
@@ -70,4 +77,5 @@ export type ExperiencesActions =
   | AddExperienceFailure
   | DeleteExperience
   | DeleteExperienceSuccess
-  | DeleteExperienceFailure;
+  | DeleteExperienceFailure
+  | SelectExperience;

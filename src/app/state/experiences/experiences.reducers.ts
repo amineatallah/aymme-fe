@@ -37,6 +37,12 @@ export function reducer(state = initialState, action: ExperiencesActions): Exper
         ...state,
         error: '',
       };
+    case ExperiencesActionTypes.SELECT_EXPERIENCE:
+      return {
+        ...state,
+        selectedExperience: action.payload,
+        error: '',
+      };
     default:
       return state;
   }

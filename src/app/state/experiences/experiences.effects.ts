@@ -29,7 +29,7 @@ export class ExperiencesEffects {
     concatMap((action: experiencesActions.AddExperience) =>
       this.homeService.syncModel(action.payload).pipe(
         map(
-          (results: any[]) => new experiencesActions.AddExperienceSuccess(results)
+          (experience: any[]) => new experiencesActions.AddExperienceSuccess(experience)
         ),
         catchError(err => of(new experiencesActions.AddExperienceFailure(err)))
       )
