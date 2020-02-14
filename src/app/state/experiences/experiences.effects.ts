@@ -11,7 +11,7 @@ export class ExperiencesEffects {
   constructor(private actions$: Actions, private homeService: HomeService) { }
 
   @Effect()
-  loadPortals$ = this.actions$.pipe(
+  loadExperiences$ = this.actions$.pipe(
     ofType(experiencesActions.ExperiencesActionTypes.LOAD_EXPERIENCES),
     concatMap((action: experiencesActions.LoadExperiences) =>
       this.homeService.getPortals().pipe(
@@ -22,4 +22,30 @@ export class ExperiencesEffects {
       )
     )
   );
+
+  @Effect()
+  addExperience$ = this.actions$.pipe(
+    ofType(experiencesActions.ExperiencesActionTypes.ADD_EXPERIENCE),
+    concatMap((action: experiencesActions.AddExperience) =>
+      this.homeService.syncModel(action.payload).pipe(
+        map(
+          (results: any[]) => new experiencesActions.AddExperienceSuccess(results)
+        ),
+        catchError(err => of(new experiencesActions.AddExperienceFailure(err)))
+      )
+    )
+  );
+
+  // @Effect()
+  // deleteExperience$ = this.actions$.pipe(
+  //   ofType(experiencesActions.ExperiencesActionTypes.DELETE_EXPERIENCE),
+  //   concatMap((action: experiencesActions.DeleteExperience) =>
+  //     this.homeService.deleteExperience(action.payload).pipe(
+  //       map(
+  //         (results: any[]) => new experiencesActions.DeleteExperienceSuccess(action.payload)
+  //       ),
+  //       catchError(err => of(new experiencesActions.DeleteExperienceFailure(err)))
+  //     )
+  //   )
+  // );
 }

@@ -1,5 +1,4 @@
 import { Component, OnInit, ElementRef, ViewChildren, QueryList, OnDestroy } from '@angular/core';
-import { HomeService } from '../shared/home.service';
 import { Observable, of, Subject } from 'rxjs';
 import { JsonEditorOptions, JsonEditorComponent } from 'ang-jsoneditor';
 import { tap, takeUntil } from 'rxjs/operators';

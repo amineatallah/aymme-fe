@@ -26,6 +26,12 @@ export function reducer(state = initialState, action: ExperiencesActions): Exper
         experiences: [],
         error: action.payload,
       };
+    case ExperiencesActionTypes.ADD_EXPERIENCE_SUCCESS:
+      return {
+        ...state,
+        experiences: [...state.experiences, action.payload],
+        error: '',
+      };
     case ExperiencesActionTypes.DELETE_EXPERIENCE_SUCCESS:
       return {
         ...state,
