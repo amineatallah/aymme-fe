@@ -32,7 +32,6 @@ import { ServicesListComponent } from './services-list/services-list.component';
 import { HeaderComponent } from './header/header.component';
 import { SpecificationsEffects } from './state/specifications/specifications.effects';
 import { HowToComponent } from './how-to/how-to.component';
-import { NotificationComponent } from './notification/notification.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +43,6 @@ import { NotificationComponent } from './notification/notification.component';
     HeaderComponent,
     DropdownComponent,
     HowToComponent,
-    NotificationComponent
   ],
   imports: [
     BrowserModule,

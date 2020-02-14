@@ -58,8 +58,7 @@ export class ServicesListComponent implements OnInit {
   customFormat(endpoint: string, serviceName: string): string {
     return endpoint
       .replace('/gateway/api', '')
-      .replace(serviceName, '')
-      .replace('//client-api/v2', '');
+      .replace(serviceName + '/', '')
   }
 
   toggleAll(services: any[]) {
@@ -77,6 +76,10 @@ export class ServicesListComponent implements OnInit {
 
   setSelectedEndpoint(endpoint: Endpoint) {
     this.store.dispatch(new servicesActions.LoadSelectedEndpoint(endpoint));
+  }
+
+  deleteEndpoint(endpointId: string) {
+    this.store.dispatch(new servicesActions.DeleteEndpoint(endpointId));
   }
 
 }

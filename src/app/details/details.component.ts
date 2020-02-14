@@ -113,7 +113,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.filterText$ = this.specForm.get('specName').valueChanges;
 
     this.actions$.pipe(
-      ofType(ServicesActions.ServicesActionTypes.UpdateEndpointSuccess),
+      ofType(ServicesActions.ServicesActionTypes.UPDATE_ENDPOINT_SUCCESS),
       takeUntil(this.destroyed$),
       tap(() => this.toastr.success('Mocks updated successfully!', '', { 'progressBar': false, 'easing': 'ease-in-out' })
       )
@@ -153,13 +153,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
       response: this.editor.first.get(),
       customHeaders: this.arrayToObject(this.form.value.headers)
     };
-
-    // this.service.updateEndpoint(endpointId, data).subscribe(data => {
-    //   this.response.response[
-    //     this.form.get('statusCode').value
-    //   ].data.body = this.editor.first.get();
-    //   this.showSuccess();
-    // });
 
     this.store.dispatch(new ServicesActions.UpdateEndpoint(data));
   }
@@ -221,7 +214,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   showSuccess() {
-    // this.notificationService.show('Mocks updated successfully!', { classname: 'bg-success text-light', delay: 3000 });
     this.toastr.success('Mocks updated successfully!', '', { 'progressBar': false, 'easing': 'ease-in-out' });
   }
 
