@@ -58,8 +58,7 @@ export class ServicesListComponent implements OnInit {
   customFormat(endpoint: string, serviceName: string): string {
     return endpoint
       .replace('/gateway/api', '')
-      .replace(serviceName, '')
-      .replace('//client-api/v2', '');
+      .replace(serviceName + '/', '')
   }
 
   toggleAll(services: any[]) {
