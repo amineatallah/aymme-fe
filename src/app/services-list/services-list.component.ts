@@ -79,4 +79,8 @@ export class ServicesListComponent implements OnInit {
     this.store.dispatch(new servicesActions.LoadSelectedEndpoint(endpoint));
   }
 
+  deleteEndpoint(endpointId: string) {
+    this.store.dispatch(new servicesActions.DeleteEndpoint(endpointId));
+  }
+
 }

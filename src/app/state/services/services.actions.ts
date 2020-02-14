@@ -2,83 +2,103 @@ import { Action } from '@ngrx/store';
 import { Service, Endpoint } from '../../shared/service.interface';
 
 export enum ServicesActionTypes {
-  LoadServices = '[Services] Load',
-  LoadServicesSuccess = '[Services] Load Success',
-  LoadServicesFailure = '[Services] Load Failure',
-  DeleteService = '[Services] Delete Service',
-  DeleteServiceSuccess = '[Services] Delete Service Success',
-  DeleteServiceFailure = '[Services] Delete Service Failure',
-  LoadSelectedEndpoint = '[Services] Set Selected Endpoint',
-  LoadEndpointSuccess = '[Services] Load Endpoint Success',
-  LoadEndpointFailure = '[Services] Load Endpoint Failure',
-  UpdateEndpoint = '[Services] Update Endpoint',
-  UpdateEndpointSuccess = '[Services] Update Endpoint Success',
-  UpdateEndpointFailure = '[Services] Update Endpoint Failure',
+  LOAD_SERVICES = '[Services] Load',
+  LOAD_SERVICES_SUCCESS = '[Services] Load Success',
+  LOAD_SERVICES_FAILURE = '[Services] Load Failure',
+  DELETE_SERVICE = '[Services] Delete Service',
+  DELETE_SERVICE_SUCCESS = '[Services] Delete Service Success',
+  DELETE_SERVICE_FAILURE = '[Services] Delete Service Failure',
+  DELETE_ENDPOINT = '[Services] Delete Endpoint',
+  DELETE_ENDPOINT_SUCCESS = '[Services] Delete Endpoint Success',
+  DELETE_ENDPOINT_FAILURE = '[Services] Delete Endpoint Failure',
+  LOAD_SELECTED_ENDPOINT = '[Services] Set Selected Endpoint',
+  LOAD_SELECTED_ENDPOINT_SUCCESS = '[Services] Load Endpoint Success',
+  LOAD_SELECTED_ENDPOINT_FAILURE = '[Services] Load Endpoint Failure',
+  UPDATE_ENDPOINT = '[Services] Update Endpoint',
+  UPDATE_ENDPOINT_SUCCESS = '[Services] Update Endpoint Success',
+  UPDATE_ENDPOINT_FAILURE = '[Services] Update Endpoint Failure',
 }
 
 export class LoadServices implements Action {
-  readonly type = ServicesActionTypes.LoadServices;
+  readonly type = ServicesActionTypes.LOAD_SERVICES;
 }
 
 export class LoadServicesSuccess implements Action {
-  readonly type = ServicesActionTypes.LoadServicesSuccess;
+  readonly type = ServicesActionTypes.LOAD_SERVICES_SUCCESS;
 
   constructor(public payload: any[]) { }
 }
 
 export class LoadServicesFailure implements Action {
-  readonly type = ServicesActionTypes.LoadServicesFailure;
+  readonly type = ServicesActionTypes.LOAD_SERVICES_FAILURE;
   constructor(public payload: string) { }
 }
 
 export class DeleteService implements Action {
-  readonly type = ServicesActionTypes.DeleteService;
+  readonly type = ServicesActionTypes.DELETE_SERVICE;
   constructor(public payload: string) { }
 }
 
 export class DeleteServiceSuccess implements Action {
-  readonly type = ServicesActionTypes.DeleteServiceSuccess;
+  readonly type = ServicesActionTypes.DELETE_SERVICE_SUCCESS;
 
   constructor(public payload: string) { }
 }
 
 export class DeleteServiceFailure implements Action {
-  readonly type = ServicesActionTypes.DeleteServiceFailure;
+  readonly type = ServicesActionTypes.DELETE_SERVICE_FAILURE;
+
+  constructor(public payload: string) { }
+}
+
+export class DeleteEndpoint implements Action {
+  readonly type = ServicesActionTypes.DELETE_ENDPOINT;
+  constructor(public payload: string) { }
+}
+
+export class DeleteEndpointSuccess implements Action {
+  readonly type = ServicesActionTypes.DELETE_ENDPOINT_SUCCESS;
+
+  constructor(public payload: string) { }
+}
+
+export class DeleteEndpointFailure implements Action {
+  readonly type = ServicesActionTypes.DELETE_ENDPOINT_FAILURE;
 
   constructor(public payload: string) { }
 }
 
 export class LoadSelectedEndpoint implements Action {
-  readonly type = ServicesActionTypes.LoadSelectedEndpoint;
+  readonly type = ServicesActionTypes.LOAD_SELECTED_ENDPOINT;
 
   constructor(public payload: Endpoint) { }
 }
 
 export class LoadEndpointSuccess implements Action {
-  readonly type = ServicesActionTypes.LoadEndpointSuccess;
+  readonly type = ServicesActionTypes.LOAD_SELECTED_ENDPOINT_SUCCESS;
 
   constructor(public payload: any[]) { }
 }
 
 export class LoadEndpointFailure implements Action {
-  readonly type = ServicesActionTypes.LoadEndpointFailure;
+  readonly type = ServicesActionTypes.LOAD_SELECTED_ENDPOINT_FAILURE;
 
   constructor(public payload: string) { }
 }
 
 export class UpdateEndpoint implements Action {
-  readonly type = ServicesActionTypes.UpdateEndpoint;
+  readonly type = ServicesActionTypes.UPDATE_ENDPOINT;
   constructor(public payload: any) { }
 }
 
 export class UpdateEndpointSuccess implements Action {
-  readonly type = ServicesActionTypes.UpdateEndpointSuccess;
+  readonly type = ServicesActionTypes.UPDATE_ENDPOINT_SUCCESS;
 
   constructor(public payload: string) { }
 }
 
 export class UpdateEndpointFailure implements Action {
-  readonly type = ServicesActionTypes.UpdateEndpointFailure;
+  readonly type = ServicesActionTypes.UPDATE_ENDPOINT_FAILURE;
 
   constructor(public payload: string) { }
 }
@@ -90,6 +110,9 @@ export type ServicesActions =
   | DeleteService
   | DeleteServiceSuccess
   | DeleteServiceFailure
+  | DeleteEndpoint
+  | DeleteEndpointSuccess
+  | DeleteEndpointFailure
   | LoadSelectedEndpoint
   | LoadEndpointSuccess
   | LoadEndpointFailure
