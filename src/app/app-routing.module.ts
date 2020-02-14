@@ -3,12 +3,13 @@ import { Routes, RouterModule } from '@angular/router';
 import { ModelComponent } from './model/model.component';
 import { ServicesListComponent } from './services-list/services-list.component';
 import { HowToComponent } from './how-to/how-to.component';
+import { ExperiencesComponent } from './experiences/experiences.component';
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', redirectTo: 'services'},
-  {path: 'services', component: ServicesListComponent, data: {animation: 'ServicePage'} },
-  {path: 'portals', component: ModelComponent, data: {animation: 'PortalsPage'} },
-  {path: 'howto', component: HowToComponent, data: {animation: 'HowToPage'} }
+  { path: '', pathMatch: 'full', redirectTo: 'services' },
+  { path: 'services', component: ServicesListComponent, data: { animation: 'ServicesPage' } },
+  { path: 'experiences', component: ExperiencesComponent, data: { animation: 'ExperiencesPage' } },
+  { path: 'howto', component: HowToComponent, data: { animation: 'HowToPage' } }
 ];
 
 @NgModule({
