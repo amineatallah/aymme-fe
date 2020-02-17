@@ -71,6 +71,10 @@ export class HomeService {
     return this.http.get(`${this.url}/getportals`);
   }
 
+  deleteExperience(experienceName) {
+    return this.http.delete(`${this.url}/portal/` + experienceName);
+  }
+
   syncModel(data) {
     return this.http.post(`${this.url}/syncmodel`, data);
   }

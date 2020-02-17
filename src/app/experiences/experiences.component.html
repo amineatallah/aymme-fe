@@ -1,0 +1,56 @@
+<ng-template #noExperiences>
+  <p>There are currently no Experiences created.</p>
+</ng-template>
+
+<div class="container-fluid">
+  <div class="row d-flex justify-content-center">
+    <div class="col-6">
+      <ng-container *ngIf="experiences$ | async as experiences">
+
+        <section class="services-header d-flex align-items-center mb-4">
+          <h6 class="mb-0">Experiences</h6>
+          <button class="btn btn-sm ml-auto btn-primary" (click)="openAddExperienceModal(addExperienceFormContent)">Add Experiences</button>
+
+        </section>
+        <!-- <pre>{{services | json}}</pre> -->
+        <ul class="services-list p-0" *ngIf="experiences.length > 0 else noExperiences">
+          <li *ngFor="let experience of experiences" class="mb-2">
+            <h5 class="d-flex align-items-center" [routerLink]="experience.name">{{experience.name}}
+              <i class="fas fa-trash ml-auto" (click)="deleteExperience(experience.name, $event)"></i>
+            </h5>
+          </li>
+        </ul>
+
+      </ng-container>
+    </div> 
+  </div>
+</div>
+
+<ng-template #addExperienceFormContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add Experience</h4>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="experienceForm" class="w-100">
+      <div class="form-group row no-gutters justify-content-between">
+        <label class="col-auto" for="experienceName">Experience Name</label>
+        <div class="col-8">
+          <input formControlName="experienceName" type="text" class="form-control" placeholder="Portal Name">
+        </div>
+      </div>
+      <div class="form-group row no-gutters justify-content-between">
+        <label class="col-auto" for="experienceLoginUrl">Experience Login URL</label>
+        <div class="col-8">
+          <input formControlName="experienceLoginUrl" type="text" class="form-control" placeholder="Login Url">
+        </div>
+      </div>
+      <div class="form-group row no-gutters justify-content-between">
+        <label class="col-auto" for="experienceModelUrl">Experience Model URL</label>
+        <div class="col-8">
+          <input formControlName="experienceModelUrl" type="text" class="form-control" placeholder="Portal Url">
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary float-right" (click)="addExperience()">Sync Model</button>
+    </form>
+  </div>
+</ng-template>
