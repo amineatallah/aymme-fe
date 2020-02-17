@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, Effect, ofType } from "@ngrx/effects";
 
 import * as experiencesActions from "./experiences.actions";
-import { concatMap, map, catchError, take } from "rxjs/operators";
+import { concatMap, map, catchError, take, takeLast, tap } from "rxjs/operators";
 import { of } from "rxjs";
 import { HomeService } from "../../shared/home.service";
 
@@ -10,18 +10,24 @@ import { HomeService } from "../../shared/home.service";
 export class ExperiencesEffects {
   constructor(private actions$: Actions, private homeService: HomeService) { }
 
+  hasLoadedExperiences: boolean = false;
+
   @Effect()
   loadExperiences$ = this.actions$.pipe(
     ofType(experiencesActions.ExperiencesActionTypes.LOAD_EXPERIENCES),
-    concatMap((action: experiencesActions.LoadExperiences) =>
-      this.homeService.getPortals().pipe(
+    concatMap((action: experiencesActions.LoadExperiences) => {
+      if (this.hasLoadedExperiences) {
+        return of();
+      }
+      return this.homeService.getPortals().pipe(
         map(
-          (portals: any[]) => new experiencesActions.LoadExperiencesSuccess(portals)
-        ),
+          (portals: any[]) => {
+            this.hasLoadedExperiences = true;
+            return new experiencesActions.LoadExperiencesSuccess(portals);
+          }),
         catchError(err => of(new experiencesActions.LoadExperiencesFailure(err)))
       )
-    ),
-    take(1)
+    })
   );
 
   @Effect()

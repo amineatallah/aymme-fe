@@ -31,20 +31,7 @@ export function reducer(state = initialState, action: ExperiencesActions): Exper
     case ExperiencesActionTypes.SYNC_EXPERIENCE_SUCCESS:
       return {
         ...state,
-        experiences: state.experiences.some(experience => experience.name === action.payload.name)
-          ? [ ...state.experiences.map((experience) => {            
-            let newExperienceState = experience;
-
-            if (experience.name === action.payload.name) {
-              newExperienceState = {
-                ...action.payload,
-                activePage: getActivePageByExperience(action.payload)
-              }
-            }
-
-            return newExperienceState;
-          })]
-          : [...state.experiences, action.payload] ,
+        experiences: processNewExperienceState(state.experiences, action.payload),
         error: '',
       };
     case ExperiencesActionTypes.DELETE_EXPERIENCE_SUCCESS:
@@ -68,6 +55,12 @@ export function reducer(state = initialState, action: ExperiencesActions): Exper
         })],
         error: '',
       };
+    case ExperiencesActionTypes.UPDATE_EXPERIENCE_SUCCESS:
+      return {
+        ...state,
+        experiences: processNewExperienceState(state.experiences, action.payload),
+        error: '',
+      };
     default:
       return state;
   }
@@ -83,4 +76,25 @@ function getActivePageByExperience(experience: any) {
   }
 
   return experience.pages.find(page => page.name === 'index').name || experience.pages[0].name;
+}
+
+function processNewExperienceState(oldExperiences, updatedExperience) {
+  debugger;
+  if (oldExperiences.some(experience => experience.name === updatedExperience.name)) {    
+    return oldExperiences.map((experience) => {
+      let newExperienceState = experience;
+
+      if (experience.name === updatedExperience.name) {
+        newExperienceState = {
+          ...updatedExperience,
+          activePage: getActivePageByExperience(updatedExperience)
+        }
+      }
+
+      return newExperienceState;
+    });
+  }
+  else {
+    return[...oldExperiences, updatedExperience]
+  }
 }
