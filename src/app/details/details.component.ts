@@ -217,7 +217,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('destroy');
     this.destroyed$.next(true);
     this.destroyed$.complete();
   }
