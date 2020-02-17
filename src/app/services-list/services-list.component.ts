@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { HomeService } from '../shared/home.service';
 import { ToastrService } from 'ngx-toastr';
@@ -20,6 +20,8 @@ import { collapseExpandAnimation } from '../shared/animation';
 export class ServicesListComponent implements OnInit {
   isInitializing = true;
   allHidden = false;
+
+  deleteDialog: Subject<any> = new Subject();
 
   readonly services$: Observable<any> = this.store.pipe(
     select(servicesSelectors.getServices),
@@ -67,11 +69,13 @@ export class ServicesListComponent implements OnInit {
     return false;
   }
 
+  initiateDeleteService(endpoint) {
+    console.log('hello');
+    this.deleteDialog.next('endpoint');
+  }
+
   deleteService(serviceName: string) {
-    if (confirm('Are you sure to delete')) {
-      this.store.dispatch(new servicesActions.DeleteService(serviceName));
-      return false;
-    }
+    this.store.dispatch(new servicesActions.DeleteService(serviceName));
   }
 
   setSelectedEndpoint(endpoint: Endpoint) {

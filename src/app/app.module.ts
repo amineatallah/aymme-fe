@@ -38,6 +38,7 @@ import { environment } from 'src/environments/environment';
 import { ServicesListComponent } from './services-list/services-list.component';
 import { HeaderComponent } from './header/header.component';
 import { HowToComponent } from './how-to/how-to.component';
+import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import { HowToComponent } from './how-to/how-to.component';
     HeaderComponent,
     DropdownComponent,
     HowToComponent,
+    ConfirmationModalComponent,
   ],
   imports: [
     BrowserModule,
