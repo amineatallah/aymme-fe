@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, Effect, ofType } from "@ngrx/effects";
 
 import * as experiencesActions from "./experiences.actions";
-import { concatMap, map, catchError } from "rxjs/operators";
+import { concatMap, map, catchError, take } from "rxjs/operators";
 import { of } from "rxjs";
 import { HomeService } from "../../shared/home.service";
 
@@ -20,7 +20,8 @@ export class ExperiencesEffects {
         ),
         catchError(err => of(new experiencesActions.LoadExperiencesFailure(err)))
       )
-    )
+    ),
+    take(1)
   );
 
   @Effect()
@@ -50,16 +51,16 @@ export class ExperiencesEffects {
     )
   );
 
-  // @Effect()
-  // deleteExperience$ = this.actions$.pipe(
-  //   ofType(experiencesActions.ExperiencesActionTypes.DELETE_EXPERIENCE),
-  //   concatMap((action: experiencesActions.DeleteExperience) =>
-  //     this.homeService.deleteExperience(action.payload).pipe(
-  //       map(
-  //         (results: any[]) => new experiencesActions.DeleteExperienceSuccess(action.payload)
-  //       ),
-  //       catchError(err => of(new experiencesActions.DeleteExperienceFailure(err)))
-  //     )
-  //   )
-  // );
+  @Effect()
+  deleteExperience$ = this.actions$.pipe(
+    ofType(experiencesActions.ExperiencesActionTypes.DELETE_EXPERIENCE),
+    concatMap((action: experiencesActions.DeleteExperience) =>
+      this.homeService.deleteExperience(action.payload).pipe(
+        map(
+          (results: any[]) => new experiencesActions.DeleteExperienceSuccess(action.payload)
+        ),
+        catchError(err => of(new experiencesActions.DeleteExperienceFailure(err)))
+      )
+    )
+  );
 }

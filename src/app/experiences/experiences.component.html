@@ -16,7 +16,7 @@
         <ul class="services-list p-0" *ngIf="experiences.length > 0 else noExperiences">
           <li *ngFor="let experience of experiences" class="mb-2">
             <h5 class="d-flex align-items-center" [routerLink]="experience.name">{{experience.name}}
-              <i class="fas fa-trash ml-auto" (click)="deleteExperience(experience.name)"></i>
+              <i class="fas fa-trash ml-auto" (click)="deleteExperience(experience.name, $event)"></i>
             </h5>
           </li>
         </ul>

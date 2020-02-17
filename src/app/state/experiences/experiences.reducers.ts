@@ -31,23 +31,26 @@ export function reducer(state = initialState, action: ExperiencesActions): Exper
     case ExperiencesActionTypes.SYNC_EXPERIENCE_SUCCESS:
       return {
         ...state,
-        experiences: [...state.experiences.map((experience) => {
-          let newExperienceState = experience;
+        experiences: state.experiences.some(experience => experience.name === action.payload.name)
+          ? [ ...state.experiences.map((experience) => {            
+            let newExperienceState = experience;
 
-          if (experience.name === action.payload.name) {
-            newExperienceState = {
-              ...action.payload,
-              activePage: getActivePageByExperience(action.payload)
+            if (experience.name === action.payload.name) {
+              newExperienceState = {
+                ...action.payload,
+                activePage: getActivePageByExperience(action.payload)
+              }
             }
-          }
 
-          return newExperienceState;
-        }),],
+            return newExperienceState;
+          })]
+          : [...state.experiences, action.payload] ,
         error: '',
       };
     case ExperiencesActionTypes.DELETE_EXPERIENCE_SUCCESS:
       return {
         ...state,
+        experiences: state.experiences.filter(experience => experience.name !== action.payload),
         error: '',
       };
     case ExperiencesActionTypes.SET_ACTIVE_PAGE:
@@ -70,7 +73,7 @@ export function reducer(state = initialState, action: ExperiencesActions): Exper
   }
 }
 
-function getActivePageByExperience(experience: any) {  
+function getActivePageByExperience(experience: any) {
   if (experience.activePage) {
     return experience.activePage;
   }
