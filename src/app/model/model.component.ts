@@ -76,13 +76,13 @@ export class ModelComponent implements OnInit {
   updateModel() {
     let editorData: any = this.editor.first.get();
     let pages = this.selectedExperience.pages.map(page => {
-      if (page.id === editorData.id) {
+      if (page.name === editorData.name) {
         return editorData;
       } else {
         return page;
       }
     });
-
+    
     this.store.dispatch(new experiencesActions.UpdateExperience({
       experienceName: this.selectedExperience.name,
       data: {
