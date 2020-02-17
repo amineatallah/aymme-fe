@@ -1,45 +1,49 @@
-<ng-container *ngIf="selectedExperience$ | async as selectedExperience">
-  
-  <div class="row no-gutters justify-content-between p-3">
-    <div class="col-5 p-3">
-      <div class="form-group row no-gutters justify-content-between">
-        <label class="col-auto">Portal Name</label>
-        <div class="col-9">
-          {{selectedExperience.name}}
+<ng-container *ngIf="selectedExperienceName$ | async">
+
+  <ng-container *ngIf="selectedExperience$ | async as selectedExperience">
+    <div class="row no-gutters justify-content-between p-3">
+      <div class="col-5 p-3">
+        <div class="form-group row no-gutters justify-content-between">
+          <label class="col-auto">Portal Name</label>
+          <div class="col-9">
+            {{selectedExperience.name}}
+          </div>
         </div>
-      </div>
-      <div class="form-group row no-gutters justify-content-between">
-        <label class="col-auto">Portal Host</label>
-        <div class="col-9">
-          {{selectedExperience.host}}
+        <div class="form-group row no-gutters justify-content-between">
+          <label class="col-auto">Portal Host</label>
+          <div class="col-9">
+            {{selectedExperience.host}}
+          </div>
         </div>
-      </div>
-      <div class="form-group row no-gutters justify-content-between">
-        <label class="col-auto">Login Url</label>
-        <div class="col-9">
-          {{selectedExperience.loginUrl}}
+        <div class="form-group row no-gutters justify-content-between">
+          <label class="col-auto">Login Url</label>
+          <div class="col-9">
+            {{selectedExperience.loginUrl}}
+          </div>
         </div>
+
       </div>
 
-    </div>
-<!-- 
-    <div class="col-7 p-3">
-      <div class="row no-gutters justify-content-between mb-3">
-        <div class="col-12 pr-4">
-          <form [formGroup]="pagesForm" class="d-flex align-items-center">
-            <label class="m-0 pr-3">Pages: </label>
-            <select class="form-control" formControlName="activePage" (change)="changePage($event)">
-              <option *ngFor="let page of selectedPortal.pages" [ngValue]="page.name">{{page.name}}</option>
-            </select>
-          </form>
+      <div class="col-7 p-3">
+        <div class="row no-gutters justify-content-between mb-3">
+          <div class="col-12 pr-4">
+            <form [formGroup]="pagesForm" class="d-flex align-items-center">
+              <label class="m-0 pr-3">Pages: </label>
+              <select class="form-control" formControlName="activePage" (change)="changePage($event)">
+                <option *ngFor="let page of selectedExperience.pages" [ngValue]="page.name">{{page.name}}</option>
+              </select>
+            </form>
+          </div>
+        </div>
+        <json-editor [options]="options" style="min-height: 1000px;" [data]="body">
+        </json-editor>
+        <div class="row no-gutters mt-3 justify-content-end">
+          <button type="button" class="btn btn-danger px-3 col-auto mr-3" (click)="syncModel()">Sync Remote
+            Model</button>
+          <button type="button" class="btn btn-primary px-3 col-auto" (click)="updateModel()">Update Model</button>
         </div>
       </div>
-      <json-editor [options]="options" style="min-height: 1000px;" [data]="body">
-      </json-editor>
-      <div class="row no-gutters mt-3 justify-content-end">
-        <button type="button" class="btn btn-danger px-3 col-auto mr-3" (click)="syncModel()">Sync Remote Model</button>
-        <button type="button" class="btn btn-primary px-3 col-auto" (click)="updateModel()">Update Model</button>
-      </div>
-    </div> -->
-  </div>
+    </div>
+  </ng-container>
+
 </ng-container>

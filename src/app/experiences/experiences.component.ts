@@ -44,16 +44,11 @@ export class ExperiencesComponent implements OnInit {
   addExperience() {
     let experienceFormValue =  this.experienceForm.value;
 
-    this.store.dispatch(new experiencesActions.AddExperience({
+    this.store.dispatch(new experiencesActions.SyncExperience({
       portalName: experienceFormValue.experienceName,      
       loginUrl: experienceFormValue.experienceLoginUrl,
       portalUrl: experienceFormValue.experienceModelUrl,
     }));
     //this.service.syncModel(this.portalForm.value)
   }
-
-  setSelectedExperience (selectedExperience) {
-    this.store.dispatch(new experiencesActions.SelectExperience(selectedExperience));
-  }
-
 }

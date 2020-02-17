@@ -24,14 +24,28 @@ export class ExperiencesEffects {
   );
 
   @Effect()
-  addExperience$ = this.actions$.pipe(
-    ofType(experiencesActions.ExperiencesActionTypes.ADD_EXPERIENCE),
-    concatMap((action: experiencesActions.AddExperience) =>
+  syncExperience$ = this.actions$.pipe(
+    ofType(experiencesActions.ExperiencesActionTypes.SYNC_EXPERIENCE),
+    concatMap((action: experiencesActions.SyncExperience) =>
       this.homeService.syncModel(action.payload).pipe(
         map(
-          (experience: any[]) => new experiencesActions.AddExperienceSuccess(experience)
+          (experience: any[]) => new experiencesActions.SyncExperienceSuccess(experience)
         ),
-        catchError(err => of(new experiencesActions.AddExperienceFailure(err)))
+        catchError(err => of(new experiencesActions.SyncExperienceFailure(err)))
+      )
+    )
+  );
+
+  @Effect()
+  updateExperience$ = this.actions$.pipe(
+    ofType(experiencesActions.ExperiencesActionTypes.UPDATE_EXPERIENCE),
+    concatMap((action: experiencesActions.UpdateExperience) =>
+
+      this.homeService.updateModel(action.payload.experienceName, action.payload.data).pipe(
+        map(
+          (results: any[]) => new experiencesActions.UpdateExperienceSuccess(results)
+        ),
+        catchError(err => of(new experiencesActions.UpdateExperienceFailure(err)))
       )
     )
   );

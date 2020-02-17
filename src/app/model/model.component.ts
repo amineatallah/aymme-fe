@@ -5,10 +5,11 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Store, select } from '@ngrx/store';
-import * as experienceSelectors from '../state/experiences/experiences.selectors';
-import * as experienceActions from '../state/experiences/experiences.actions'
+import * as experiencesSelectors from '../state/experiences/experiences.selectors';
+import * as experiencesActions from '../state/experiences/experiences.actions'
 import { ActivatedRoute } from '@angular/router';
 import { tap, map, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-model',
@@ -20,13 +21,15 @@ export class ModelComponent implements OnInit {
   data: any;
   portals: any;
   selectedExperience$: any;
+  selectedExperience: any;
+  selectedExperienceName$: Observable<any>;
   pagesForm: FormGroup;
+
   private editorHolder: ElementRef;
   public options = new JsonEditorOptions;
   @ViewChildren(JsonEditorComponent) editor: QueryList<JsonEditorComponent>
   constructor(
     private modalService: NgbModal,
-    private service: HomeService,
     private route: ActivatedRoute,
     private store: Store<any>) { }
 
@@ -39,59 +42,55 @@ export class ModelComponent implements OnInit {
       activePage: new FormControl('')
     });
 
-    this.selectedExperience$ = this.route.params.pipe(
-      switchMap((params: any) => {
-        return this.store.select(experienceSelectors.getExperienceByName, { name: params.experienceName });
-      }),
-      tap((results) => {
-        if (!results) {
-          this.store.dispatch(new experienceActions.LoadExperiences);
-        }
+    this.selectedExperienceName$ = this.route.params.pipe(
+      tap((params: any) => {
+        this.store.dispatch(new experiencesActions.LoadExperiences);
+
+        this.selectedExperience$ = this.store.select(experiencesSelectors.getExperienceByName, { name: params.experienceName }).pipe(tap((selectedExperience) => {
+          if (!selectedExperience) {
+            return;
+          }
+
+          this.selectedExperience = selectedExperience;
+
+          this.body = selectedExperience.pages.find(page => page.name === selectedExperience.activePage)
+          this.pagesForm.get('activePage').setValue(selectedExperience.activePage);
+        }))
       })
     );
 
-
-    // this.service.getPortals().subscribe((portals: any) => {
-    //   this.portals = portals;
-    //   this.selectedPortal = portals[0];
-    //   this.body = this.selectedPortal.pages.find(page => page.name === this.selectedPortal.activePage); 
-    //   this.pagesForm.get('activePage').setValue(this.body.name);
-    // });
   }
-  
-  // changePortal($event) {
-  //   this.selectedPortal = this.portals.find(portal => portal.name === $event.target.value);
-  //   this.body = this.selectedPortal.pages[0];
-  // }
 
-  // changePage($event) {
-  //   let page = this.selectedPortal.pages.find(page => page.name === this.pagesForm.get('activePage').value);
-  //   this.body = page.children[0];
-  // }
+  changePage($event) {
+    this.store.dispatch(new experiencesActions.SetActiveExperience({ selectedExperienceName: this.selectedExperience.name, newActivePage: this.pagesForm.get('activePage').value }));
+  }
 
-  // syncModel() {
-  //   this.service.syncModel({ portalName: this.selectedPortal.name, portalUrl: this.selectedPortal.host, loginUrl: this.selectedPortal.loginUrl }).subscribe((val: any) => {
-  //   })
-  // }
+  syncModel() {
+    this.store.dispatch(new experiencesActions.SyncExperience({
+      portalName: this.selectedExperience.name,
+      loginUrl: this.selectedExperience.loginUrl,
+      portalUrl: this.selectedExperience.host,
+    }));
+  }
 
-  // createPortal() {
-  //   this.service.syncModel(this.portalForm.value).subscribe();
-  // }
-  // openModal(content) {
-  //   this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => { }, (reason) => {
-  //   });
-  // }
+  updateModel() {
+    let editorData: any = this.editor.first.get();
+    let pages = this.selectedExperience.pages.map(page => {
+      if (page.id === editorData.id) {
+        return editorData;
+      } else {
+        return page;
+      }
+    });
 
-  // updateModel() {
-  //   let editorData: any = this.editor.first.get();
-  //   let pages = this.selectedPortal.pages.map(page => {
-  //     if (page.id === editorData.id) {
-  //       return editorData;
-  //     } else {
-  //       return page;
-  //     }
-  //   })
-
-  //   this.service.updateModel(this.selectedPortal.name, { activePage: this.pagesForm.get('activePage').value, pages: JSON.stringify(pages) }).subscribe();
-  // }
+    this.store.dispatch(new experiencesActions.UpdateExperience({
+      experienceName: this.selectedExperience.name,
+      data: {
+        activePage: this.pagesForm.get('activePage').value,
+        pages: JSON.stringify(pages),
+      }
+    })
+    );
+    //this.service.updateModel(this.selectedPortal.name, { activePage: this.pagesForm.get('activePage').value, pages: JSON.stringify(pages) }).subscribe();
+  }
 }

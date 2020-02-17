@@ -2,13 +2,11 @@ import { ExperiencesActions, ExperiencesActionTypes } from './experiences.action
 
 export interface ExperiencesState {
   experiences: any;
-  selectedExperience: any | undefined;
   error: string;
 }
 
 export const initialState: ExperiencesState = {
   experiences: [],
-  selectedExperience: undefined,
   error: '',
 };
 
@@ -17,7 +15,11 @@ export function reducer(state = initialState, action: ExperiencesActions): Exper
     case ExperiencesActionTypes.LOAD_EXPERIENCES_SUCCESS:
       return {
         ...state,
-        experiences: [...action.payload],
+        experiences: [...action.payload.map((experience) => {
+          experience.activePage = getActivePageByExperience(experience);
+          return experience;
+        }
+        )],
         error: '',
       };
     case ExperiencesActionTypes.LOAD_EXPERIENCES_FAILURE:
@@ -26,10 +28,21 @@ export function reducer(state = initialState, action: ExperiencesActions): Exper
         experiences: [],
         error: action.payload,
       };
-    case ExperiencesActionTypes.ADD_EXPERIENCE_SUCCESS:
+    case ExperiencesActionTypes.SYNC_EXPERIENCE_SUCCESS:
       return {
         ...state,
-        experiences: [...state.experiences, action.payload],
+        experiences: [...state.experiences.map((experience) => {
+          let newExperienceState = experience;
+
+          if (experience.name === action.payload.name) {
+            newExperienceState = {
+              ...action.payload,
+              activePage: getActivePageByExperience(action.payload)
+            }
+          }
+
+          return newExperienceState;
+        }),],
         error: '',
       };
     case ExperiencesActionTypes.DELETE_EXPERIENCE_SUCCESS:
@@ -37,13 +50,34 @@ export function reducer(state = initialState, action: ExperiencesActions): Exper
         ...state,
         error: '',
       };
-    case ExperiencesActionTypes.SELECT_EXPERIENCE:
+    case ExperiencesActionTypes.SET_ACTIVE_PAGE:
       return {
         ...state,
-        selectedExperience: action.payload,
+        experiences: [...state.experiences.map((experience) => {
+          let newExperienceState = experience;
+          if (experience.name === action.payload.selectedExperienceName) {
+            newExperienceState = {
+              ...experience,
+              activePage: action.payload.newActivePage
+            }
+          }
+          return newExperienceState;
+        })],
         error: '',
       };
     default:
       return state;
   }
+}
+
+function getActivePageByExperience(experience: any) {  
+  if (experience.activePage) {
+    return experience.activePage;
+  }
+
+  if (experience.pages.length === 0) {
+    return;
+  }
+
+  return experience.pages.find(page => page.name === 'index').name || experience.pages[0].name;
 }
