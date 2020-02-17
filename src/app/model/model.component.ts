@@ -87,7 +87,7 @@ export class ModelComponent implements OnInit {
       experienceName: this.selectedExperience.name,
       data: {
         activePage: this.pagesForm.get('activePage').value,
-        pages: JSON.stringify(pages),
+        pages: pages,
       }
     })
     );
