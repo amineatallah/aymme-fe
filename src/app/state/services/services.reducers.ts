@@ -41,7 +41,7 @@ export function reducer(state = initialState, action: ServicesActions): Services
           service.endpoints = service.endpoints.filter((endpoint) => endpoint.id !== action.payload);
           return service;
         }).filter((service) => service.endpoints.length !== 0),      
-        selectedEndpoint: state.selectedEndpoint.serviceName === action.payload ? null : state.selectedEndpoint,
+        selectedEndpoint: state.selectedEndpoint._id === action.payload ? null : state.selectedEndpoint,
         error: '',
       };
     case ServicesActionTypes.DELETE_SERVICE_FAILURE:
