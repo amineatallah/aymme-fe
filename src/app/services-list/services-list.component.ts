@@ -92,7 +92,7 @@ export class ServicesListComponent implements OnInit, OnDestroy {
 
   openConfirmDeleteService(service, event) {
     this.modalService.confirm(
-      'Are you sure you want to delete the service?', 'Service', service.serviceName
+      'Are you sure you want to delete this service, all its endpoints and mocked data?', 'Service', service.serviceName
     ).pipe(
       take(1)
     ).subscribe(result => {
@@ -105,7 +105,7 @@ export class ServicesListComponent implements OnInit, OnDestroy {
 
   openConfirmDeleteEndpoint(endpoint) {
     this.modalService.confirm(
-      'Are you sure you want to delete the endpoint?', 'Endpoint', endpoint.path
+      'Are you sure you want to delete the endpoint with its mocked data?', 'Endpoint', endpoint.path
     ).pipe(
       take(1)
     ).subscribe(result => {
