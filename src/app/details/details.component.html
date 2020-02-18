@@ -118,7 +118,7 @@
                   <label (click)="spec.isOpen = !spec.isOpen"
                     class="m-0 cursor-pointer"><strong>{{spec.name}}</strong></label>
                   <div class="controls">
-                    <a href="#" class="mr-3" (click)="deleteSpecs(spec._id)"><i class="fas fa-trash"></i></a>
+                    <a href="#" class="mr-3" (click)="openConfirmDeleteSpecs(spec, $event)"><i class="fas fa-trash"></i></a>
                     <i class="fa fa-chevron-down"></i>
                   </div>
                 </div>

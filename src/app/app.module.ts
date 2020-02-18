@@ -38,6 +38,7 @@ import { environment } from 'src/environments/environment';
 import { ServicesListComponent } from './services-list/services-list.component';
 import { HeaderComponent } from './header/header.component';
 import { HowToComponent } from './how-to/how-to.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import { HowToComponent } from './how-to/how-to.component';
     HeaderComponent,
     DropdownComponent,
     HowToComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -76,7 +78,7 @@ import { HowToComponent } from './how-to/how-to.component';
     StoreModule.forFeature('experiences', experiencesReducers),
     EffectsModule.forFeature([ExperiencesEffects]),
 
-    ToastrModule.forRoot({ progressBar: true }),
+    ToastrModule.forRoot({ easing: 'ease-in-out' }),
     StoreDevtoolsModule.instrument( {
       name: 'AYMME App',
       maxAge: 25,

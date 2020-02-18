@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren, ElementRef, QueryList } from '@angular/core';
+import { Component, OnInit, ViewChildren, ElementRef, QueryList, OnDestroy } from '@angular/core';
 import { HomeService } from '../shared/home.service';
 import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -8,15 +8,17 @@ import { Store, select } from '@ngrx/store';
 import * as experiencesSelectors from '../state/experiences/experiences.selectors';
 import * as experiencesActions from '../state/experiences/experiences.actions'
 import { ActivatedRoute } from '@angular/router';
-import { tap, map, switchMap } from 'rxjs/operators';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { tap, map, switchMap, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Actions, ofType } from '@ngrx/effects';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-model',
   templateUrl: './model.component.html',
   styleUrls: ['./model.component.scss']
 })
-export class ModelComponent implements OnInit {
+export class ModelComponent implements OnInit, OnDestroy {
   body: any;
   data: any;
   portals: any;
@@ -24,14 +26,17 @@ export class ModelComponent implements OnInit {
   selectedExperience: any;
   selectedExperienceName$: Observable<any>;
   pagesForm: FormGroup;
+  destroyed$ = new Subject<boolean>();
 
-  private editorHolder: ElementRef;
   public options = new JsonEditorOptions;
   @ViewChildren(JsonEditorComponent) editor: QueryList<JsonEditorComponent>
   constructor(
-    private modalService: NgbModal,
     private route: ActivatedRoute,
-    private store: Store<any>) { }
+    private store: Store<any>,
+    private actions$: Actions,
+    private toastr: ToastrService,
+    ) { }
+    
 
   ngOnInit() {
     this.options.mode = 'code';
@@ -59,6 +64,40 @@ export class ModelComponent implements OnInit {
       })
     );
 
+    this.actions$.pipe(
+      ofType(experiencesActions.ExperiencesActionTypes.SYNC_EXPERIENCE_SUCCESS),
+      takeUntil(this.destroyed$),
+      tap(() => this.toastr.success('Experience synced successfully!', '')
+      )
+    ).subscribe();
+
+    this.actions$.pipe(
+      ofType(experiencesActions.ExperiencesActionTypes.SYNC_EXPERIENCE_FAILURE),
+      takeUntil(this.destroyed$),
+      tap(() => {
+        this.toastr.error('Unable to sync Experience!', '');
+      })
+    ).subscribe();
+
+    this.actions$.pipe(
+      ofType(experiencesActions.ExperiencesActionTypes.UPDATE_EXPERIENCE),
+      takeUntil(this.destroyed$),
+      tap(() => this.toastr.success('Experience updated successfully!', '')
+      )
+    ).subscribe();
+
+    this.actions$.pipe(
+      ofType(experiencesActions.ExperiencesActionTypes.UPDATE_EXPERIENCE_FAILURE),
+      takeUntil(this.destroyed$),
+      tap(() => {
+        this.toastr.error('Unable to update Experience!', '');
+      })
+    ).subscribe();
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 
   changePage($event) {
@@ -91,6 +130,5 @@ export class ModelComponent implements OnInit {
       }
     })
     );
-    //this.service.updateModel(this.selectedPortal.name, { activePage: this.pagesForm.get('activePage').value, pages: JSON.stringify(pages) }).subscribe();
   }
 }

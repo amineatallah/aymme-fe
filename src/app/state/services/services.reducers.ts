@@ -31,7 +31,7 @@ export function reducer(state = initialState, action: ServicesActions): Services
       return {
         ...state,
         services: state.services.filter(service => service.serviceName !== action.payload),
-        selectedEndpoint: state.selectedEndpoint.serviceName === action.payload ? null : state.selectedEndpoint,
+        selectedEndpoint: (state.selectedEndpoint) && state.selectedEndpoint.serviceName === action.payload ? null : state.selectedEndpoint,
         error: '',
       };
     case ServicesActionTypes.DELETE_ENDPOINT_SUCCESS:
@@ -41,7 +41,7 @@ export function reducer(state = initialState, action: ServicesActions): Services
           service.endpoints = service.endpoints.filter((endpoint) => endpoint.id !== action.payload);
           return service;
         }).filter((service) => service.endpoints.length !== 0),      
-        selectedEndpoint: state.selectedEndpoint.serviceName === action.payload ? null : state.selectedEndpoint,
+        selectedEndpoint: (state.selectedEndpoint) && state.selectedEndpoint._id === action.payload ? null : state.selectedEndpoint,
         error: '',
       };
     case ServicesActionTypes.DELETE_SERVICE_FAILURE:

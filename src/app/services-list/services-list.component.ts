@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, EventEmitter, OnDestroy } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { HomeService } from '../shared/home.service';
 import { ToastrService } from 'ngx-toastr';
 import * as servicesSelectors from '../state/services/services.selectors';
 import * as servicesActions from '../state/services/services.actions';
-import { tap } from 'rxjs/operators';
+import { tap, take, takeUntil } from 'rxjs/operators';
 import { Endpoint } from '../shared/service.interface';
 import { collapseExpandAnimation } from '../shared/animation';
+import { ModalService } from '../shared/modal.service';
+import { Actions, ofType } from '@ngrx/effects';
 
 @Component({
   selector: 'app-services-list',
@@ -17,7 +19,8 @@ import { collapseExpandAnimation } from '../shared/animation';
     collapseExpandAnimation
   ]
 })
-export class ServicesListComponent implements OnInit {
+export class ServicesListComponent implements OnInit, OnDestroy {
+  destroyed$ = new Subject<boolean>();
   isInitializing = true;
   allHidden = false;
 
@@ -41,12 +44,32 @@ export class ServicesListComponent implements OnInit {
 
   constructor(
     private store: Store<any>,
-    private homeService: HomeService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private modalService: ModalService,
+    private actions$: Actions,
   ) { }
 
   ngOnInit() {
     this.loadServices();
+
+    this.actions$.pipe(
+      ofType(servicesActions.ServicesActionTypes.DELETE_SERVICE),
+      takeUntil(this.destroyed$),
+      tap(() => this.toastr.error('Service deleted successfully!', '')
+      )
+    ).subscribe();
+
+    this.actions$.pipe(
+      ofType(servicesActions.ServicesActionTypes.DELETE_ENDPOINT_SUCCESS),
+      takeUntil(this.destroyed$),
+      tap(() => this.toastr.error('Endpoint deleted successfully!', '')
+      )
+    ).subscribe();
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 
   loadServices() {
@@ -67,11 +90,33 @@ export class ServicesListComponent implements OnInit {
     return false;
   }
 
+  openConfirmDeleteService(service, event) {
+    this.modalService.confirm(
+      'Are you sure you want to delete this service, all its endpoints and mocked data?', 'Service', service.serviceName
+    ).pipe(
+      take(1)
+    ).subscribe(result => {
+      if (result === true) {
+        this.deleteService(service._id);
+      }
+    });
+    event.stopPropagation();
+  }
+
+  openConfirmDeleteEndpoint(endpoint) {
+    this.modalService.confirm(
+      'Are you sure you want to delete the endpoint with its mocked data?', 'Endpoint', endpoint.path
+    ).pipe(
+      take(1)
+    ).subscribe(result => {
+      if (result === true) {
+        this.deleteEndpoint(endpoint.id);
+      }
+    });
+  }
+
   deleteService(serviceName: string) {
-    if (confirm('Are you sure to delete')) {
-      this.store.dispatch(new servicesActions.DeleteService(serviceName));
-      return false;
-    }
+    this.store.dispatch(new servicesActions.DeleteService(serviceName));
   }
 
   setSelectedEndpoint(endpoint: Endpoint) {

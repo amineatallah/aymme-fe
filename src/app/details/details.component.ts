@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChildren, QueryList, OnDestroy } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { JsonEditorOptions, JsonEditorComponent } from 'ang-jsoneditor';
-import { tap, takeUntil } from 'rxjs/operators';
+import { tap, takeUntil, take } from 'rxjs/operators';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import * as servicesSelectors from '../state/services/services.selectors';
@@ -12,6 +12,7 @@ import { collapseExpandAnimation, slideInOutAnimation, fadeInStaggerAnimation } 
 import { ToastrService } from 'ngx-toastr';
 import * as ServicesActions from '../state/services/services.actions';
 import { Actions, ofType } from '@ngrx/effects';
+import { ModalService } from '../shared/modal.service';
 
 @Component({
   selector: 'app-details',
@@ -52,6 +53,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private specNameValidator: SpecNameValidator,
     private toastr: ToastrService,
     private actions$: Actions,
+    private modalService: ModalService
   ) { }
 
   ngOnInit() {
@@ -114,7 +116,28 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.actions$.pipe(
       ofType(ServicesActions.ServicesActionTypes.UPDATE_ENDPOINT_SUCCESS),
       takeUntil(this.destroyed$),
-      tap(() => this.toastr.success('Mocks updated successfully!', '', { 'progressBar': false, 'easing': 'ease-in-out' })
+      tap(() => this.toastr.success('Mocks updated successfully!', '')
+      )
+    ).subscribe();
+
+    this.actions$.pipe(
+      ofType(specificationsActions.SpecificationsActionTypes.CREATE_SPECIFICATION_SUCCESS),
+      takeUntil(this.destroyed$),
+      tap(() => this.toastr.success('Specification created successfully!', '')
+      )
+    ).subscribe();
+
+    this.actions$.pipe(
+      ofType(specificationsActions.SpecificationsActionTypes.DELETE_SPECIFICATION_SUCCESS),
+      takeUntil(this.destroyed$),
+      tap(() => this.toastr.error('Specification deleted successfully!', '')
+      )
+    ).subscribe();
+
+    this.actions$.pipe(
+      ofType(specificationsActions.SpecificationsActionTypes.CREATE_EXAMPLE_SUCCESS),
+      takeUntil(this.destroyed$),
+      tap(() => this.toastr.success('Examples uploaded successfully!', '')
       )
     ).subscribe();
 
@@ -207,13 +230,27 @@ export class DetailsComponent implements OnInit, OnDestroy {
     return retVal.join(', ');
   }
 
+  openConfirmDeleteSpecs(spec, event) {
+    this.modalService.confirm(
+      'Are you sure you want to delete the specification?', 'Specification', spec.name
+    ).pipe(
+      take(1)
+    ).subscribe(result => {
+      if (result === true) {
+        this.deleteSpecs(spec._id);
+      }
+    });
+    event.stopPropagation();
+    return false;
+  }
+
   deleteSpecs(id: string) {
     this.store.dispatch(new specificationsActions.DeleteSpecification(id));
     return false;
   }
 
   showSuccess() {
-    this.toastr.success('Mocks updated successfully!', '', { 'progressBar': false, 'easing': 'ease-in-out' });
+    this.toastr.success('Mocks updated successfully!', '');
   }
 
   ngOnDestroy() {
