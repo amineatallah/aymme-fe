@@ -26,7 +26,7 @@ export class ModelComponent implements OnInit, OnDestroy {
   selectedExperience: any;
   selectedExperienceName$: Observable<any>;
   pagesForm: FormGroup;
-  destroyed$: Subject<boolean>;
+  destroyed$ = new Subject<boolean>();
 
   public options = new JsonEditorOptions;
   @ViewChildren(JsonEditorComponent) editor: QueryList<JsonEditorComponent>

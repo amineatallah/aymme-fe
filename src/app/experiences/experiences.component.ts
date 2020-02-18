@@ -41,8 +41,10 @@ export class ExperiencesComponent implements OnInit, OnDestroy {
     this.actions$.pipe(
       ofType(experiencesActions.ExperiencesActionTypes.SYNC_EXPERIENCE_SUCCESS),
       takeUntil(this.destroyed$),
-      tap(() => this.toastr.success('Experience synced successfully!', '')
-      )
+      tap(() => {
+        this.toastr.success('Experience synced successfully!', '');
+        this.ngModalService.dismissAll();
+      })
     ).subscribe();
   }
 
