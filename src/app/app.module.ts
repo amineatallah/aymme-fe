@@ -78,7 +78,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     StoreModule.forFeature('experiences', experiencesReducers),
     EffectsModule.forFeature([ExperiencesEffects]),
 
-    ToastrModule.forRoot({ progressBar: true }),
+    ToastrModule.forRoot({ easing: 'ease-in-out' }),
     StoreDevtoolsModule.instrument( {
       name: 'AYMME App',
       maxAge: 25,

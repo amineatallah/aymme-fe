@@ -67,14 +67,14 @@ export class ModelComponent implements OnInit, OnDestroy {
     this.actions$.pipe(
       ofType(experiencesActions.ExperiencesActionTypes.SYNC_EXPERIENCE_SUCCESS),
       takeUntil(this.destroyed$),
-      tap(() => this.toastr.success('Experience synced successfully!', '', { 'progressBar': false, 'easing': 'ease-in-out' })
+      tap(() => this.toastr.success('Experience synced successfully!', '')
       )
     ).subscribe();
 
     this.actions$.pipe(
       ofType(experiencesActions.ExperiencesActionTypes.UPDATE_EXPERIENCE),
       takeUntil(this.destroyed$),
-      tap(() => this.toastr.success('Experience updated successfully!', '', { 'progressBar': false, 'easing': 'ease-in-out' })
+      tap(() => this.toastr.success('Experience updated successfully!', '')
       )
     ).subscribe();
   }

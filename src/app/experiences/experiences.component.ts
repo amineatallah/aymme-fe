@@ -41,7 +41,7 @@ export class ExperiencesComponent implements OnInit, OnDestroy {
     this.actions$.pipe(
       ofType(experiencesActions.ExperiencesActionTypes.SYNC_EXPERIENCE_SUCCESS),
       takeUntil(this.destroyed$),
-      tap(() => this.toastr.success('Experience synced successfully!', '', { 'progressBar': false, 'easing': 'ease-in-out' })
+      tap(() => this.toastr.success('Experience synced successfully!', '')
       )
     ).subscribe();
   }

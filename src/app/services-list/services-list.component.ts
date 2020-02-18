@@ -55,14 +55,14 @@ export class ServicesListComponent implements OnInit, OnDestroy {
     this.actions$.pipe(
       ofType(servicesActions.ServicesActionTypes.DELETE_SERVICE),
       takeUntil(this.destroyed$),
-      tap(() => this.toastr.error('Service deleted successfully!', '', { 'progressBar': false, 'easing': 'ease-in-out' })
+      tap(() => this.toastr.error('Service deleted successfully!', '')
       )
     ).subscribe();
 
     this.actions$.pipe(
       ofType(servicesActions.ServicesActionTypes.DELETE_ENDPOINT_SUCCESS),
       takeUntil(this.destroyed$),
-      tap(() => this.toastr.error('Endpoint deleted successfully!', '', { 'progressBar': false, 'easing': 'ease-in-out' })
+      tap(() => this.toastr.error('Endpoint deleted successfully!', '')
       )
     ).subscribe();
   }

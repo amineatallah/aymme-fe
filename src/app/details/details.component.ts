@@ -116,28 +116,28 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.actions$.pipe(
       ofType(ServicesActions.ServicesActionTypes.UPDATE_ENDPOINT_SUCCESS),
       takeUntil(this.destroyed$),
-      tap(() => this.toastr.success('Mocks updated successfully!', '', { 'progressBar': false, 'easing': 'ease-in-out' })
+      tap(() => this.toastr.success('Mocks updated successfully!', '')
       )
     ).subscribe();
 
     this.actions$.pipe(
       ofType(specificationsActions.SpecificationsActionTypes.CREATE_SPECIFICATION_SUCCESS),
       takeUntil(this.destroyed$),
-      tap(() => this.toastr.success('Specification created successfully!', '', { 'progressBar': false, 'easing': 'ease-in-out' })
+      tap(() => this.toastr.success('Specification created successfully!', '')
       )
     ).subscribe();
 
     this.actions$.pipe(
       ofType(specificationsActions.SpecificationsActionTypes.DELETE_SPECIFICATION_SUCCESS),
       takeUntil(this.destroyed$),
-      tap(() => this.toastr.error('Specification deleted successfully!', '', { 'progressBar': false, 'easing': 'ease-in-out' })
+      tap(() => this.toastr.error('Specification deleted successfully!', '')
       )
     ).subscribe();
 
     this.actions$.pipe(
       ofType(specificationsActions.SpecificationsActionTypes.CREATE_EXAMPLE_SUCCESS),
       takeUntil(this.destroyed$),
-      tap(() => this.toastr.success('Examples uploaded successfully!', '', { 'progressBar': false, 'easing': 'ease-in-out' })
+      tap(() => this.toastr.success('Examples uploaded successfully!', '')
       )
     ).subscribe();
 
@@ -250,7 +250,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   showSuccess() {
-    this.toastr.success('Mocks updated successfully!', '', { 'progressBar': false, 'easing': 'ease-in-out' });
+    this.toastr.success('Mocks updated successfully!', '');
   }
 
   ngOnDestroy() {
