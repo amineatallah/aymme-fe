@@ -79,7 +79,6 @@ function getActivePageByExperience(experience: any) {
 }
 
 function processNewExperienceState(oldExperiences, updatedExperience) {
-  debugger;
   if (oldExperiences.some(experience => experience.name === updatedExperience.name)) {    
     return oldExperiences.map((experience) => {
       let newExperienceState = experience;
