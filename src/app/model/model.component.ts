@@ -72,10 +72,26 @@ export class ModelComponent implements OnInit, OnDestroy {
     ).subscribe();
 
     this.actions$.pipe(
+      ofType(experiencesActions.ExperiencesActionTypes.SYNC_EXPERIENCE_FAILURE),
+      takeUntil(this.destroyed$),
+      tap(() => {
+        this.toastr.error('Unable to sync Experience!', '');
+      })
+    ).subscribe();
+
+    this.actions$.pipe(
       ofType(experiencesActions.ExperiencesActionTypes.UPDATE_EXPERIENCE),
       takeUntil(this.destroyed$),
       tap(() => this.toastr.success('Experience updated successfully!', '')
       )
+    ).subscribe();
+
+    this.actions$.pipe(
+      ofType(experiencesActions.ExperiencesActionTypes.UPDATE_EXPERIENCE_FAILURE),
+      takeUntil(this.destroyed$),
+      tap(() => {
+        this.toastr.error('Unable to update Experience!', '');
+      })
     ).subscribe();
   }
 

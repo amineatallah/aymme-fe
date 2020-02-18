@@ -6,7 +6,7 @@ import * as experiencesActions from '../state/experiences/experiences.actions';
 import { FormGroup, FormControl } from '@angular/forms';
 import { take, takeUntil, tap } from 'rxjs/operators';
 import { ModalService } from '../shared/modal.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ofType, Actions } from '@ngrx/effects';
 import { ToastrService } from 'ngx-toastr';
 
@@ -19,6 +19,7 @@ export class ExperiencesComponent implements OnInit, OnDestroy {
   destroyed$ = new Subject<boolean>();
   experiences$: Observable<any>;
   experienceForm: FormGroup;
+  formModalReference: any;
 
   constructor(
     private store: Store<any>,
@@ -31,8 +32,10 @@ export class ExperiencesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.experienceForm = new FormGroup({
       experienceName: new FormControl(''),
-      experienceLoginUrl: new FormControl('http://<IP_ADDRESS>:8080/gateway/api/auth/login'),
-      experienceModelUrl: new FormControl('http://<IP_ADDRESS>:8080/gateway/api/portals'),
+      hostAddress: new FormControl(''),
+      portNumber: new FormControl('8080'),
+      experienceLoginUrl: new FormControl('/gateway/api/auth/login'),
+      experienceModelUrl: new FormControl('/gateway/api/portals'),
     });
 
     this.store.dispatch(new experiencesActions.LoadExperiences());
@@ -43,7 +46,23 @@ export class ExperiencesComponent implements OnInit, OnDestroy {
       takeUntil(this.destroyed$),
       tap(() => {
         this.toastr.success('Experience synced successfully!', '');
-        this.ngModalService.dismissAll();
+        this.dismissFormModal();
+      })
+    ).subscribe();
+
+    this.actions$.pipe(
+      ofType(experiencesActions.ExperiencesActionTypes.SYNC_EXPERIENCE_FAILURE),
+      takeUntil(this.destroyed$),
+      tap(() => {
+        this.toastr.error('Unable to sync Experience!', '');
+      })
+    ).subscribe();
+
+    this.actions$.pipe(
+      ofType(experiencesActions.ExperiencesActionTypes.DELETE_EXPERIENCE_SUCCESS),
+      takeUntil(this.destroyed$),
+      tap(() => {
+        this.toastr.error('Experience deleted successfully!', '');
       })
     ).subscribe();
   }
@@ -51,6 +70,11 @@ export class ExperiencesComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroyed$.next(true);
     this.destroyed$.complete();
+  }
+
+  dismissFormModal() {
+    this.ngModalService.dismissAll();
+    return false;
   }
 
   openConfirmDeleteExperience(experience, event) {
@@ -72,16 +96,18 @@ export class ExperiencesComponent implements OnInit, OnDestroy {
   }
 
   openAddExperienceModal(addExperienceFormContent) {
-    this.ngModalService.open(addExperienceFormContent, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => { }, (reason) => { });
+    this.formModalReference = this.ngModalService.open(addExperienceFormContent, { backdrop: 'static', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => { }, (reason) => { });
   }
 
   addExperience() {
     let experienceFormValue = this.experienceForm.value;
 
+    let baseUrl = `http://${experienceFormValue.hostAddress}${experienceFormValue.portNumber ? ':' + experienceFormValue.portNumber : ''}`
+
     this.store.dispatch(new experiencesActions.SyncExperience({
       portalName: experienceFormValue.experienceName,
-      loginUrl: experienceFormValue.experienceLoginUrl,
-      portalUrl: experienceFormValue.experienceModelUrl,
+      loginUrl: baseUrl + experienceFormValue.experienceLoginUrl,
+      portalUrl: baseUrl + experienceFormValue.experienceModelUrl,
     }));
   }
 }
