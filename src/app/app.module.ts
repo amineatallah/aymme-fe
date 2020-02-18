@@ -38,7 +38,7 @@ import { environment } from 'src/environments/environment';
 import { ServicesListComponent } from './services-list/services-list.component';
 import { HeaderComponent } from './header/header.component';
 import { HowToComponent } from './how-to/how-to.component';
-import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 
 @NgModule({
@@ -51,7 +51,7 @@ import { ConfirmationModalComponent } from './confirmation-modal/confirmation-mo
     HeaderComponent,
     DropdownComponent,
     HowToComponent,
-    ConfirmationModalComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,
