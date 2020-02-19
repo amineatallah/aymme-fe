@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, ExtraOptions } from '@angular/router';
 import { ModelComponent } from './model/model.component';
 import { ServicesListComponent } from './services-list/services-list.component';
 import { HowToComponent } from './how-to/how-to.component';
@@ -13,8 +13,13 @@ const routes: Routes = [
   { path: 'howto', component: HowToComponent, data: { animation: 'HowToPage' } }
 ];
 
+const routerOptions: ExtraOptions = {
+  useHash: false,
+  anchorScrolling: 'enabled',
+};
+
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, routerOptions)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

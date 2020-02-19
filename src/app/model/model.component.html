@@ -30,7 +30,7 @@
             <form [formGroup]="pagesForm" class="d-flex align-items-center">
               <label class="m-0 pr-3">Pages: </label>
               <select class="form-control" formControlName="activePage" (change)="changePage($event)">
-                <option *ngFor="let page of selectedExperience.pages" [ngValue]="page.name">{{page.name}}</option>
+                <option *ngFor="let page of selectedExperience.pages" [ngValue]="page.name">{{page.properties.title}}</option>
               </select>
             </form>
           </div>
