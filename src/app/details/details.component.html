@@ -85,7 +85,7 @@
         </div>
 
         <div class="col-12">
-          <p class="text-muted">Total Mocks: ({{(specs$ | async)?.length}})</p>
+          <p class="text-muted">Total Specifications: {{(specs$ | async)?.length}}</p>
           <form class="mb-3" [formGroup]="specForm" (ngSubmit)="createSpec()">
             <div class="form-group">
               <label for="spec-name">Specification Name</label>
