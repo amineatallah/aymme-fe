@@ -18,12 +18,14 @@
                 <i class="fas fa-trash ml-auto" (click)="openConfirmDeleteService(service, $event)"></i>
                 <i class="fas fa-chevron-down ml-3"></i></h5>
               <ul *ngIf="!service.hidden" [@collapseExpand]>
-                <li *ngFor="let endpoint of service.endpoints" class="d-flex align-items-center mb-2 show-on-hover-trigger"
+                <li *ngFor="let endpoint of service.endpoints"
+                  class="d-flex align-items-center mb-2 show-on-hover-trigger"
                   [ngClass]="{'active' : context.selectedEndpoint ? endpoint.id === context.selectedEndpoint._id : false}">
                   <a (click)="setSelectedEndpoint(endpoint)"
                     class="my-auto">{{customFormat(endpoint.path, service.serviceName)}}</a>
 
-                    <i class="fas fa-trash ml-auto mr-4 show-on-hover-item" (click)="openConfirmDeleteEndpoint(endpoint)"></i>
+                  <i class="fas fa-trash ml-auto mr-4 show-on-hover-item"
+                    (click)="openConfirmDeleteEndpoint(endpoint)"></i>
                 </li>
               </ul>
             </li>
@@ -39,4 +41,5 @@
     <ng-template #noServices>
       <p>There are currently no services available to display.</p>
     </ng-template>
-  </div> 
+  </div>
+</div>
