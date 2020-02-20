@@ -79,7 +79,7 @@ function getActivePageByExperience(experience: any) {
 }
 
 function processNewExperienceState(oldExperiences, updatedExperience) {
-  if (oldExperiences.some(experience => experience.name === updatedExperience.name)) {    
+  if (oldExperiences.some(experience => experience.name === updatedExperience.name)) {
     return oldExperiences.map((experience) => {
       let newExperienceState = experience;
 
@@ -94,6 +94,6 @@ function processNewExperienceState(oldExperiences, updatedExperience) {
     });
   }
   else {
-    return[...oldExperiences, updatedExperience]
+    return [...oldExperiences, { ...updatedExperience, activePage: getActivePageByExperience(updatedExperience) }]
   }
 }
