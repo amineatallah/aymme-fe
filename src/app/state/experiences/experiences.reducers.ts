@@ -15,11 +15,7 @@ export function reducer(state = initialState, action: ExperiencesActions): Exper
     case ExperiencesActionTypes.LOAD_EXPERIENCES_SUCCESS:
       return {
         ...state,
-        experiences: [...action.payload.map((experience) => {
-          experience.activePage = getActivePageByExperience(experience);
-          return experience;
-        }
-        )],
+        experiences: [...action.payload],
         error: '',
       };
     case ExperiencesActionTypes.LOAD_EXPERIENCES_FAILURE:
@@ -66,18 +62,6 @@ export function reducer(state = initialState, action: ExperiencesActions): Exper
   }
 }
 
-function getActivePageByExperience(experience: any) {
-  if (experience.activePage) {
-    return experience.activePage;
-  }
-
-  if (experience.pages.length === 0) {
-    return;
-  }
-
-  return experience.pages.find(page => page.name === 'index').name || experience.pages[0].name;
-}
-
 function processNewExperienceState(oldExperiences, updatedExperience) {
   if (oldExperiences.some(experience => experience.name === updatedExperience.name)) {
     return oldExperiences.map((experience) => {
@@ -86,7 +70,6 @@ function processNewExperienceState(oldExperiences, updatedExperience) {
       if (experience.name === updatedExperience.name) {
         newExperienceState = {
           ...updatedExperience,
-          activePage: getActivePageByExperience(updatedExperience)
         }
       }
 
@@ -94,6 +77,6 @@ function processNewExperienceState(oldExperiences, updatedExperience) {
     });
   }
   else {
-    return [...oldExperiences, { ...updatedExperience, activePage: getActivePageByExperience(updatedExperience) }]
+    return [...oldExperiences, { ...updatedExperience }]
   }
 }
