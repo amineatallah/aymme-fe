@@ -9,7 +9,7 @@
 
         <section class="services-header d-flex align-items-center mb-4">
           <h6 class="mb-0">Experiences</h6>
-          <button class="btn btn-sm ml-auto btn-primary" (click)="openAddExperienceModal(addExperienceFormContent)">Add Experiences</button>
+          <button class="btn btn-sm ml-auto btn-primary" (click)="openAddExperienceModal()">Add Experiences</button>
 
         </section>
         <!-- <pre>{{services | json}}</pre> -->
@@ -25,47 +25,3 @@
     </div> 
   </div>
 </div>
-
-<ng-template #addExperienceFormContent let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Add Experience</h4>
-    <a href="#" class="p-1" (click)="dismissFormModal()">
-      <i class="fas fa-times"></i>
-    </a>
-  </div>
-  <div class="modal-body">
-    <form [formGroup]="experienceForm" class="w-100" (ngSubmit)="addExperience()">
-      <div class="form-group row no-gutters justify-content-between">
-        <label class="col-auto" for="experienceName">Experience Name</label>
-        <div class="col-8">
-          <input formControlName="experienceName" type="text" class="form-control" placeholder="e.g. retail-experience, wealth-experience">
-        </div>
-      </div>
-      <div class="form-group row no-gutters justify-content-between">
-        <label class="col-auto" for="hostAddress">Host Address</label>
-        <div class="col-8">
-          <input formControlName="hostAddress" type="text" class="form-control" placeholder="e.g. 192.168.1.100, dev.backbase.com">
-        </div>
-      </div>
-      <div class="form-group row no-gutters justify-content-between">
-        <label class="col-auto" for="portNumber">Host Port Number</label>
-        <div class="col-8">
-          <input formControlName="portNumber" type="text" class="form-control" placeholder="e.g. 8080">
-        </div>
-      </div>
-      <div class="form-group row no-gutters justify-content-between">
-        <label class="col-auto" for="experienceLoginUrl">Host Login Endpoint</label>
-        <div class="col-8">
-          <input formControlName="experienceLoginUrl" type="text" class="form-control" placeholder="e.g. /gateway/api/auth/login">
-        </div>
-      </div>
-      <div class="form-group row no-gutters justify-content-between">
-        <label class="col-auto" for="experienceModelUrl">Host Model Endpoint</label>
-        <div class="col-8">
-          <input formControlName="experienceModelUrl" type="text" class="form-control" placeholder="e.g. /gateway/api/portals">
-        </div>
-      </div>
-      <button type="submit" class="btn btn-primary float-right">Sync Model</button>
-    </form>
-  </div>
-</ng-template>

@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, from, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { ExperienceFormDialogComponent } from '../experience-form-dialog/experience-form-dialog.component';
 
 
 @Injectable({
@@ -21,6 +22,22 @@ export class ModalService {
     modal.componentInstance.prompt = prompt;
     modal.componentInstance.title = title;
     modal.componentInstance.details = details;
+
+    return from(modal.result).pipe(
+      catchError(error => {
+        console.warn(error);
+        return of(undefined);
+      })
+    );
+  }
+
+  experienceFormModal(
+    experienceData = {}
+  ): Observable<boolean> {
+    const modal = this.ngbModal.open(
+      ExperienceFormDialogComponent, { backdrop: 'static' });
+
+    modal.componentInstance.experienceData = experienceData;
 
     return from(modal.result).pipe(
       catchError(error => {

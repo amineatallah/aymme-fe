@@ -12,6 +12,7 @@ import { tap, map, switchMap, takeUntil } from 'rxjs/operators';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Actions, ofType } from '@ngrx/effects';
 import { ToastrService } from 'ngx-toastr';
+import { ModalService } from '../shared/modal.service';
 
 @Component({
   selector: 'app-model',
@@ -25,7 +26,6 @@ export class ModelComponent implements OnInit, OnDestroy {
   selectedExperience$: any;
   selectedExperience: any;
   selectedExperienceName$: Observable<any>;
-  pagesForm: FormGroup;
   destroyed$ = new Subject<boolean>();
 
   public options = new JsonEditorOptions;
@@ -35,6 +35,7 @@ export class ModelComponent implements OnInit, OnDestroy {
     private store: Store<any>,
     private actions$: Actions,
     private toastr: ToastrService,
+    private modalService: ModalService,
     ) { }
     
 
@@ -42,10 +43,6 @@ export class ModelComponent implements OnInit, OnDestroy {
     this.options.mode = 'code';
     this.options.modes = ['code', 'text', 'tree', 'view'];
     this.options.statusBar = true;
-
-    this.pagesForm = new FormGroup({
-      activePage: new FormControl('')
-    });
 
     this.selectedExperienceName$ = this.route.params.pipe(
       tap((params: any) => {
@@ -58,8 +55,7 @@ export class ModelComponent implements OnInit, OnDestroy {
 
           this.selectedExperience = selectedExperience;
 
-          this.body = selectedExperience.pages.find(page => page.name === selectedExperience.activePage)
-          this.pagesForm.get('activePage').setValue(selectedExperience.activePage);
+          this.body = selectedExperience.pages.find(page => page.name === selectedExperience.activePage);
         }))
       })
     );
@@ -100,8 +96,8 @@ export class ModelComponent implements OnInit, OnDestroy {
     this.destroyed$.complete();
   }
 
-  changePage($event) {
-    this.store.dispatch(new experiencesActions.SetActiveExperience({ selectedExperienceName: this.selectedExperience.name, newActivePage: this.pagesForm.get('activePage').value }));
+  selectPage(selectedActivePage) {
+    this.store.dispatch(new experiencesActions.SetActiveExperience({ selectedExperienceName: this.selectedExperience.name, newActivePage: selectedActivePage.name }));
   }
 
   syncModel() {
@@ -125,10 +121,14 @@ export class ModelComponent implements OnInit, OnDestroy {
     this.store.dispatch(new experiencesActions.UpdateExperience({
       experienceName: this.selectedExperience.name,
       data: {
-        activePage: this.pagesForm.get('activePage').value,
+        activePage: this.selectedExperience.activePage,
         pages: pages,
       }
     })
     );
+  }
+
+  editExperience() {
+    this.modalService.experienceFormModal(this.selectedExperience);
   }
 }

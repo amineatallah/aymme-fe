@@ -39,6 +39,7 @@ import { ServicesListComponent } from './services-list/services-list.component';
 import { HeaderComponent } from './header/header.component';
 import { HowToComponent } from './how-to/how-to.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { ExperienceFormDialogComponent } from './experience-form-dialog/experience-form-dialog.component';
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     DropdownComponent,
     HowToComponent,
     ConfirmDialogComponent,
+    ExperienceFormDialogComponent,
   ],
   imports: [
     BrowserModule,
