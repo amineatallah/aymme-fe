@@ -1,49 +1,64 @@
 <ng-container *ngIf="selectedExperienceName$ | async">
-
   <ng-container *ngIf="selectedExperience$ | async as selectedExperience">
-    <div class="row no-gutters justify-content-between p-3">
-      <div class="col-5 p-3">
-        <div class="form-group row no-gutters justify-content-between">
-          <label class="col-auto">Portal Name</label>
-          <div class="col-9">
-            {{selectedExperience.name}}
-          </div>
-        </div>
-        <div class="form-group row no-gutters justify-content-between">
-          <label class="col-auto">Portal Host</label>
-          <div class="col-9">
-            {{selectedExperience.host}}
-          </div>
-        </div>
-        <div class="form-group row no-gutters justify-content-between">
-          <label class="col-auto">Login Url</label>
-          <div class="col-9">
-            {{selectedExperience.loginUrl}}
-          </div>
+
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-4">
+
+          <header class="aymme-header d-flex align-items-center mb-4">
+            <h6 class="mb-0">Experience Details</h6>
+            <!-- <a href="#" class="p-1 ml-auto" (click)="loadServices()"><i class="fas fa-sync-alt"></i></a>
+                <a href="#" *ngIf="context.hasServices" class="p-1 ml-2" (click)="toggleAll(services);"><i
+                    class="fas fa-arrows-alt-v"></i></a> -->
+          </header>
+          <!-- <pre>{{services | json}}</pre> -->
+          <section class="aymme-border">
+            <div class="form-group row no-gutters justify-content-between my-2">
+              <label class="col-auto">Portal Name</label>
+              <div class="col-9 dark-label">
+                {{selectedExperience.name}}
+              </div>
+            </div>
+            <div class="form-group row no-gutters justify-content-between my-2">
+              <label class="col-auto">Portal Host</label>
+              <div class="col-9 dark-label">
+                {{selectedExperience.host}}
+              </div>
+            </div>
+            <div class="form-group row no-gutters justify-content-between mt-2 mb-1">
+              <label class="col-auto">Login Url</label>
+              <div class="col-9 dark-label">
+                {{selectedExperience.loginUrl}}
+              </div>
+            </div>
+          </section>
+
+          <label class="aymme-border mt-3 mb-0">Pages </label>
+          <ul class="p-0">
+            <li *ngFor="let page of selectedExperience.pages"
+              class="d-flex align-items-center aymme-border-item dark-label p-2 pl-4"
+              [ngClass]="{'active' : selectedExperience.activePage === page.name}"(click)="selectPage(page)">
+              {{page.properties.title}}
+            </li>
+          </ul>
+
         </div>
 
-      </div>
-
-      <div class="col-7 p-3">
-        <div class="row no-gutters justify-content-between mb-3">
-          <div class="col-12 pr-4">
-            <form [formGroup]="pagesForm" class="d-flex align-items-center">
-              <label class="m-0 pr-3">Pages: </label>
-              <select class="form-control" formControlName="activePage" (change)="changePage($event)">
-                <option *ngFor="let page of selectedExperience.pages" [ngValue]="page.name">{{page.properties.title}}</option>
-              </select>
-            </form>
+        <div class="col-8 no-relative">
+          <section class="aymme-header d-flex align-items-center mb-4">
+            <h6 class="mb-0">Experience Model</h6>
+          </section>
+          <json-editor [options]="options" style="min-height: 1000px;" [data]="body">
+          </json-editor>
+          <div class="row no-gutters mt-3 justify-content-end">
+            <button type="button" class="btn btn-danger px-3 col-auto mr-3" (click)="syncModel()">Sync Remote
+              Model</button>
+            <button type="button" class="btn btn-primary px-3 col-auto" (click)="updateModel()">Update Model</button>
           </div>
-        </div>
-        <json-editor [options]="options" style="min-height: 1000px;" [data]="body">
-        </json-editor>
-        <div class="row no-gutters mt-3 justify-content-end">
-          <button type="button" class="btn btn-danger px-3 col-auto mr-3" (click)="syncModel()">Sync Remote
-            Model</button>
-          <button type="button" class="btn btn-primary px-3 col-auto" (click)="updateModel()">Update Model</button>
         </div>
       </div>
     </div>
-  </ng-container>
 
+  </ng-container>
 </ng-container>
