@@ -8,9 +8,7 @@
 
           <header class="aymme-header d-flex align-items-center mb-4">
             <h6 class="mb-0">Experience Details</h6>
-            <!-- <a href="#" class="p-1 ml-auto" (click)="loadServices()"><i class="fas fa-sync-alt"></i></a>
-                <a href="#" *ngIf="context.hasServices" class="p-1 ml-2" (click)="toggleAll(services);"><i
-                    class="fas fa-arrows-alt-v"></i></a> -->
+            <button class="btn btn-sm mr-3 ml-auto btn-outline-primary" (click)="editExperience()">Edit Host</button>
           </header>
           <!-- <pre>{{services | json}}</pre> -->
           <section class="aymme-border">
@@ -38,7 +36,7 @@
           <ul class="p-0">
             <li *ngFor="let page of selectedExperience.pages"
               class="d-flex align-items-center aymme-border-item dark-label p-2 pl-4"
-              [ngClass]="{'active' : selectedExperience.activePage === page.name}"(click)="selectPage(page)">
+              [ngClass]="{'active' : selectedExperience.activePage === page.name}" (click)="selectPage(page)">
               {{page.properties.title}}
             </li>
           </ul>
@@ -54,7 +52,8 @@
           <div class="row no-gutters mt-3 justify-content-end">
             <button type="button" class="btn btn-danger px-3 col-auto mr-3" (click)="syncModel()">Sync Remote
               Model</button>
-            <button type="button" class="btn btn-primary px-3 col-auto" (click)="updateModel()">Update Model</button>
+            <button type="button" class="btn btn-primary px-3 col-auto" (click)="updateModel()">Update & Use
+              Model</button>
           </div>
         </div>
       </div>

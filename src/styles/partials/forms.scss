@@ -42,6 +42,11 @@ form {
       color: #888;
     }
 
+    &:disabled {
+      background-color: rgba(255,255,255,.1);
+      color: #888;
+    }
+
     &:focus {
       background-color: rgba(255,255,255,.1);
       border-color: #222;

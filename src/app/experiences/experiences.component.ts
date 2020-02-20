@@ -18,8 +18,6 @@ import { ToastrService } from 'ngx-toastr';
 export class ExperiencesComponent implements OnInit, OnDestroy {
   destroyed$ = new Subject<boolean>();
   experiences$: Observable<any>;
-  experienceForm: FormGroup;
-  formModalReference: any;
 
   constructor(
     private store: Store<any>,
@@ -30,39 +28,24 @@ export class ExperiencesComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.experienceForm = new FormGroup({
-      experienceName: new FormControl(''),
-      hostAddress: new FormControl(''),
-      portNumber: new FormControl('8080'),
-      experienceLoginUrl: new FormControl('/gateway/api/auth/login'),
-      experienceModelUrl: new FormControl('/gateway/api/portals'),
-    });
-
     this.store.dispatch(new experiencesActions.LoadExperiences());
     this.experiences$ = this.store.pipe(select(experiencesSelectors.getExperiences));
-
-    this.actions$.pipe(
-      ofType(experiencesActions.ExperiencesActionTypes.SYNC_EXPERIENCE_SUCCESS),
-      takeUntil(this.destroyed$),
-      tap(() => {
-        this.toastr.success('Experience synced successfully!', '');
-        this.dismissFormModal();
-      })
-    ).subscribe();
-
-    this.actions$.pipe(
-      ofType(experiencesActions.ExperiencesActionTypes.SYNC_EXPERIENCE_FAILURE),
-      takeUntil(this.destroyed$),
-      tap(() => {
-        this.toastr.error('Unable to sync Experience!', '');
-      })
-    ).subscribe();
 
     this.actions$.pipe(
       ofType(experiencesActions.ExperiencesActionTypes.DELETE_EXPERIENCE_SUCCESS),
       takeUntil(this.destroyed$),
       tap(() => {
         this.toastr.error('Experience deleted successfully!', '');
+      })
+    ).subscribe();
+
+    this.actions$.pipe(
+      ofType(experiencesActions.ExperiencesActionTypes.SYNC_EXPERIENCE_SUCCESS),
+      takeUntil(this.destroyed$),
+      tap(() => {
+        this.toastr.success('Experience synced successfully!', '');
+        this.destroyed$.next(true);
+        this.destroyed$.complete();
       })
     ).subscribe();
   }
@@ -95,19 +78,7 @@ export class ExperiencesComponent implements OnInit, OnDestroy {
     this.store.dispatch(new experiencesActions.DeleteExperience(experienceName));
   }
 
-  openAddExperienceModal(addExperienceFormContent) {
-    this.formModalReference = this.ngModalService.open(addExperienceFormContent, { backdrop: 'static', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => { }, (reason) => { });
-  }
-
-  addExperience() {
-    let experienceFormValue = this.experienceForm.value;
-
-    let baseUrl = `http://${experienceFormValue.hostAddress}${experienceFormValue.portNumber ? ':' + experienceFormValue.portNumber : ''}`
-
-    this.store.dispatch(new experiencesActions.SyncExperience({
-      portalName: experienceFormValue.experienceName,
-      loginUrl: baseUrl + experienceFormValue.experienceLoginUrl,
-      portalUrl: baseUrl + experienceFormValue.experienceModelUrl,
-    }));
+  openAddExperienceModal() {
+    this.modalService.experienceFormModal();
   }
 }

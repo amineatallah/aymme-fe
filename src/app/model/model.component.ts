@@ -12,6 +12,7 @@ import { tap, map, switchMap, takeUntil } from 'rxjs/operators';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Actions, ofType } from '@ngrx/effects';
 import { ToastrService } from 'ngx-toastr';
+import { ModalService } from '../shared/modal.service';
 
 @Component({
   selector: 'app-model',
@@ -34,6 +35,7 @@ export class ModelComponent implements OnInit, OnDestroy {
     private store: Store<any>,
     private actions$: Actions,
     private toastr: ToastrService,
+    private modalService: ModalService,
     ) { }
     
 
@@ -124,5 +126,9 @@ export class ModelComponent implements OnInit, OnDestroy {
       }
     })
     );
+  }
+
+  editExperience() {
+    this.modalService.experienceFormModal(this.selectedExperience);
   }
 }
