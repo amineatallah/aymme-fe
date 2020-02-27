@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,  } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import * as fileSaver from 'file-saver';
 
 @Injectable({
   providedIn: 'root'
@@ -67,7 +68,7 @@ export class HomeService {
     return this.http.post(`${this.url}/upload/` + id, formData, {})
   }
 
-  getPortals(){
+  getPortals() {
     return this.http.get(`${this.url}/getportals`);
   }
 
@@ -79,7 +80,18 @@ export class HomeService {
     return this.http.post(`${this.url}/syncmodel`, data);
   }
 
-  updateModel(portalName, data){
+  updateModel(portalName, data) {
     return this.http.post(`${this.url}/updatemodel/` + portalName, data);
+  }
+
+  exportServices(fileName: string) {
+    fileSaver.saveAs(`${this.url}/exportservices/`, `${fileName}`);
+  }
+
+  importServices(file: File) {
+    const formData: FormData = new FormData();
+    formData.append('files[]', file, file.name);
+
+    return this.http.post(`${this.url}/importservices/`, formData, {})
   }
 }

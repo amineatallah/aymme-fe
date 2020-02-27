@@ -3,7 +3,6 @@ import { Observable, Subject } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import * as experiencesSelectors from '../state/experiences/experiences.selectors';
 import * as experiencesActions from '../state/experiences/experiences.actions';
-import { FormGroup, FormControl } from '@angular/forms';
 import { take, takeUntil, tap } from 'rxjs/operators';
 import { ModalService } from '../shared/modal.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
