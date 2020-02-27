@@ -40,7 +40,7 @@ export function reducer(state = initialState, action: ServicesActions): Services
         services: state.services.map(service => {
           service.endpoints = service.endpoints.filter((endpoint) => endpoint.id !== action.payload);
           return service;
-        }).filter((service) => service.endpoints.length !== 0),      
+        }).filter((service) => service.endpoints.length !== 0),
         selectedEndpoint: (state.selectedEndpoint) && state.selectedEndpoint._id === action.payload ? null : state.selectedEndpoint,
         error: '',
       };
@@ -60,6 +60,13 @@ export function reducer(state = initialState, action: ServicesActions): Services
         ...state,
         services: [],
         error: action.payload,
+      };
+    case ServicesActionTypes.IMPORT_SERVICES_SUCCESS:
+      return {
+        ...state,
+        services: action.payload,
+        selectedEndpoint: null,
+        error: '',
       };
     default:
       return state;

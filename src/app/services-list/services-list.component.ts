@@ -10,6 +10,7 @@ import { Endpoint } from '../shared/service.interface';
 import { collapseExpandAnimation } from '../shared/animation';
 import { ModalService } from '../shared/modal.service';
 import { Actions, ofType } from '@ngrx/effects';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-services-list',
@@ -23,6 +24,7 @@ export class ServicesListComponent implements OnInit, OnDestroy {
   destroyed$ = new Subject<boolean>();
   isInitializing = true;
   allHidden = false;
+  importServicesForm : FormGroup;
 
   readonly services$: Observable<any> = this.store.pipe(
     select(servicesSelectors.getServices),
@@ -47,9 +49,15 @@ export class ServicesListComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private modalService: ModalService,
     private actions$: Actions,
+    private homeService: HomeService,
+    private formBuilder: FormBuilder,
   ) { }
 
   ngOnInit() {
+
+    this.importServicesForm = this.formBuilder.group({
+      importFiles: new FormControl(''),
+    });
     this.loadServices();
 
     this.actions$.pipe(
@@ -63,6 +71,20 @@ export class ServicesListComponent implements OnInit, OnDestroy {
       ofType(servicesActions.ServicesActionTypes.DELETE_ENDPOINT_SUCCESS),
       takeUntil(this.destroyed$),
       tap(() => this.toastr.error('Endpoint deleted successfully!', '')
+      )
+    ).subscribe();
+
+    this.actions$.pipe(
+      ofType(servicesActions.ServicesActionTypes.IMPORT_SERVICES_SUCCESS),
+      takeUntil(this.destroyed$),
+      tap(() => this.toastr.success('Services imported successfully!', '')
+      )
+    ).subscribe();
+
+    this.actions$.pipe(
+      ofType(servicesActions.ServicesActionTypes.IMPORT_SERVICES_FAILURE),
+      takeUntil(this.destroyed$),
+      tap(() => this.toastr.error('Unable to import services!', '')
       )
     ).subscribe();
   }
@@ -125,6 +147,18 @@ export class ServicesListComponent implements OnInit, OnDestroy {
 
   deleteEndpoint(endpointId: string) {
     this.store.dispatch(new servicesActions.DeleteEndpoint(endpointId));
+  }
+
+  onFileChange(event): void {
+    this.store.dispatch(new servicesActions.ImportServices(event.target.files[0]));
+    this.importServicesForm.reset();
+  }
+  
+  exportServices() {
+    const currentDate = new Date().toISOString();
+    const fileName = `services-${currentDate}.json`;
+
+    this.homeService.exportServices(fileName);
   }
 
 }

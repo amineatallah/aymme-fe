@@ -5,6 +5,7 @@ import * as servicesActions from "./services.actions";
 import { concatMap, map, catchError } from "rxjs/operators";
 import { of } from "rxjs";
 import { HomeService } from "../../shared/home.service";
+import * as fileSaver from 'file-saver';
 
 @Injectable()
 export class ServicesEffects {
@@ -73,5 +74,20 @@ export class ServicesEffects {
         catchError(err => of(new servicesActions.UpdateEndpointFailure(err)))
       )
     )
+  );
+
+  @Effect()
+  exportServices$ = this.actions$.pipe(
+    ofType(servicesActions.ServicesActionTypes.IMPORT_SERVICES),
+    concatMap((action: servicesActions.ImportServices) => {
+      return this.homeService.importServices(action.payload).pipe(
+        map(
+          (result: any) => {
+            return new servicesActions.ImportServicesSuccess(result)
+          }
+        ),
+        catchError(err => of(new servicesActions.ImportServicesFailure(err)))
+      )
+    })
   );
 }

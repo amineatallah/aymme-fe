@@ -17,6 +17,9 @@ export enum ServicesActionTypes {
   UPDATE_ENDPOINT = '[Services] Update Endpoint',
   UPDATE_ENDPOINT_SUCCESS = '[Services] Update Endpoint Success',
   UPDATE_ENDPOINT_FAILURE = '[Services] Update Endpoint Failure',
+  IMPORT_SERVICES = '[Services] Import Services',
+  IMPORT_SERVICES_SUCCESS = '[Services] Import Services Success',
+  IMPORT_SERVICES_FAILURE = '[Services] Import Services Failure',
 }
 
 export class LoadServices implements Action {
@@ -103,6 +106,25 @@ export class UpdateEndpointFailure implements Action {
   constructor(public payload: string) { }
 }
 
+export class ImportServices implements Action {
+  readonly type = ServicesActionTypes.IMPORT_SERVICES;
+  constructor(public payload: File) { }
+}
+
+export class ImportServicesSuccess implements Action {
+  readonly type = ServicesActionTypes.IMPORT_SERVICES_SUCCESS;
+
+  constructor(public payload: any) { }
+}
+
+export class ImportServicesFailure implements Action {
+  readonly type = ServicesActionTypes.IMPORT_SERVICES_FAILURE;
+
+  constructor(public payload: string) { }
+}
+
+
+
 export type ServicesActions =
   | LoadServices
   | LoadServicesSuccess
@@ -118,4 +140,7 @@ export type ServicesActions =
   | LoadEndpointFailure
   | UpdateEndpoint
   | UpdateEndpointSuccess
-  | UpdateEndpointFailure;
+  | UpdateEndpointFailure
+  | ImportServices
+  | ImportServicesSuccess
+  | ImportServicesFailure;
