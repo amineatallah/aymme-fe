@@ -189,9 +189,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   changeStatusCode(event) {
-    this.endpointData = this.response.response[
-      this.form.get('statusCode').value
-    ].data.body;
+    this.endpointData = this.response.response[event].data.body;
   }
 
   useMocks(data) {
