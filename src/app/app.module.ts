@@ -40,6 +40,7 @@ import { HeaderComponent } from './header/header.component';
 import { HowToComponent } from './how-to/how-to.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { ExperienceFormDialogComponent } from './experience-form-dialog/experience-form-dialog.component';
+import { FooterComponent } from './footer/footer.component';
 
 
 @NgModule({
@@ -54,6 +55,7 @@ import { ExperienceFormDialogComponent } from './experience-form-dialog/experien
     HowToComponent,
     ConfirmDialogComponent,
     ExperienceFormDialogComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
