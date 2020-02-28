@@ -11,7 +11,8 @@
               <span>Import</span>
             </form>
             <button class="btn btn-sm btn-outline-primary mx-2" (click)="exportServices()">Export</button>
-            <a href="#" class="p-1" (click)="loadServices()"><i class="fas fa-sync-alt"></i></a>
+            <span>|</span>
+            <a href="#" class="p-1 ml-2" (click)="loadServices()"><i class="fas fa-sync-alt"></i></a>
             <a href="#" *ngIf="context.hasServices" class="p-1 ml-2" (click)="toggleAll(services);"><i
                 class="fas fa-arrows-alt-v"></i></a>
           </section>
