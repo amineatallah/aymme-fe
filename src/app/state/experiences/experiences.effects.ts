@@ -32,6 +32,7 @@ export class ExperiencesEffects {
           }),
         catchError(
           err => {
+            this.toastr.error(err.error.message, 'Unable to load Experiences!');
             return of(new experiencesActions.LoadExperiencesFailure(err))
           }
         )
@@ -52,7 +53,7 @@ export class ExperiencesEffects {
         ),
         catchError(
           err => {
-            this.toastr.error('Unable to sync Experience!', '');
+            this.toastr.error(err.error.message, 'Unable to sync Experience!');
             return of(new experiencesActions.SyncExperienceFailure(err))
           }
         )
@@ -68,13 +69,13 @@ export class ExperiencesEffects {
       this.homeService.updateModel(action.payload.experienceName, action.payload.data).pipe(
         map(
           (results: any[]) => {
-            this.toastr.success('Experience updated successfully!', '');
+            this.toastr.success('', 'Experience updated successfully!');
             new experiencesActions.UpdateExperienceSuccess(results);
           }
         ),
         catchError(
           err => {
-            this.toastr.error('Unable to update Experience!', '');
+            this.toastr.error(err.error.message, 'Unable to update Experience!');
             return of(new experiencesActions.UpdateExperienceFailure(err))
           }
         )
@@ -89,12 +90,16 @@ export class ExperiencesEffects {
       this.homeService.deleteExperience(action.payload).pipe(
         map(
           (results: any[]) => {
-            this.toastr.error('Experience deleted successfully!', '');
+            this.toastr.success('', 'Experience deleted successfully!');
             return new experiencesActions.DeleteExperienceSuccess(action.payload);
           }
         ),
         catchError(
-          err => of(new experiencesActions.DeleteExperienceFailure(err)))
+          err => {
+            this.toastr.error(err.error.message, 'Unable to delete Experience!');
+            return of(new experiencesActions.DeleteExperienceFailure(err))
+          }
+        )
       )
     )
   );

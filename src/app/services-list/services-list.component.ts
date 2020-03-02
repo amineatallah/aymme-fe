@@ -53,11 +53,11 @@ export class ServicesListComponent implements OnInit {
     this.importServicesForm = this.formBuilder.group({
       importFiles: new FormControl(''),
     });
-    this.loadServices();
+    this.loadServices(true);
   }
 
-  loadServices() {
-    this.store.dispatch(new servicesActions.LoadServices());
+  loadServices(initializing : boolean) {
+    this.store.dispatch(new servicesActions.LoadServices(initializing));
     this.allHidden = false;
     return false;
   }

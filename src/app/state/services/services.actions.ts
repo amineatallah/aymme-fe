@@ -24,6 +24,7 @@ export enum ServicesActionTypes {
 
 export class LoadServices implements Action {
   readonly type = ServicesActionTypes.LOAD_SERVICES;
+  constructor(public initializing: boolean) { }
 }
 
 export class LoadServicesSuccess implements Action {

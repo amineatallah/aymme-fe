@@ -17,9 +17,19 @@ export class ServicesEffects {
     concatMap((action: servicesActions.LoadServices) =>
       this.homeService.getServices().pipe(
         map(
-          (services: any[]) => new servicesActions.LoadServicesSuccess(services)
+          (services: any[]) => {
+            if (!action.initializing) {
+              this.toastr.success('', 'Succesfully refreshed services!');
+            }
+            return new servicesActions.LoadServicesSuccess(services);
+          }
         ),
-        catchError(err => of(new servicesActions.LoadServicesFailure(err)))
+        catchError(
+          err => {
+            this.toastr.error(err.error.message, 'Unable to load services!');
+            return of(new servicesActions.LoadServicesFailure(err))
+          }
+        )
       )
     )
   );
@@ -32,7 +42,12 @@ export class ServicesEffects {
         map(
           (endpoint: any) => new servicesActions.LoadEndpointSuccess(endpoint)
         ),
-        catchError(err => of(new servicesActions.LoadEndpointFailure(err)))
+        catchError(
+          err => {
+            this.toastr.error(err.error.message, 'Unable to delete service!');
+            return of(new servicesActions.LoadEndpointFailure(err));
+          }
+        )
       )
     )
   );
@@ -44,11 +59,16 @@ export class ServicesEffects {
       this.homeService.deleteService(action.payload).pipe(
         map(
           (result: any) => {
-            this.toastr.error('Service deleted successfully!', '');
+            this.toastr.success('', 'Service deleted successfully!');
             return new servicesActions.DeleteServiceSuccess(action.payload)
           }
         ),
-        catchError(err => of(new servicesActions.DeleteServiceFailure(err)))
+        catchError(
+          err => {
+            this.toastr.error(err.error.message, 'Unable to delete service!');
+            return of(new servicesActions.DeleteServiceFailure(err))
+          }
+        )
       )
     )
   );
@@ -60,11 +80,16 @@ export class ServicesEffects {
       this.homeService.deleteEndpointById(action.payload).pipe(
         map(
           (result: any) => {
-            this.toastr.error('Endpoint deleted successfully!', '');
+            this.toastr.success('', 'Endpoint deleted successfully!');
             return new servicesActions.DeleteEndpointSuccess(action.payload);
           }
         ),
-        catchError(err => of(new servicesActions.DeleteEndpointFailure(err)))
+        catchError(
+          err => {
+            this.toastr.error(err.error.message, 'Unable to delete endpoint!');
+            return of(new servicesActions.DeleteEndpointFailure(err))
+          }
+        )
       )
     )
   );
@@ -76,12 +101,14 @@ export class ServicesEffects {
       this.homeService.updateEndpoint(action.payload.id, action.payload).pipe(
         map(
           (result: any) => {
-            this.toastr.success('Mocks updated successfully!', '');
+            this.toastr.success('', 'Mocks updated successfully!');
             return new servicesActions.UpdateEndpointSuccess(result);
           }
         ),
         catchError(
           err => {
+            console.log(err);
+            this.toastr.error(err.error.message, 'Unable to update mocks!');
             return of(new servicesActions.UpdateEndpointFailure(err));
           })
       )
@@ -100,7 +127,7 @@ export class ServicesEffects {
           }
         ),
         catchError(err => {
-          this.toastr.error('Unable to import services!', '');
+          this.toastr.error(err.error.message, 'Unable to import services!');
           return of(new servicesActions.ImportServicesFailure(err));
         })
       )

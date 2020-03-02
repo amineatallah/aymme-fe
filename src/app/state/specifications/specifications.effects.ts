@@ -23,7 +23,12 @@ export class SpecificationsEffects {
         map(
           (specifications: any[]) => new specificationsActions.LoadSpecificationsSuccess(specifications)
         ),
-        catchError(err => of(new specificationsActions.LoadSpecificationsFailure(err)))
+        catchError(
+          err => {
+            this.toastr.error(err.error.message, 'Unable to load specifications!');
+            return of(new specificationsActions.LoadSpecificationsFailure(err))
+          }
+        )
       )
     )
   );
@@ -35,11 +40,16 @@ export class SpecificationsEffects {
       this.homeService.createSpec({ name: action.payload.specName }).pipe(
         map(
           (specifications: any[]) => {
-            this.toastr.success('Specification created successfully!', '');
+            this.toastr.success('', 'Specification created successfully!');
             return new specificationsActions.CreateSpecificationSuccess(specifications);
           }
         ),
-        catchError(err => of(new specificationsActions.CreateSpecificationFailure(err)))
+        catchError(
+          err => {
+            this.toastr.error(err.error.message, 'Unable to create specification!');
+            return of(new specificationsActions.CreateSpecificationFailure(err));
+          }
+        )
       )
     )
   );
@@ -51,11 +61,16 @@ export class SpecificationsEffects {
       this.homeService.deleteSpecs(action.payload).pipe(
         map(
           (specifications: any) => {
-            this.toastr.error('Specification deleted successfully!', '');
+            this.toastr.success('', 'Specification deleted successfully!');
             return new specificationsActions.DeleteSpecificationSuccess(action.payload)
           }
         ),
-        catchError(err => of(new specificationsActions.DeleteSpecificationFailure(err)))
+        catchError(
+          err => {
+            this.toastr.error(err.error.message, 'Unable to delete specification!');
+            return of(new specificationsActions.DeleteSpecificationFailure(err));
+          }
+        )
       )
     )
   );
@@ -67,11 +82,16 @@ export class SpecificationsEffects {
       this.homeService.uploadFile(action.payload.id, action.payload.filesToUpload).pipe(
         map(
           (specifications: any) => {
-            this.toastr.success('Examples uploaded successfully!', '');
+            this.toastr.success('', 'File uploaded successfully!');
             return new specificationsActions.CreateExampleSuccess(specifications);
           }
         ),
-        catchError(err => of(new specificationsActions.CreateExampleFailure(err)))
+        catchError(
+          err => {
+            this.toastr.error(err.error.message, 'Unable to upload file!');
+            return of(new specificationsActions.CreateExampleFailure(err))
+          }
+        )
       )
     )
   );
