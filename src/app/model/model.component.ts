@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Store } from '@ngrx/store';
 import * as experiencesSelectors from '../state/experiences/experiences.selectors';
 import * as experiencesActions from '../state/experiences/experiences.actions'

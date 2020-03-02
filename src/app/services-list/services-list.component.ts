@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { HomeService } from '../shared/home.service';
 import * as servicesSelectors from '../state/services/services.selectors';
