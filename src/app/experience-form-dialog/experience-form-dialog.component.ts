@@ -4,7 +4,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { takeUntil, tap } from 'rxjs/operators';
-import { ToastrService } from 'ngx-toastr';
 import * as experiencesActions from '../state/experiences/experiences.actions';
 import { Subject } from 'rxjs';
 

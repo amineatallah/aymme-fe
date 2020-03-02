@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChildren, QueryList, OnDestroy } from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, of  } from 'rxjs';
 import { JsonEditorOptions, JsonEditorComponent } from 'ang-jsoneditor';
-import { tap, takeUntil, take } from 'rxjs/operators';
+import { tap, take } from 'rxjs/operators';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import * as servicesSelectors from '../state/services/services.selectors';
@@ -11,7 +11,7 @@ import { SpecNameValidator } from './specNameValidator';
 import { collapseExpandAnimation, slideInOutAnimation, fadeInStaggerAnimation } from '../shared/animation';
 import { ToastrService } from 'ngx-toastr';
 import * as ServicesActions from '../state/services/services.actions';
-import { Actions, ofType } from '@ngrx/effects';
+import { Actions } from '@ngrx/effects';
 import { ModalService } from '../shared/modal.service';
 
 @Component({
@@ -24,8 +24,7 @@ import { ModalService } from '../shared/modal.service';
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss']
 })
-export class DetailsComponent implements OnInit, OnDestroy {
-  destroyed$ = new Subject<boolean>();
+export class DetailsComponent implements OnInit {
   endpoint$: Observable<any>;
   endpointData: any;
   specs$: Observable<any>;
@@ -51,9 +50,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private store: Store<any>,
     private formBuilder: FormBuilder,
     private specNameValidator: SpecNameValidator,
-    private toastr: ToastrService,
-    private actions$: Actions,
-    private modalService: ModalService
+    private modalService: ModalService,
   ) { }
 
   ngOnInit() {
@@ -112,35 +109,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.specs$ = this.store.pipe(select(specificationsSelectors.getSpecifications)).pipe(tap(_ => this.specName.updateValueAndValidity()));
 
     this.filterText$ = this.specForm.get('specName').valueChanges;
-
-    this.actions$.pipe(
-      ofType(ServicesActions.ServicesActionTypes.UPDATE_ENDPOINT_SUCCESS),
-      takeUntil(this.destroyed$),
-      tap(() => this.toastr.success('Mocks updated successfully!', '')
-      )
-    ).subscribe();
-
-    this.actions$.pipe(
-      ofType(specificationsActions.SpecificationsActionTypes.CREATE_SPECIFICATION_SUCCESS),
-      takeUntil(this.destroyed$),
-      tap(() => this.toastr.success('Specification created successfully!', '')
-      )
-    ).subscribe();
-
-    this.actions$.pipe(
-      ofType(specificationsActions.SpecificationsActionTypes.DELETE_SPECIFICATION_SUCCESS),
-      takeUntil(this.destroyed$),
-      tap(() => this.toastr.error('Specification deleted successfully!', '')
-      )
-    ).subscribe();
-
-    this.actions$.pipe(
-      ofType(specificationsActions.SpecificationsActionTypes.CREATE_EXAMPLE_SUCCESS),
-      takeUntil(this.destroyed$),
-      tap(() => this.toastr.success('Examples uploaded successfully!', '')
-      )
-    ).subscribe();
-
   }
 
   get specName() {
@@ -245,14 +213,5 @@ export class DetailsComponent implements OnInit, OnDestroy {
   deleteSpecs(id: string) {
     this.store.dispatch(new specificationsActions.DeleteSpecification(id));
     return false;
-  }
-
-  showSuccess() {
-    this.toastr.success('Mocks updated successfully!', '');
-  }
-
-  ngOnDestroy() {
-    this.destroyed$.next(true);
-    this.destroyed$.complete();
   }
 }
