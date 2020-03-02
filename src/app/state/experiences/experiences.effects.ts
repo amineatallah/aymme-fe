@@ -2,13 +2,18 @@ import { Injectable } from "@angular/core";
 import { Actions, Effect, ofType } from "@ngrx/effects";
 
 import * as experiencesActions from "./experiences.actions";
-import { concatMap, map, catchError, take, takeLast, tap } from "rxjs/operators";
+import { concatMap, map, catchError } from "rxjs/operators";
 import { of } from "rxjs";
 import { HomeService } from "../../shared/home.service";
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class ExperiencesEffects {
-  constructor(private actions$: Actions, private homeService: HomeService) { }
+  constructor(
+    private actions$: Actions,
+    private homeService: HomeService,
+    private toastr: ToastrService,
+  ) { }
 
   hasLoadedExperiences: boolean = false;
 
@@ -25,7 +30,11 @@ export class ExperiencesEffects {
             this.hasLoadedExperiences = true;
             return new experiencesActions.LoadExperiencesSuccess(portals);
           }),
-        catchError(err => of(new experiencesActions.LoadExperiencesFailure(err)))
+        catchError(
+          err => {
+            return of(new experiencesActions.LoadExperiencesFailure(err))
+          }
+        )
       )
     })
   );
@@ -36,9 +45,17 @@ export class ExperiencesEffects {
     concatMap((action: experiencesActions.SyncExperience) =>
       this.homeService.syncModel(action.payload).pipe(
         map(
-          (experience: any[]) => new experiencesActions.SyncExperienceSuccess(experience)
+          (experience: any[]) => {
+            this.toastr.success('Experience synced successfully!', '')
+            return new experiencesActions.SyncExperienceSuccess(experience);
+          }
         ),
-        catchError(err => of(new experiencesActions.SyncExperienceFailure(err)))
+        catchError(
+          err => {
+            this.toastr.error('Unable to sync Experience!', '');
+            return of(new experiencesActions.SyncExperienceFailure(err))
+          }
+        )
       )
     )
   );
@@ -50,9 +67,17 @@ export class ExperiencesEffects {
 
       this.homeService.updateModel(action.payload.experienceName, action.payload.data).pipe(
         map(
-          (results: any[]) => new experiencesActions.UpdateExperienceSuccess(results)
+          (results: any[]) => {
+            this.toastr.success('Experience updated successfully!', '');
+            new experiencesActions.UpdateExperienceSuccess(results);
+          }
         ),
-        catchError(err => of(new experiencesActions.UpdateExperienceFailure(err)))
+        catchError(
+          err => {
+            this.toastr.error('Unable to update Experience!', '');
+            return of(new experiencesActions.UpdateExperienceFailure(err))
+          }
+        )
       )
     )
   );
@@ -63,9 +88,13 @@ export class ExperiencesEffects {
     concatMap((action: experiencesActions.DeleteExperience) =>
       this.homeService.deleteExperience(action.payload).pipe(
         map(
-          (results: any[]) => new experiencesActions.DeleteExperienceSuccess(action.payload)
+          (results: any[]) => {
+            this.toastr.error('Experience deleted successfully!', '');
+            return new experiencesActions.DeleteExperienceSuccess(action.payload);
+          }
         ),
-        catchError(err => of(new experiencesActions.DeleteExperienceFailure(err)))
+        catchError(
+          err => of(new experiencesActions.DeleteExperienceFailure(err)))
       )
     )
   );

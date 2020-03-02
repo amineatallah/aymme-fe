@@ -1,15 +1,13 @@
-import { Component, OnInit, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { HomeService } from '../shared/home.service';
-import { ToastrService } from 'ngx-toastr';
 import * as servicesSelectors from '../state/services/services.selectors';
 import * as servicesActions from '../state/services/services.actions';
-import { tap, take, takeUntil } from 'rxjs/operators';
+import { tap, take } from 'rxjs/operators';
 import { Endpoint } from '../shared/service.interface';
 import { collapseExpandAnimation } from '../shared/animation';
 import { ModalService } from '../shared/modal.service';
-import { Actions, ofType } from '@ngrx/effects';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 
 @Component({
@@ -20,8 +18,7 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
     collapseExpandAnimation
   ]
 })
-export class ServicesListComponent implements OnInit, OnDestroy {
-  destroyed$ = new Subject<boolean>();
+export class ServicesListComponent implements OnInit {
   isInitializing = true;
   allHidden = false;
   importServicesForm : FormGroup;
@@ -46,9 +43,7 @@ export class ServicesListComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<any>,
-    private toastr: ToastrService,
     private modalService: ModalService,
-    private actions$: Actions,
     private homeService: HomeService,
     private formBuilder: FormBuilder,
   ) { }
@@ -59,39 +54,6 @@ export class ServicesListComponent implements OnInit, OnDestroy {
       importFiles: new FormControl(''),
     });
     this.loadServices();
-
-    this.actions$.pipe(
-      ofType(servicesActions.ServicesActionTypes.DELETE_SERVICE),
-      takeUntil(this.destroyed$),
-      tap(() => this.toastr.error('Service deleted successfully!', '')
-      )
-    ).subscribe();
-
-    this.actions$.pipe(
-      ofType(servicesActions.ServicesActionTypes.DELETE_ENDPOINT_SUCCESS),
-      takeUntil(this.destroyed$),
-      tap(() => this.toastr.error('Endpoint deleted successfully!', '')
-      )
-    ).subscribe();
-
-    this.actions$.pipe(
-      ofType(servicesActions.ServicesActionTypes.IMPORT_SERVICES_SUCCESS),
-      takeUntil(this.destroyed$),
-      tap(() => this.toastr.success('Services imported successfully!', '')
-      )
-    ).subscribe();
-
-    this.actions$.pipe(
-      ofType(servicesActions.ServicesActionTypes.IMPORT_SERVICES_FAILURE),
-      takeUntil(this.destroyed$),
-      tap(() => this.toastr.error('Unable to import services!', '')
-      )
-    ).subscribe();
-  }
-
-  ngOnDestroy() {
-    this.destroyed$.next(true);
-    this.destroyed$.complete();
   }
 
   loadServices() {

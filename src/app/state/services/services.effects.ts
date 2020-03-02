@@ -5,11 +5,11 @@ import * as servicesActions from "./services.actions";
 import { concatMap, map, catchError } from "rxjs/operators";
 import { of } from "rxjs";
 import { HomeService } from "../../shared/home.service";
-import * as fileSaver from 'file-saver';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class ServicesEffects {
-  constructor(private actions$: Actions, private homeService: HomeService) { }
+  constructor(private actions$: Actions, private homeService: HomeService, private toastr: ToastrService) { }
 
   @Effect()
   loadServices$ = this.actions$.pipe(
@@ -43,7 +43,10 @@ export class ServicesEffects {
     concatMap((action: servicesActions.DeleteService) =>
       this.homeService.deleteService(action.payload).pipe(
         map(
-          (result: any) => new servicesActions.DeleteServiceSuccess(action.payload)
+          (result: any) => {
+            this.toastr.error('Service deleted successfully!', '');
+            return new servicesActions.DeleteServiceSuccess(action.payload)
+          }
         ),
         catchError(err => of(new servicesActions.DeleteServiceFailure(err)))
       )
@@ -56,7 +59,10 @@ export class ServicesEffects {
     concatMap((action: servicesActions.DeleteEndpoint) =>
       this.homeService.deleteEndpointById(action.payload).pipe(
         map(
-          (result: any) => new servicesActions.DeleteEndpointSuccess(action.payload)
+          (result: any) => {
+            this.toastr.error('Endpoint deleted successfully!', '');
+            return new servicesActions.DeleteEndpointSuccess(action.payload);
+          }
         ),
         catchError(err => of(new servicesActions.DeleteEndpointFailure(err)))
       )
@@ -69,9 +75,15 @@ export class ServicesEffects {
     concatMap((action: servicesActions.UpdateEndpoint) =>
       this.homeService.updateEndpoint(action.payload.id, action.payload).pipe(
         map(
-          (result: any) => new servicesActions.UpdateEndpointSuccess(result)
+          (result: any) => {
+            this.toastr.success('Mocks updated successfully!', '');
+            return new servicesActions.UpdateEndpointSuccess(result);
+          }
         ),
-        catchError(err => of(new servicesActions.UpdateEndpointFailure(err)))
+        catchError(
+          err => {
+            return of(new servicesActions.UpdateEndpointFailure(err));
+          })
       )
     )
   );
@@ -83,10 +95,14 @@ export class ServicesEffects {
       return this.homeService.importServices(action.payload).pipe(
         map(
           (result: any) => {
-            return new servicesActions.ImportServicesSuccess(result)
+            this.toastr.success('Services imported successfully!', '');
+            return new servicesActions.ImportServicesSuccess(result);
           }
         ),
-        catchError(err => of(new servicesActions.ImportServicesFailure(err)))
+        catchError(err => {
+          this.toastr.error('Unable to import services!', '');
+          return of(new servicesActions.ImportServicesFailure(err));
+        })
       )
     })
   );
