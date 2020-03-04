@@ -2,10 +2,11 @@ import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/
 import { FormGroup, FormControl } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Actions, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { takeUntil, tap } from 'rxjs/operators';
+import * as experiencesSelectors from '../state/experiences/experiences.selectors';
 import * as experiencesActions from '../state/experiences/experiences.actions';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-experience-form-dialog',
@@ -18,6 +19,7 @@ export class ExperienceFormDialogComponent implements OnInit, OnDestroy {
   experienceData: any;
   experienceForm: FormGroup;
   isEditing: boolean = false;
+  isSyncingExperience$: Observable<boolean>;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -26,7 +28,7 @@ export class ExperienceFormDialogComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-
+    this.isSyncingExperience$ = this.store.pipe(select(experiencesSelectors.isSyncingExperience));
     let experienceFormData = this.destructureExperienceDetail(this.experienceData);
 
     if (this.experienceData.name) {

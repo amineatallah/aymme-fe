@@ -2,11 +2,13 @@ import { ExperiencesActions, ExperiencesActionTypes } from './experiences.action
 
 export interface ExperiencesState {
   experiences: any;
+  isSyncingExperience: boolean;
   error: string;
 }
 
 export const initialState: ExperiencesState = {
   experiences: [],
+  isSyncingExperience: false,
   error: '',
 };
 
@@ -24,12 +26,25 @@ export function reducer(state = initialState, action: ExperiencesActions): Exper
         experiences: [],
         error: action.payload,
       };
+    case ExperiencesActionTypes.SYNC_EXPERIENCE:
+      return {
+        ...state,
+        isSyncingExperience: true,
+      };
     case ExperiencesActionTypes.SYNC_EXPERIENCE_SUCCESS:
       return {
         ...state,
         experiences: processNewExperienceState(state.experiences, action.payload),
+        isSyncingExperience: false,
         error: '',
       };
+
+    case ExperiencesActionTypes.SYNC_EXPERIENCE_FAILURE:
+      return {
+        ...state,
+        isSyncingExperience: false,
+        error: '',
+      };      
     case ExperiencesActionTypes.DELETE_EXPERIENCE_SUCCESS:
       return {
         ...state,
