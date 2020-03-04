@@ -8,7 +8,7 @@
     <div class="col-6">
       <section class="aymme-header d-flex align-items-center mb-4">
         <h6 class="mb-0">Projects</h6>
-        <button class="btn btn-sm ml-auto btn-primary" (click)="open(createProjectModalTemplate)">Add Project</button>
+        <button class="btn btn-sm ml-auto btn-primary" (click)="openCreateProjectModal()">Add Project</button>
   
       </section>
       <ul class="aymme-list p-0" *ngIf="projects.length > 0 else noExperiences">
@@ -23,7 +23,7 @@
 </div>
 
   
-<ng-template #createProjectModalTemplate let-modal>
+<!-- <ng-template #createProjectModalTemplate let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Create Project</h4>
     <a class="p-1" (click)="modal.dismiss()">
@@ -43,4 +43,4 @@
       <button type="button" class="btn btn-primary" (click)="createProject()">Create</button>
     </div>
   </form>
-</ng-template>
+</ng-template> -->

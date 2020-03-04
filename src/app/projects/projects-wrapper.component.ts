@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectsService } from './projects.service';
 import { Observable } from 'rxjs';
+import * as projectsActions from '../state/projects/projects.actions';
+import * as projectsSelectors from '../state/projects/projects.selectors';
+import { Store, select } from '@ngrx/store';
 
 @Component({
   selector: 'projects-wrapper',
@@ -18,10 +20,11 @@ import { Observable } from 'rxjs';
 export class ProjectsWrapperComponent implements OnInit {
 
   projects$: Observable<any>
-  constructor(private projectsService: ProjectsService) { }
+  constructor(private store: Store<any>) { }
 
   ngOnInit(): void {
-    this.projects$ = this.projectsService.getProjects();
+    this.store.dispatch(new projectsActions.LoadProjects);
+    this.projects$ = this.store.pipe(select(projectsSelectors.getProjects));
   }
 
 }

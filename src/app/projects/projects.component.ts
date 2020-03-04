@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ProjectsService } from './projects.service';
+import { ModalService } from '../shared/modal.service';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'projects',
@@ -9,30 +8,19 @@ import { ProjectsService } from './projects.service';
   styleUrls: ['./projects.component.scss']
 })
 export class ProjectsComponent implements OnInit {
-  projectForm: FormGroup;
   @Input() projects: [] | undefined;
-  constructor(private modalService: NgbModal, private projectsService: ProjectsService) {}
+  constructor(private modalService: ModalService, private store: Store<any>) {}
 
   ngOnInit(): void {
-
-    this.projectForm = new FormGroup({
-      projectName: new FormControl('', [Validators.required, Validators.minLength(3)])
-    })
   }
 
-  open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-    }, (reason) => {
-    });
+  openCreateProjectModal() {
+    this.modalService.projectFormModal();
   }
 
-  createProject() {
-    this.projectsService.createProject(this.projectForm.value).subscribe(val => {
-    });
-  }
 
   deleteProject(projectName: string, event) {
-    this.projectsService.deleteProject(projectName).subscribe();
+    //this.store.deleteProject(projectName).subscribe();
     event.stopPropagation();
   }
 }

@@ -1,10 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import * as experiencesActions from '../state/experiences/experiences.actions';
-import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-experience-form-dialog',
@@ -12,15 +10,13 @@ import { Subject } from 'rxjs';
   styleUrls: ['./experience-form-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ExperienceFormDialogComponent implements OnInit, OnDestroy {
-  destroyed$ = new Subject<boolean>();
+export class ExperienceFormDialogComponent implements OnInit {
   experienceData: any;
   experienceForm: FormGroup;
   isEditing: boolean = false;
 
   constructor(
     public activeModal: NgbActiveModal,
-    private actions$: Actions,
     private store: Store<any>,
   ) { }
 
@@ -39,11 +35,6 @@ export class ExperienceFormDialogComponent implements OnInit, OnDestroy {
       experienceLoginUrl: new FormControl(experienceFormData.experienceLoginUrl),
       experienceModelUrl: new FormControl(experienceFormData.experienceModelUrl),
     });
-  }
-
-  ngOnDestroy() {
-    this.destroyed$.next(true);
-    this.destroyed$.complete();
   }
 
   destructureExperienceDetail(experienceData) {
