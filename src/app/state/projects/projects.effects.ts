@@ -26,7 +26,7 @@ export class ProjectsEffects {
           }),
         catchError(
           err => {
-            this.toastr.error(err.error.message, 'Unable to load Experiences!');
+            this.toastr.error(err.error.message, 'Unable to load projects!');
             return of(new projectsActions.LoadProjectsFailure(err))
           }
         )
@@ -41,13 +41,13 @@ export class ProjectsEffects {
       this.projectsService.createProject(action.payload).pipe(
         map(
           (experience: any[]) => {
-            this.toastr.success('Experience synced successfully!', '')
+            this.toastr.success('Project created successfully!', '')
             return new projectsActions.CreateProjectSuccess(experience);
           }
         ),
         catchError(
           err => {
-            this.toastr.error(err.error.message, 'Unable to sync Experience!');
+            this.toastr.error(err.error.message, 'Unable to create project!');
             return of(new projectsActions.CreateProjectFailure(err))
           }
         )
@@ -62,13 +62,13 @@ export class ProjectsEffects {
       this.projectsService.deleteProject(action.payload).pipe(
         map(
           (results: any[]) => {
-            this.toastr.success('', 'Experience deleted successfully!');
+            this.toastr.success('', 'Project deleted successfully!');
             return new projectsActions.DeleteProjectSuccess(action.payload);
           }
         ),
         catchError(
           err => {
-            this.toastr.error(err.error.message, 'Unable to delete Experience!');
+            this.toastr.error(err.error.message, 'Unable to delete project!');
             return of(new projectsActions.DeleteProjectFailure(err))
           }
         )

@@ -8,39 +8,16 @@
     <div class="col-6">
       <section class="aymme-header d-flex align-items-center mb-4">
         <h6 class="mb-0">Projects</h6>
-        <button class="btn btn-sm ml-auto btn-primary" (click)="openCreateProjectModal()">Add Project</button>
+        <button class="btn btn-sm ml-auto btn-primary" (click)="openCreateProjectModal()">Create Project</button>
   
       </section>
       <ul class="aymme-list p-0" *ngIf="projects.length > 0 else noExperiences">
         <li *ngFor="let project of projects" class="mb-2">
           <h5 class="d-flex align-items-center text-uppercase" [routerLink]="project.name">{{project.name}}
-            <i class="fas fa-trash ml-auto" (click)="deleteProject(project.name, $event)"></i>
+            <i class="fas fa-trash ml-auto" (click)="openConfirmDeleteProject(project.name, $event)"></i>
           </h5>          
         </li>
       </ul>
     </div> 
   </div>
 </div>
-
-  
-<!-- <ng-template #createProjectModalTemplate let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Create Project</h4>
-    <a class="p-1" (click)="modal.dismiss()">
-      <i class="fas fa-times"></i>
-    </a>
-  </div>
-  <form [formGroup]="projectForm">
-    <div class="modal-body">
-        <div class="form-group mb-0">
-          <label class="col-auto" for="projectName">Project Name</label>
-          <div class="col">
-            <input id="projectName" formControlName="projectName" type="text" class="form-control" placeholder="Project Name">
-          </div>
-        </div>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-primary" (click)="createProject()">Create</button>
-    </div>
-  </form>
-</ng-template> -->

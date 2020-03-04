@@ -46,8 +46,8 @@ export class CreateProjectFailure implements Action {
 }
 
 export class DeleteProject implements Action {
-  readonly type = ProjectsActionTypes.CREATE_PROJECT;
-  constructor(public payload: any) { }
+  readonly type = ProjectsActionTypes.DELETE_PROJECT;
+  constructor(public payload: string) { }
 }
 
 export class DeleteProjectSuccess implements Action {

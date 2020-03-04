@@ -1,8 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { takeUntil, tap } from 'rxjs/operators';
 import * as experiencesActions from '../state/experiences/experiences.actions';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-experience-form-dialog',
@@ -10,13 +13,15 @@ import * as experiencesActions from '../state/experiences/experiences.actions';
   styleUrls: ['./experience-form-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ExperienceFormDialogComponent implements OnInit {
+export class ExperienceFormDialogComponent implements OnInit, OnDestroy {
+  destroyed$ = new Subject<boolean>();
   experienceData: any;
   experienceForm: FormGroup;
   isEditing: boolean = false;
 
   constructor(
     public activeModal: NgbActiveModal,
+    private actions$: Actions,
     private store: Store<any>,
   ) { }
 
@@ -35,6 +40,19 @@ export class ExperienceFormDialogComponent implements OnInit {
       experienceLoginUrl: new FormControl(experienceFormData.experienceLoginUrl),
       experienceModelUrl: new FormControl(experienceFormData.experienceModelUrl),
     });
+
+    this.actions$.pipe(
+      ofType(experiencesActions.ExperiencesActionTypes.SYNC_EXPERIENCE_SUCCESS),
+      takeUntil(this.destroyed$),
+      tap(() => {
+        this.activeModal.close(true);
+      })
+    ).subscribe();
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 
   destructureExperienceDetail(experienceData) {

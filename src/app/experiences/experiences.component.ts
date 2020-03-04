@@ -34,7 +34,7 @@ export class ExperiencesComponent implements OnInit {
 
   openConfirmDeleteExperience(experience, event) {
     this.modalService.confirm(
-      'Are you sure you want to delete the experience?', 'Experience', experience.name
+      'Are you sure you want to delete the experience?', 'Delete Experience', experience.name
     ).pipe(
       take(1)
     ).subscribe(result => {

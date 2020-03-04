@@ -1,4 +1,5 @@
 import { ProjectsActions, ProjectsActionTypes } from './projects.actions';
+import { isNgTemplate } from '@angular/compiler';
 
 export interface ProjectsState {
   projects: any;
@@ -15,19 +16,21 @@ export function reducer(state = initialState, action: ProjectsActions): Projects
     case ProjectsActionTypes.LOAD_PROJECTS_SUCCESS:
       return {
         ...state,
-        projects: [...action.payload],
+        projects: action.payload,
         error: '',
       };
     case ProjectsActionTypes.CREATE_PROJECT_SUCCESS:
       return {
         ...state,
-        projects: [...state.projects, action.payload],
+        projects: [...state.projects, action.payload].filter((project, index, array) => {
+          return array.indexOf(array.find(item => item.name === project.name)) === index;
+        }),
         error: '',
       };
     case ProjectsActionTypes.DELETE_PROJECT_SUCCESS:
       return {
         ...state,
-        projects: [state.projects.filter(project => project.name !== action.payload)],
+        projects: state.projects.filter(project => project.name !== action.payload),
         error: '',
       };
     default:
