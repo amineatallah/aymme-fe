@@ -26,8 +26,9 @@
               <ul *ngIf="!service.hidden" [@collapseExpand]>
                 <li *ngFor="let endpoint of service.endpoints"
                   class="d-flex align-items-center mb-2 show-on-hover-trigger"
-                  [ngClass]="{'active' : context.selectedEndpoint ? endpoint.id === context.selectedEndpoint._id : false}">
-                  <a (click)="setSelectedEndpoint(endpoint)"
+                  [ngClass]="{'active' : context.selectedEndpoint ? endpoint.id === context.selectedEndpoint.id : false}"
+                  >
+                  <a (click)="setSelectedEndpoint(projectName, endpoint)"
                     class="my-auto">{{customFormat(endpoint.path, service.serviceName)}}</a>
 
                   <i class="fas fa-trash ml-auto mr-4 show-on-hover-item"

@@ -1,0 +1,47 @@
+
+<ng-template #noExperiences>
+  <p>There are currently no Projects created.</p>
+</ng-template>
+  
+<div class="container-fluid">
+  <div class="row d-flex justify-content-center">
+    <div class="col-6">
+      <section class="services-header d-flex align-items-center mb-4">
+        <h6 class="mb-0">Projects</h6>
+        <button class="btn btn-sm ml-auto btn-primary" (click)="open(createProjectModalTemplate)">Add Project</button>
+  
+      </section>
+      <ul class="services-list p-0" *ngIf="projects.length > 0 else noExperiences">
+        <li *ngFor="let project of projects" class="mb-2 d-flex justify-content-between">
+          <h5 class="d-flex align-items-center text-uppercase" [routerLink]="project.name">{{project.name}}
+          </h5>
+          <i class="fas fa-trash ml-auto" (click)="deleteProject(project.name)"></i>
+          <!-- <i class="fas fa-trash ml-auto" (click)="openConfirmDeleteExperience(experience, $event)"></i> -->
+        </li>
+      </ul>
+    </div> 
+  </div>
+</div>
+
+  
+<ng-template #createProjectModalTemplate let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Create Project</h4>
+    <a class="p-1" (click)="modal.dismiss()">
+      <i class="fas fa-times"></i>
+    </a>
+  </div>
+  <form [formGroup]="projectForm">
+    <div class="modal-body">
+        <div class="form-group mb-0">
+          <label class="col-auto" for="projectName">Project Name</label>
+          <div class="col">
+            <input id="projectName" formControlName="projectName" type="text" class="form-control" placeholder="Project Name">
+          </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="createProject()">Create</button>
+    </div>
+  </form>
+</ng-template>

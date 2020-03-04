@@ -9,6 +9,7 @@ import { Endpoint } from '../shared/service.interface';
 import { collapseExpandAnimation } from '../shared/animation';
 import { ModalService } from '../shared/modal.service';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-services-list',
@@ -22,6 +23,7 @@ export class ServicesListComponent implements OnInit {
   isInitializing = true;
   allHidden = false;
   importServicesForm : FormGroup;
+  projectName: string;
 
   readonly services$: Observable<any> = this.store.pipe(
     select(servicesSelectors.getServices),
@@ -30,7 +32,7 @@ export class ServicesListComponent implements OnInit {
         return;
       }
       // Select the first service and first endpoint (For development of AYMME purpose)
-      this.setSelectedEndpoint(services[0].endpoints[0]);
+      this.setSelectedEndpoint(this.projectName, services[0].endpoints[0]);
       this.isInitializing = false;
     })
   );
@@ -46,18 +48,20 @@ export class ServicesListComponent implements OnInit {
     private modalService: ModalService,
     private homeService: HomeService,
     private formBuilder: FormBuilder,
+    private activeRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
 
+    this.projectName = this.activeRoute.snapshot.params.projectName;
     this.importServicesForm = this.formBuilder.group({
       importFiles: new FormControl(''),
     });
     this.loadServices(true);
   }
 
-  loadServices(initializing : boolean) {
-    this.store.dispatch(new servicesActions.LoadServices(initializing));
+  loadServices(initializing: boolean) {
+    this.store.dispatch(new servicesActions.LoadServices({projectName: this.projectName, initializing: initializing}));
     this.allHidden = false;
     return false;
   }
@@ -100,15 +104,16 @@ export class ServicesListComponent implements OnInit {
   }
 
   deleteService(serviceName: string) {
-    this.store.dispatch(new servicesActions.DeleteService(serviceName));
+    this.store.dispatch(new servicesActions.DeleteService({projectName: this.projectName, serviceName: serviceName}));
   }
 
-  setSelectedEndpoint(endpoint: Endpoint) {
-    this.store.dispatch(new servicesActions.LoadSelectedEndpoint(endpoint));
+  setSelectedEndpoint(projectName: String, endpoint: Endpoint) {
+
+    this.store.dispatch(new servicesActions.LoadSelectedEndpoint({projectName, endpoint}));
   }
 
   deleteEndpoint(endpointId: string) {
-    this.store.dispatch(new servicesActions.DeleteEndpoint(endpointId));
+    this.store.dispatch(new servicesActions.DeleteEndpoint({projectName: this.projectName, id: endpointId}));
   }
 
   onFileChange(event): void {

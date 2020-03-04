@@ -4,10 +4,13 @@ import { ModelComponent } from './model/model.component';
 import { ServicesListComponent } from './services-list/services-list.component';
 import { HowToComponent } from './how-to/how-to.component';
 import { ExperiencesComponent } from './experiences/experiences.component';
+import { ProjectsWrapperComponent } from './projects/projects-wrapper.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'services' },
-  { path: 'services', component: ServicesListComponent, data: { animation: 'ServicesPage' } },
+  { path: '', pathMatch: 'full', redirectTo: 'projects' },
+  { path: 'projects', component: ProjectsWrapperComponent },
+  { path: 'projects/:projectName', component: ServicesListComponent },
+  // { path: 'services', component: ServicesListComponent, data: { animation: 'ServicesPage' } },
   { path: 'experiences', component: ExperiencesComponent, data: { animation: 'ExperiencesPage' } },
   { path: 'experiences/:experienceName', component: ModelComponent, data: { animation: 'ExperienceDetailsPage' } },
   { path: 'howto', component: HowToComponent, data: { animation: 'HowToPage' } }

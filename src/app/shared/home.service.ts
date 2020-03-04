@@ -12,33 +12,22 @@ export class HomeService {
 
   constructor(private http: HttpClient) { }
 
-  getServices() {
-    return this.http.get(`${this.url}/services`);
+  getServices(projectName) {
+    return this.http.get(`${this.url}/projects/${projectName}/services`);
   }
 
-  getServiceEndpoints(serviceName: string) {
-    return this.http.get(`${this.url}/services/` + serviceName);
+  getEndpoint(projectName: string, id: string) {
+    return this.http.get(`${this.url}/projects/${projectName}/endpoints/${id}`);
   }
 
-  getEndpoint(id: string) {
-    return this.http.get(`${this.url}/endpoints/` + id);
-  }
-
-  updateEndpoint(id: string, data: any) {
-    return this.http.post(`${this.url}/endpoints/` + id, data, {});
-  }
-
-  updateMocks(data: any) {
-    return this.http.post(`${this.url}/mocks`, data, {});
+  updateEndpoint(projectName, id: string, data: any) {
+    return this.http.post(`${this.url}/projects/${projectName}/endpoints/${id}`, data, {});
   }
 
   deleteSpecs(id: string) {
     return this.http.delete(`${this.url}/specs/` + id);
   }
 
-  findMocks(id) {
-    return this.http.get(`${this.url}/findmocks/` + id);
-  }
 
   createSpec(data: any) {
     return this.http.post(`${this.url}/createspec`, data);
@@ -48,12 +37,12 @@ export class HomeService {
     return this.http.get(`${this.url}/specs`);
   }
 
-  deleteService(serviceName: string) {
-    return this.http.delete(`${this.url}/services/` + serviceName);
+  deleteService(projectName: string, serviceName: string) { 
+    return this.http.delete(`${this.url}/projects/${projectName}/services/${serviceName}`);
   }
 
-  deleteEndpointById(id: string) {
-    return this.http.delete(`${this.url}/endpoints/` + id);
+  deleteEndpointById(projectName: string, id: string) {
+    return this.http.delete(`${this.url}/projects/${projectName}/endpoints/${id}`);
   }
 
 

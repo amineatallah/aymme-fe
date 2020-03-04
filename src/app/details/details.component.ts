@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 import * as ServicesActions from '../state/services/services.actions';
 import { Actions } from '@ngrx/effects';
 import { ModalService } from '../shared/modal.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-details',
@@ -44,19 +45,25 @@ export class DetailsComponent implements OnInit {
   defaultFilterText: string;
   headers: FormArray;
   showHeaders: boolean;
+  projectName: string;
   @ViewChildren(JsonEditorComponent) editor: QueryList<JsonEditorComponent>;
 
   constructor(
     private store: Store<any>,
     private formBuilder: FormBuilder,
     private specNameValidator: SpecNameValidator,
+    private toastr: ToastrService,
+    private actions$: Actions,
     private modalService: ModalService,
+    private activeRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
     this.options.mode = 'code';
     this.options.modes = ['code', 'text', 'tree', 'view'];
     this.options.statusBar = false;
+
+    this.projectName = this.activeRoute.snapshot.params.projectName;
 
     this.form = this.formBuilder.group({
       delay: 0,
@@ -77,7 +84,9 @@ export class DetailsComponent implements OnInit {
         this.form.get('delay').setValue(val.delay);
         this.form.get('noData').setValue(val.emptyArray);
         this.response = val;
-        this.endpointData = val.response[val.statusCode].data.body;
+        console.log('this.response', this.response);
+        // this.endpointData = val.response[val.statusCode].data.body;
+        this.endpointData = val.response[val.statusCode];
 
         this.headers = this.form.get('headers') as FormArray;
         this.headers.clear();
@@ -140,11 +149,12 @@ export class DetailsComponent implements OnInit {
       delay: parseInt(this.form.get('delay').value, 10),
       emptyArray: this.form.get('noData').value,
       forward: this.form.get('forward').value,
-      response: this.editor.first.get(),
+      response: Object.assign({}, this.response.response, { [this.form.get('statusCode').value]:this.editor.first.get()}),
       customHeaders: this.arrayToObject(this.form.value.headers)
     };
 
-    this.store.dispatch(new ServicesActions.UpdateEndpoint(data));
+
+    this.store.dispatch(new ServicesActions.UpdateEndpoint({projectName: this.projectName, data: data}));
   }
 
   arrayToObject(array) {
@@ -157,7 +167,7 @@ export class DetailsComponent implements OnInit {
   }
 
   changeStatusCode(event) {
-    this.endpointData = this.response.response[event].data.body;
+    this.endpointData = this.response.response[event];
   }
 
   useMocks(data) {

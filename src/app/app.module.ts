@@ -41,6 +41,8 @@ import { HowToComponent } from './how-to/how-to.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { ExperienceFormDialogComponent } from './experience-form-dialog/experience-form-dialog.component';
 import { FooterComponent } from './footer/footer.component';
+import { ProjectsComponent } from './projects/projects.component';
+import { ProjectsWrapperComponent } from './projects/projects-wrapper.component';
 
 
 @NgModule({
@@ -56,6 +58,8 @@ import { FooterComponent } from './footer/footer.component';
     ConfirmDialogComponent,
     ExperienceFormDialogComponent,
     FooterComponent,
+    ProjectsComponent,
+    ProjectsWrapperComponent
   ],
   imports: [
     BrowserModule,

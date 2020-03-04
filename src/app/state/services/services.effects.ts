@@ -15,10 +15,13 @@ export class ServicesEffects {
   loadServices$ = this.actions$.pipe(
     ofType(servicesActions.ServicesActionTypes.LOAD_SERVICES),
     concatMap((action: servicesActions.LoadServices) =>
-      this.homeService.getServices().pipe(
+    {
+
+      console.log('actions', action);
+     return this.homeService.getServices(action.payload.projectName).pipe(
         map(
           (services: any[]) => {
-            if (!action.initializing) {
+            if (!action.payload.initializing) {
               this.toastr.success('', 'Succesfully refreshed services!');
             }
             return new servicesActions.LoadServicesSuccess(services);
@@ -31,6 +34,7 @@ export class ServicesEffects {
           }
         )
       )
+    }
     )
   );
 
@@ -38,7 +42,7 @@ export class ServicesEffects {
   loadSelectedEndpoint$ = this.actions$.pipe(
     ofType(servicesActions.ServicesActionTypes.LOAD_SELECTED_ENDPOINT),
     concatMap((action: servicesActions.LoadSelectedEndpoint) =>
-      this.homeService.getEndpoint(action.payload.id).pipe(
+      this.homeService.getEndpoint(action.payload.projectName, action.payload.endpoint.id).pipe(
         map(
           (endpoint: any) => new servicesActions.LoadEndpointSuccess(endpoint)
         ),
@@ -56,11 +60,11 @@ export class ServicesEffects {
   deleteService$ = this.actions$.pipe(
     ofType(servicesActions.ServicesActionTypes.DELETE_SERVICE),
     concatMap((action: servicesActions.DeleteService) =>
-      this.homeService.deleteService(action.payload).pipe(
+      this.homeService.deleteService(action.payload.projectName, action.payload.serviceName).pipe(
         map(
           (result: any) => {
             this.toastr.success('', 'Service deleted successfully!');
-            return new servicesActions.DeleteServiceSuccess(action.payload)
+            return new servicesActions.DeleteServiceSuccess(action.payload.serviceName)
           }
         ),
         catchError(
@@ -77,11 +81,11 @@ export class ServicesEffects {
   deleteEndpoint$ = this.actions$.pipe(
     ofType(servicesActions.ServicesActionTypes.DELETE_ENDPOINT),
     concatMap((action: servicesActions.DeleteEndpoint) =>
-      this.homeService.deleteEndpointById(action.payload).pipe(
+      this.homeService.deleteEndpointById(action.payload.projectName, action.payload.id).pipe(
         map(
           (result: any) => {
             this.toastr.success('', 'Endpoint deleted successfully!');
-            return new servicesActions.DeleteEndpointSuccess(action.payload);
+            return new servicesActions.DeleteEndpointSuccess(action.payload.id);
           }
         ),
         catchError(
@@ -98,7 +102,7 @@ export class ServicesEffects {
   updateEndpoint$ = this.actions$.pipe(
     ofType(servicesActions.ServicesActionTypes.UPDATE_ENDPOINT),
     concatMap((action: servicesActions.UpdateEndpoint) =>
-      this.homeService.updateEndpoint(action.payload.id, action.payload).pipe(
+      this.homeService.updateEndpoint(action.payload.projectName, action.payload.data.id, action.payload.data).pipe(
         map(
           (result: any) => {
             this.toastr.success('', 'Mocks updated successfully!');

@@ -24,7 +24,7 @@ export enum ServicesActionTypes {
 
 export class LoadServices implements Action {
   readonly type = ServicesActionTypes.LOAD_SERVICES;
-  constructor(public initializing: boolean) { }
+  constructor( public payload: any) { }
 }
 
 export class LoadServicesSuccess implements Action {
@@ -40,7 +40,7 @@ export class LoadServicesFailure implements Action {
 
 export class DeleteService implements Action {
   readonly type = ServicesActionTypes.DELETE_SERVICE;
-  constructor(public payload: string) { }
+  constructor(public payload: any) { }
 }
 
 export class DeleteServiceSuccess implements Action {
@@ -57,7 +57,7 @@ export class DeleteServiceFailure implements Action {
 
 export class DeleteEndpoint implements Action {
   readonly type = ServicesActionTypes.DELETE_ENDPOINT;
-  constructor(public payload: string) { }
+  constructor(public payload: any) { }
 }
 
 export class DeleteEndpointSuccess implements Action {
@@ -75,7 +75,7 @@ export class DeleteEndpointFailure implements Action {
 export class LoadSelectedEndpoint implements Action {
   readonly type = ServicesActionTypes.LOAD_SELECTED_ENDPOINT;
 
-  constructor(public payload: Endpoint) { }
+  constructor(public payload: any) { }
 }
 
 export class LoadEndpointSuccess implements Action {
