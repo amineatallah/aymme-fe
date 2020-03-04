@@ -8,6 +8,8 @@
             <h6 class="mb-0">Services</h6>
             <form [formGroup]="importProjectForm" class="btn btn-outline-secondary btn-sm btn-file-upload ml-auto b">
               <input formControlName="importFiles" type="file" single accept=".json" (change)="onFileChange($event)">
+              <span *ngIf="isImportingProject$ |async" class="spinner-grow spinner-grow-sm mr-2" role="status"
+                aria-hidden="true"></span>
               <span>Import</span>
             </form>
             <button class="btn btn-sm btn-outline-primary mx-2" (click)="exportProject()">Export</button>
@@ -16,29 +18,42 @@
             <a href="#" *ngIf="context.hasServices" class="p-1 ml-2" (click)="toggleAll(services);"><i
                 class="fas fa-arrows-alt-v"></i></a>
           </section>
-          <!-- <pre>{{services | json}}</pre> -->
-          <ul class="services-list p-0" *ngIf="context.hasServices else noServices">
-            <li *ngFor="let service of services" class="mb-2" [ngClass]="{'is-open': !service.hidden}">
-              <h5 class="d-flex align-items-center" (click)="service.hidden = !service.hidden">{{service.serviceName}}
 
-                <i class="fas fa-trash ml-auto" (click)="openConfirmDeleteService(service, $event)"></i>
-                <i class="fas fa-chevron-down ml-3"></i></h5>
-              <ul *ngIf="!service.hidden" [@collapseExpand]>
-                <li *ngFor="let endpoint of service.endpoints"
-                  class="d-flex align-items-center mb-2 show-on-hover-trigger"
-                  [ngClass]="{'active' : context.selectedEndpoint ? endpoint.id === context.selectedEndpoint.id : false}"
-                  >
-                  <a (click)="setSelectedEndpoint(projectName, endpoint)"
-                    class="my-auto">{{customFormat(endpoint.path, service.serviceName)}}</a>
+          <ng-container *ngIf="isLoadingServices$ | async; then loadingServices else loadedServices"></ng-container>
 
-                  <i class="fas fa-trash ml-auto mr-4 show-on-hover-item"
-                    (click)="openConfirmDeleteEndpoint(endpoint)"></i>
-                </li>
-              </ul>
-            </li>
-          </ul>
+          <ng-template #loadingServices>
+            <div class="d-flex justify-content-center">
+              <div class="spinner-grow text-light" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+          </ng-template>
+
+          <ng-template #loadedServices>
+            <ul class="services-list p-0" *ngIf="context.hasServices else noServices">
+              <li *ngFor="let service of services" class="mb-2" [ngClass]="{'is-open': !service.hidden}">
+                <h5 class="d-flex align-items-center" (click)="service.hidden = !service.hidden">{{service.serviceName}}
+
+                  <i class="fas fa-trash ml-auto" (click)="openConfirmDeleteService(service, $event)"></i>
+                  <i class="fas fa-chevron-down ml-3"></i></h5>
+                <ul *ngIf="!service.hidden" [@collapseExpand]>
+                  <li *ngFor="let endpoint of service.endpoints"
+                    class="d-flex align-items-center mb-2 show-on-hover-trigger"
+                    [ngClass]="{'active' : context.selectedEndpoint ? endpoint.id === context.selectedEndpoint.id : false}">
+                    <a (click)="setSelectedEndpoint(projectName, endpoint)"
+                      class="my-auto">{{customFormat(endpoint.path, service.serviceName)}}</a>
+
+                    <i class="fas fa-trash ml-auto mr-4 show-on-hover-item"
+                      (click)="openConfirmDeleteEndpoint(endpoint)"></i>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </ng-template>
         </ng-container>
       </ng-container>
+
+
     </div>
 
     <div class="col-6 no-relative">

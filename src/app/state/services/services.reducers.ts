@@ -4,27 +4,38 @@ import { Service, Endpoint } from '../../shared/service.interface';
 export interface ServicesState {
   services: Service[];
   selectedEndpoint: any | undefined;
+  isImportingProject: boolean;
+  isLoadingServices: boolean;
   error: string;
 }
 
 export const initialState: ServicesState = {
   services: [],
   selectedEndpoint: undefined,
+  isImportingProject: false,
+  isLoadingServices: false,
   error: '',
 };
 
 export function reducer(state = initialState, action: ServicesActions): ServicesState {
   switch (action.type) {
+    case ServicesActionTypes.LOAD_SERVICES:
+      return {
+        ...state,
+        isLoadingServices: true,
+      };
     case ServicesActionTypes.LOAD_SERVICES_SUCCESS:
       return {
         ...state,
         services: [...action.payload],
+        isLoadingServices: false,
         error: '',
       };
     case ServicesActionTypes.LOAD_SERVICES_FAILURE:
       return {
         ...state,
         services: [],
+        isLoadingServices: false,
         error: action.payload,
       };
     case ServicesActionTypes.DELETE_SERVICE_SUCCESS:
@@ -61,13 +72,25 @@ export function reducer(state = initialState, action: ServicesActions): Services
         services: [],
         error: action.payload,
       };
-    case ServicesActionTypes.IMPORT_SERVICES_SUCCESS:
+    case ServicesActionTypes.IMPORT_PROJECT:
+      return {
+        ...state,
+        isImportingProject: true,
+      };
+    case ServicesActionTypes.IMPORT_PROJECT_SUCCESS:
       return {
         ...state,
         services: action.payload,
         selectedEndpoint: null,
+        isImportingProject: false,
         error: '',
       };
+
+    case ServicesActionTypes.IMPORT_PROJECT_FAILURE:
+      return {
+        ...state,
+        isImportingProject: false,
+      }
     default:
       return state;
   }

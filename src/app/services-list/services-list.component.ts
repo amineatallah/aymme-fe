@@ -24,7 +24,9 @@ export class ServicesListComponent implements OnInit {
   allHidden = false;
   importProjectForm : FormGroup;
   projectName: string;
-
+  isImportingProject$ : Observable<boolean>;
+  isLoadingServices$ : Observable<boolean>;
+  
   readonly services$: Observable<any> = this.store.pipe(
     select(servicesSelectors.getServices),
     tap(services => {
@@ -52,7 +54,8 @@ export class ServicesListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
+    this.isImportingProject$ = this.store.pipe(select(servicesSelectors.isImportingProject));
+    this.isLoadingServices$ = this.store.pipe(select(servicesSelectors.isLoadingServices));
     this.projectName = this.activeRoute.snapshot.params.projectName;
     this.importProjectForm = this.formBuilder.group({
       importFiles: new FormControl(''),
@@ -117,7 +120,7 @@ export class ServicesListComponent implements OnInit {
   }
 
   onFileChange(event): void {
-    this.store.dispatch(new servicesActions.ImportServices(this.projectName, event.target.files[0]));
+    this.store.dispatch(new servicesActions.ImportProject(this.projectName, event.target.files[0]));
     this.importProjectForm.reset();
   }
   
