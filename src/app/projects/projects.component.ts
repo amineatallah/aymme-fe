@@ -31,7 +31,8 @@ export class ProjectsComponent implements OnInit {
     });
   }
 
-  deleteProject(projectName: string) {
+  deleteProject(projectName: string, event) {
     this.projectsService.deleteProject(projectName).subscribe();
+    event.stopPropagation();
   }
 }
