@@ -1,5 +1,5 @@
 
-<ng-template #noExperiences>
+<ng-template #noProjects>
   <p>There are currently no projects created.</p>
 </ng-template>
   
@@ -11,7 +11,7 @@
         <button class="btn btn-sm ml-auto btn-primary" (click)="openCreateProjectModal()">Create Project</button>
   
       </section>
-      <ul class="aymme-list p-0" *ngIf="projects.length > 0 else noExperiences">
+      <ul class="aymme-list p-0" *ngIf="projects.length > 0 else noProjects">
         <li *ngFor="let project of projects" class="mb-2">
           <h5 class="d-flex align-items-center text-uppercase" [routerLink]="project.name">{{project.name}}
             <i class="fas fa-trash ml-auto" (click)="openConfirmDeleteProject(project.name, $event)"></i>

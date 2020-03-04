@@ -18,7 +18,7 @@
     </div>
 
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Create</button>
+        <button type="submit" class="btn btn-primary"> <span *ngIf="isCreatingProject$ |async" class="spinner-grow spinner-grow-sm mr-2" role="status" aria-hidden="true"></span>Create</button>
     </div>
 
 </form>
