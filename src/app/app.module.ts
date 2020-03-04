@@ -31,6 +31,9 @@ import { SpecificationsEffects } from './state/specifications/specifications.eff
 import { reducer as experiencesReducers } from './state/experiences/experiences.reducers';
 import { ExperiencesEffects } from './state/experiences/experiences.effects';
 
+import { reducer as projectsReducers } from './state/projects/projects.reducers';
+import { ProjectsEffects } from './state/projects/projects.effects';
+
 import { ToastrModule } from 'ngx-toastr';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -43,6 +46,8 @@ import { ExperienceFormDialogComponent } from './experience-form-dialog/experien
 import { FooterComponent } from './footer/footer.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { ProjectsWrapperComponent } from './projects/projects-wrapper.component';
+import { ProjectFormDialogComponent } from './project-form-dialog/project-form-dialog.component';
+import { DirectivesModule } from './directives/directives.module';
 
 
 @NgModule({
@@ -59,7 +64,8 @@ import { ProjectsWrapperComponent } from './projects/projects-wrapper.component'
     ExperienceFormDialogComponent,
     FooterComponent,
     ProjectsComponent,
-    ProjectsWrapperComponent
+    ProjectsWrapperComponent,
+    ProjectFormDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,6 +78,7 @@ import { ProjectsWrapperComponent } from './projects/projects-wrapper.component'
     ReactiveFormsModule,
     FormsModule,
     BrowserAnimationsModule,
+    DirectivesModule,
 
     StoreModule.forRoot(rootReducers, {}),
     StoreRouterConnectingModule.forRoot({serializer: CustomSerializer}),
@@ -85,6 +92,9 @@ import { ProjectsWrapperComponent } from './projects/projects-wrapper.component'
 
     StoreModule.forFeature('experiences', experiencesReducers),
     EffectsModule.forFeature([ExperiencesEffects]),
+    
+    StoreModule.forFeature('projects', projectsReducers),
+    EffectsModule.forFeature([ProjectsEffects]),
 
     ToastrModule.forRoot({ easing: 'ease-in-out' }),
     StoreDevtoolsModule.instrument( {

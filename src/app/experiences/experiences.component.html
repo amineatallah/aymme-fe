@@ -1,5 +1,5 @@
 <ng-template #noExperiences>
-  <p>There are currently no Experiences created.</p>
+  <p>There are currently no Experiences added.</p>
 </ng-template>
 
 <div class="container-fluid">
@@ -7,13 +7,13 @@
     <div class="col-6">
       <ng-container *ngIf="experiences$ | async as experiences">
 
-        <section class="services-header d-flex align-items-center mb-4">
+        <section class="aymme-header d-flex align-items-center mb-4">
           <h6 class="mb-0">Experiences</h6>
           <button class="btn btn-sm ml-auto btn-primary" (click)="openAddExperienceModal()">Add Experiences</button>
 
         </section>
         <!-- <pre>{{services | json}}</pre> -->
-        <ul class="services-list p-0" *ngIf="experiences.length > 0 else noExperiences">
+        <ul class="aymme-list p-0" *ngIf="experiences.length > 0 else noExperiences">
           <li *ngFor="let experience of experiences" class="mb-2">
             <h5 class="d-flex align-items-center" [routerLink]="experience.name">{{experience.name}}
               <i class="fas fa-trash ml-auto" (click)="openConfirmDeleteExperience(experience, $event)"></i>

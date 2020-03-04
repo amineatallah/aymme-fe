@@ -4,6 +4,7 @@ import { Observable, from, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { ExperienceFormDialogComponent } from '../experience-form-dialog/experience-form-dialog.component';
+import { ProjectFormDialogComponent } from '../project-form-dialog/project-form-dialog.component';
 
 
 @Injectable({
@@ -38,6 +39,19 @@ export class ModalService {
       ExperienceFormDialogComponent, { backdrop: 'static' });
 
     modal.componentInstance.experienceData = experienceData;
+
+    return from(modal.result).pipe(
+      catchError(error => {
+        console.warn(error);
+        return of(undefined);
+      })
+    );
+  }
+
+  projectFormModal(
+  ): Observable<boolean> {
+    const modal = this.ngbModal.open(
+      ProjectFormDialogComponent, { backdrop: 'static' });
 
     return from(modal.result).pipe(
       catchError(error => {

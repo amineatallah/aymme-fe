@@ -20,6 +20,7 @@ export class ProjectsService {
   }
 
   deleteProject(projectName) {
+    console.log('lol' + projectName);
     return this.http.delete(`${this.url}/projects/${projectName}`)
   }
 }

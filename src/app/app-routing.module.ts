@@ -8,9 +8,8 @@ import { ProjectsWrapperComponent } from './projects/projects-wrapper.component'
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'projects' },
-  { path: 'projects', component: ProjectsWrapperComponent },
-  { path: 'projects/:projectName', component: ServicesListComponent },
-  // { path: 'services', component: ServicesListComponent, data: { animation: 'ServicesPage' } },
+  { path: 'projects', component: ProjectsWrapperComponent, data: { animation: 'ProjectsPage' } },
+  { path: 'projects/:projectName', component: ServicesListComponent, data: { animation: 'ServicesListPage' } },
   { path: 'experiences', component: ExperiencesComponent, data: { animation: 'ExperiencesPage' } },
   { path: 'experiences/:experienceName', component: ModelComponent, data: { animation: 'ExperienceDetailsPage' } },
   { path: 'howto', component: HowToComponent, data: { animation: 'HowToPage' } }
