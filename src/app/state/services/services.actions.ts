@@ -109,7 +109,7 @@ export class UpdateEndpointFailure implements Action {
 
 export class ImportServices implements Action {
   readonly type = ServicesActionTypes.IMPORT_SERVICES;
-  constructor(public payload: File) { }
+  constructor(public projectName, public files: File) { }
 }
 
 export class ImportServicesSuccess implements Action {

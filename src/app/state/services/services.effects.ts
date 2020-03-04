@@ -123,7 +123,7 @@ export class ServicesEffects {
   exportServices$ = this.actions$.pipe(
     ofType(servicesActions.ServicesActionTypes.IMPORT_SERVICES),
     concatMap((action: servicesActions.ImportServices) => {
-      return this.homeService.importServices(action.payload).pipe(
+      return this.homeService.importProject(action.projectName, action.files).pipe(
         map(
           (result: any) => {
             this.toastr.success('Services imported successfully!', '');
@@ -131,6 +131,7 @@ export class ServicesEffects {
           }
         ),
         catchError(err => {
+          console.log(err);
           this.toastr.error(err.error.message, 'Unable to import services!');
           return of(new servicesActions.ImportServicesFailure(err));
         })

@@ -73,14 +73,14 @@ export class HomeService {
     return this.http.post(`${this.url}/updatemodel/` + portalName, data);
   }
 
-  exportServices(fileName: string) {
-    fileSaver.saveAs(`${this.url}/exportservices/`, `${fileName}`);
+  exportProject(projectName: string, fileName: string) {
+    fileSaver.saveAs(`${this.url}/exportproject/${projectName}`, `${fileName}`);
   }
 
-  importServices(file: File) {
+  importProject(projectName: string, file: File) {
     const formData: FormData = new FormData();
     formData.append('files[]', file, file.name);
 
-    return this.http.post(`${this.url}/importservices/`, formData, {})
+    return this.http.post(`${this.url}/importproject/${projectName}`, formData, {})
   }
 }
