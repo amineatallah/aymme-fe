@@ -22,7 +22,7 @@ import { ActivatedRoute } from '@angular/router';
 export class ServicesListComponent implements OnInit {
   isInitializing = true;
   allHidden = false;
-  importServicesForm : FormGroup;
+  importProjectForm : FormGroup;
   projectName: string;
 
   readonly services$: Observable<any> = this.store.pipe(
@@ -54,7 +54,7 @@ export class ServicesListComponent implements OnInit {
   ngOnInit() {
 
     this.projectName = this.activeRoute.snapshot.params.projectName;
-    this.importServicesForm = this.formBuilder.group({
+    this.importProjectForm = this.formBuilder.group({
       importFiles: new FormControl(''),
     });
     this.loadServices(true);
@@ -117,15 +117,15 @@ export class ServicesListComponent implements OnInit {
   }
 
   onFileChange(event): void {
-    this.store.dispatch(new servicesActions.ImportServices(event.target.files[0]));
-    this.importServicesForm.reset();
+    this.store.dispatch(new servicesActions.ImportServices(this.projectName, event.target.files[0]));
+    this.importProjectForm.reset();
   }
   
-  exportServices() {
+  exportProject() {
     const currentDate = new Date().toISOString();
-    const fileName = `services-${currentDate}.json`;
+    const fileName = `${this.projectName}-${currentDate}.json`;
 
-    this.homeService.exportServices(fileName);
+    this.homeService.exportProject(this.projectName, fileName);
   }
 
 }
