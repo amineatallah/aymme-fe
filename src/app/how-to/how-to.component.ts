@@ -10,7 +10,7 @@ export class HowToComponent implements OnInit {
   public code =
     `{
     "/gateway/api//*": {
-      "target": "http://0.0.0.0:3000/gateway/api",
+      "target": "http://0.0.0.0:3000/gateway/{{project_name}}/api",
       "secure": false,
       "logLevel": "debug",
       "changeOrigin": true,
