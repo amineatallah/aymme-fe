@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import * as projectsActions from '../state/projects/projects.actions';
-import { Subject } from 'rxjs';
+import * as projectsSelectors from '../state/projects/projects.selectors';
+import { Subject, Observable } from 'rxjs';
 import { Actions, ofType } from '@ngrx/effects';
 import { takeUntil, tap } from 'rxjs/operators';
 
@@ -14,6 +15,7 @@ import { takeUntil, tap } from 'rxjs/operators';
 })
 export class ProjectFormDialogComponent implements OnInit {
   destroyed$ = new Subject<boolean>();
+  isCreatingProject$ : Observable<boolean>;
   projectForm: FormGroup;
   
   constructor(
@@ -26,6 +28,8 @@ export class ProjectFormDialogComponent implements OnInit {
     this.projectForm = new FormGroup({
       projectName: new FormControl('', [Validators.required, Validators.minLength(3)])
     });
+
+    this.isCreatingProject$ = this.store.pipe(select(projectsSelectors.isCreatingProject));
 
     this.actions$.pipe(
       ofType(projectsActions.ProjectsActionTypes.CREATE_PROJECT_SUCCESS),

@@ -1,0 +1,21 @@
+<ng-container *ngIf="isLoading$ | async; then loadingState else loadedProjects"></ng-container>
+
+<ng-template #loadingState>
+    <div class="container-fluid">
+        <div class="row d-flex justify-content-center">
+            <div class="spinner-grow text-light" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #loadedProjects>
+    <ng-container *ngIf="projects$ | async as projects">
+        <ng-container *ngTemplateOutlet="projectsTemplate; context:{projects: projects}"></ng-container>
+
+        <ng-template #projectsTemplate let-projects=projects>
+            <projects [projects]="projects"></projects>
+        </ng-template>
+    </ng-container>
+</ng-template>

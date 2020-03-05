@@ -11,14 +11,14 @@
         <div class="form-group mb-0">
             <label class="col-auto" for="projectName">Project Name</label>
             <div class="col">
-                <input [focus]="true" id="projectName" formControlName="projectName" type="text" class="form-control"
+                <input id="projectName" formControlName="projectName" type="text" class="form-control"
                     placeholder="Project Name">
             </div>
         </div>
     </div>
 
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Create</button>
+        <button type="submit" class="btn btn-primary" [disabled]="projectForm.invalid"> <span *ngIf="isCreatingProject$ |async" class="spinner-grow spinner-grow-sm mr-2" role="status" aria-hidden="true"></span>Create</button>
     </div>
 
 </form>

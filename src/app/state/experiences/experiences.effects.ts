@@ -70,7 +70,7 @@ export class ExperiencesEffects {
         map(
           (results: any[]) => {
             this.toastr.success('', 'Experience updated successfully!');
-            new experiencesActions.UpdateExperienceSuccess(results);
+            return new experiencesActions.UpdateExperienceSuccess(results);
           }
         ),
         catchError(

@@ -49,10 +49,16 @@
           <json-editor [options]="options" style="min-height: 1000px;" [data]="body">
           </json-editor>
           <div class="row no-gutters mt-3 justify-content-end">
-            <button type="button" class="btn btn-danger px-3 col-auto mr-3" (click)="syncModel()">Sync Remote
-              Model</button>
-            <button type="button" class="btn btn-primary px-3 col-auto" (click)="updateModel()">Update & Use
-              Model</button>
+            <button type="button" class="btn btn-danger px-3 col-auto mr-3" (click)="syncModel()">
+              <span *ngIf="isSyncingExperience$ |async" class="spinner-grow spinner-grow-sm mr-2" role="status"
+                aria-hidden="true"></span>
+              Sync Remote Model
+            </button>
+            <button type="button" class="btn btn-primary px-3 col-auto" (click)="updateModel()">
+              <span *ngIf="isUpdatingExperience$ |async" class="spinner-grow spinner-grow-sm mr-2" role="status"
+                aria-hidden="true"></span>
+              Update & Use Model
+            </button>
           </div>
         </div>
       </div>

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, interval, of } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { HomeService } from '../shared/home.service';
 import * as servicesSelectors from '../state/services/services.selectors';
 import * as servicesActions from '../state/services/services.actions';
-import { tap, take } from 'rxjs/operators';
+import { tap, take, delayWhen } from 'rxjs/operators';
 import { Endpoint } from '../shared/service.interface';
 import { collapseExpandAnimation } from '../shared/animation';
 import { ModalService } from '../shared/modal.service';
@@ -22,8 +22,10 @@ import { ActivatedRoute } from '@angular/router';
 export class ServicesListComponent implements OnInit {
   isInitializing = true;
   allHidden = false;
-  importProjectForm : FormGroup;
+  importProjectForm: FormGroup;
   projectName: string;
+  isImportingProject$: Observable<boolean>;
+  isLoadingServices$: Observable<boolean>;
 
   readonly services$: Observable<any> = this.store.pipe(
     select(servicesSelectors.getServices),
@@ -52,7 +54,8 @@ export class ServicesListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
+    this.isImportingProject$ = this.store.pipe(select(servicesSelectors.isImportingProject));
+    this.isLoadingServices$ = this.store.pipe(select(servicesSelectors.isLoadingServices), delayWhen(isLoading => isLoading ? of(undefined) : interval(500)));
     this.projectName = this.activeRoute.snapshot.params.projectName;
     this.importProjectForm = this.formBuilder.group({
       importFiles: new FormControl(''),
@@ -61,7 +64,7 @@ export class ServicesListComponent implements OnInit {
   }
 
   loadServices(initializing: boolean) {
-    this.store.dispatch(new servicesActions.LoadServices({projectName: this.projectName, initializing: initializing}));
+    this.store.dispatch(new servicesActions.LoadServices({ projectName: this.projectName, initializing: initializing }));
     this.allHidden = false;
     return false;
   }
@@ -104,23 +107,23 @@ export class ServicesListComponent implements OnInit {
   }
 
   deleteService(serviceName: string) {
-    this.store.dispatch(new servicesActions.DeleteService({projectName: this.projectName, serviceName: serviceName}));
+    this.store.dispatch(new servicesActions.DeleteService({ projectName: this.projectName, serviceName: serviceName }));
   }
 
   setSelectedEndpoint(projectName: String, endpoint: Endpoint) {
 
-    this.store.dispatch(new servicesActions.LoadSelectedEndpoint({projectName, endpoint}));
+    this.store.dispatch(new servicesActions.LoadSelectedEndpoint({ projectName, endpoint }));
   }
 
   deleteEndpoint(endpointId: string) {
-    this.store.dispatch(new servicesActions.DeleteEndpoint({projectName: this.projectName, id: endpointId}));
+    this.store.dispatch(new servicesActions.DeleteEndpoint({ projectName: this.projectName, id: endpointId }));
   }
 
   onFileChange(event): void {
-    this.store.dispatch(new servicesActions.ImportServices(this.projectName, event.target.files[0]));
+    this.store.dispatch(new servicesActions.ImportProject(this.projectName, event.target.files[0]));
     this.importProjectForm.reset();
   }
-  
+
   exportProject() {
     const currentDate = new Date().toISOString();
     const fileName = `${this.projectName}-${currentDate}.json`;

@@ -47,7 +47,6 @@ import { FooterComponent } from './footer/footer.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { ProjectsWrapperComponent } from './projects/projects-wrapper.component';
 import { ProjectFormDialogComponent } from './project-form-dialog/project-form-dialog.component';
-import { DirectivesModule } from './directives/directives.module';
 
 
 @NgModule({
@@ -78,7 +77,6 @@ import { DirectivesModule } from './directives/directives.module';
     ReactiveFormsModule,
     FormsModule,
     BrowserAnimationsModule,
-    DirectivesModule,
 
     StoreModule.forRoot(rootReducers, {}),
     StoreRouterConnectingModule.forRoot({serializer: CustomSerializer}),

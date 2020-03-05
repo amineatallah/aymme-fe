@@ -121,19 +121,19 @@ export class ServicesEffects {
 
   @Effect()
   exportServices$ = this.actions$.pipe(
-    ofType(servicesActions.ServicesActionTypes.IMPORT_SERVICES),
-    concatMap((action: servicesActions.ImportServices) => {
+    ofType(servicesActions.ServicesActionTypes.IMPORT_PROJECT),
+    concatMap((action: servicesActions.ImportProject) => {
       return this.homeService.importProject(action.projectName, action.files).pipe(
         map(
           (result: any) => {
             this.toastr.success('Services imported successfully!', '');
-            return new servicesActions.ImportServicesSuccess(result);
+            return new servicesActions.ImportProjectSuccess(result);
           }
         ),
         catchError(err => {
           console.log(err);
           this.toastr.error(err.error.message, 'Unable to import services!');
-          return of(new servicesActions.ImportServicesFailure(err));
+          return of(new servicesActions.ImportProjectFailure(err));
         })
       )
     })
