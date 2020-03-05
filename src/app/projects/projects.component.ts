@@ -32,7 +32,6 @@ export class ProjectsComponent implements OnInit {
       take(1)
     ).subscribe(result => {
       if (result === true) {
-        console.log(projectName);
         this.store.dispatch(new projectActions.DeleteProject(projectName));
       }
     });

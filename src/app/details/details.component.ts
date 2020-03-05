@@ -84,7 +84,6 @@ export class DetailsComponent implements OnInit {
         this.form.get('delay').setValue(val.delay);
         this.form.get('noData').setValue(val.emptyArray);
         this.response = val;
-        console.log('this.response', this.response);
         // this.endpointData = val.response[val.statusCode].data.body;
         this.endpointData = val.response[val.statusCode];
 

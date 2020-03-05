@@ -16,7 +16,6 @@ export class ServicesEffects {
     ofType(servicesActions.ServicesActionTypes.LOAD_SERVICES),
     concatMap((action: servicesActions.LoadServices) => {
 
-      console.log('actions', action);
       return this.homeService.getServices(action.payload.projectName).pipe(
         map(
           (services: any[]) => {
@@ -110,7 +109,6 @@ export class ServicesEffects {
         ),
         catchError(
           err => {
-            console.log(err);
             this.toastr.error(err.error.message, 'Unable to update mocks!');
             return of(new servicesActions.UpdateEndpointFailure(err));
           })
@@ -130,7 +128,6 @@ export class ServicesEffects {
           }
         ),
         catchError(err => {
-          console.log(err);
           this.toastr.error(err.error.message, 'Unable to import services!');
           return of(new servicesActions.ImportProjectFailure(err));
         })
