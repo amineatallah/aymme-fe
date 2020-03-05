@@ -10,3 +10,5 @@ export const hasExperiences = createSelector(getExperiencesFeatureState, state =
 export const getExperienceByName = createSelector(getExperiencesFeatureState, (state, prop) : any => state.experiences.find((experience) => experience.name === prop.name));
 
 export const isSyncingExperience = createSelector(getExperiencesFeatureState, state => state.isSyncingExperience);
+
+export const isUpdatingExperience = createSelector(getExperiencesFeatureState, state => state.isUpdatingExperience);

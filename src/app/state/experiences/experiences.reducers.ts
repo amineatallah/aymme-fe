@@ -3,12 +3,14 @@ import { ExperiencesActions, ExperiencesActionTypes } from './experiences.action
 export interface ExperiencesState {
   experiences: any;
   isSyncingExperience: boolean;
+  isUpdatingExperience: boolean;
   error: string;
 }
 
 export const initialState: ExperiencesState = {
   experiences: [],
   isSyncingExperience: false,
+  isUpdatingExperience: false,
   error: '',
 };
 
@@ -44,7 +46,7 @@ export function reducer(state = initialState, action: ExperiencesActions): Exper
         ...state,
         isSyncingExperience: false,
         error: '',
-      };      
+      };
     case ExperiencesActionTypes.DELETE_EXPERIENCE_SUCCESS:
       return {
         ...state,
@@ -66,10 +68,24 @@ export function reducer(state = initialState, action: ExperiencesActions): Exper
         })],
         error: '',
       };
+    case ExperiencesActionTypes.UPDATE_EXPERIENCE:
+      return {
+        ...state,
+        isUpdatingExperience: true,
+        error: '',
+      };
     case ExperiencesActionTypes.UPDATE_EXPERIENCE_SUCCESS:
       return {
         ...state,
         experiences: processNewExperienceState(state.experiences, action.payload),
+        isUpdatingExperience: false,
+        error: '',
+      };
+
+    case ExperiencesActionTypes.UPDATE_EXPERIENCE_FAILURE:
+      return {
+        ...state,
+        isUpdatingExperience: false,
         error: '',
       };
     default:

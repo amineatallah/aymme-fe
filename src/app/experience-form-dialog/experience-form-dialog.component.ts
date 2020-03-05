@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
@@ -36,11 +36,11 @@ export class ExperienceFormDialogComponent implements OnInit, OnDestroy {
     }
 
     this.experienceForm = new FormGroup({
-      experienceName: new FormControl({ value: this.experienceData.name, disabled: this.isEditing }),
-      hostAddress: new FormControl(experienceFormData.hostAddress),
+      experienceName: new FormControl({ value: this.experienceData.name, disabled: this.isEditing }, [Validators.required]),
+      hostAddress: new FormControl(experienceFormData.hostAddress, [Validators.required]),
       portNumber: new FormControl(experienceFormData.portNumber),
-      experienceLoginUrl: new FormControl(experienceFormData.experienceLoginUrl),
-      experienceModelUrl: new FormControl(experienceFormData.experienceModelUrl),
+      experienceLoginUrl: new FormControl(experienceFormData.experienceLoginUrl, [Validators.required]),
+      experienceModelUrl: new FormControl(experienceFormData.experienceModelUrl, [Validators.required]),
     });
 
     this.actions$.pipe(

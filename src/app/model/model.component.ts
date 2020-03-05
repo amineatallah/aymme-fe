@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import * as experiencesSelectors from '../state/experiences/experiences.selectors';
 import * as experiencesActions from '../state/experiences/experiences.actions'
 import { ActivatedRoute } from '@angular/router';
-import { tap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { tap, delayWhen } from 'rxjs/operators';
+import { Observable, of, interval } from 'rxjs';
 import { ModalService } from '../shared/modal.service';
 
 @Component({
@@ -20,7 +20,9 @@ export class ModelComponent implements OnInit {
   selectedExperience$: any;
   selectedExperience: any;
   selectedExperienceName$: Observable<any>;
-
+  isSyncingExperience$: Observable<any>;
+  isUpdatingExperience$: Observable<any>;
+  
   public options = new JsonEditorOptions;
   @ViewChildren(JsonEditorComponent) editor: QueryList<JsonEditorComponent>
   constructor(
@@ -31,6 +33,9 @@ export class ModelComponent implements OnInit {
 
 
   ngOnInit() {
+    this.isSyncingExperience$ = this.store.pipe(select(experiencesSelectors.isSyncingExperience));
+    this.isUpdatingExperience$ = this.store.pipe(select(experiencesSelectors.isUpdatingExperience), delayWhen(isLoading => isLoading ? of(undefined) : interval(500)));
+    
     this.options.mode = 'code';
     this.options.modes = ['code', 'text', 'tree', 'view'];
     this.options.statusBar = true;
