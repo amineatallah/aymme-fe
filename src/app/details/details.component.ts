@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChildren, QueryList, OnDestroy } from '@angular/core';
-import { Observable, of  } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { JsonEditorOptions, JsonEditorComponent } from 'ang-jsoneditor';
 import { tap, take } from 'rxjs/operators';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
@@ -131,7 +131,10 @@ export class DetailsComponent implements OnInit {
   }
 
   addHeader(headerName: string = '', headerValue: string = '', $event: Event = null): boolean {
-    $event.stopPropagation();
+    if ($event) {
+      $event.stopPropagation();
+    }
+
     this.headers = this.form.get('headers') as FormArray;
     this.headers.push(this.createHeadersInput(headerName, headerValue));
     return false;
@@ -149,12 +152,12 @@ export class DetailsComponent implements OnInit {
       delay: parseInt(this.form.get('delay').value, 10),
       emptyArray: this.form.get('noData').value,
       forward: this.form.get('forward').value,
-      response: Object.assign({}, this.response.response, { [this.form.get('statusCode').value]: this.editor.first.get()}),
+      response: Object.assign({}, this.response.response, { [this.form.get('statusCode').value]: this.editor.first.get() }),
       customHeaders: this.arrayToObject(this.form.value.headers)
     };
 
 
-    this.store.dispatch(new ServicesActions.UpdateEndpoint({projectName: this.projectName, data}));
+    this.store.dispatch(new ServicesActions.UpdateEndpoint({ projectName: this.projectName, data }));
   }
 
   arrayToObject(array) {
