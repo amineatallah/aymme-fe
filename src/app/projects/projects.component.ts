@@ -5,7 +5,7 @@ import * as projectActions from '../state/projects/projects.actions';
 import { take } from 'rxjs/operators';
 
 @Component({
-  selector: 'projects',
+  selector: 'app-projects',
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss']
 })
@@ -13,7 +13,7 @@ export class ProjectsComponent implements OnInit {
   @Input() projects: [] | undefined;
 
   constructor(
-    private modalService: ModalService, 
+    private modalService: ModalService,
     private store: Store<any>,
     ) {}
 
@@ -25,7 +25,7 @@ export class ProjectsComponent implements OnInit {
   }
 
 
-  openConfirmDeleteProject(projectName: string, event) {  
+  openConfirmDeleteProject(projectName: string, event) {
     this.modalService.confirm(
       'Are you sure you want to delete the project?', 'Delete Project', projectName
     ).pipe(

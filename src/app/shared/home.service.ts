@@ -37,7 +37,7 @@ export class HomeService {
     return this.http.get(`${this.url}/specs`);
   }
 
-  deleteService(projectName: string, serviceName: string) { 
+  deleteService(projectName: string, serviceName: string) {
     return this.http.delete(`${this.url}/projects/${projectName}/services/${serviceName}`);
   }
 
@@ -48,13 +48,13 @@ export class HomeService {
 
   uploadFile(id, files: Array<File>) {
     const formData: FormData = new FormData();
-    for (var prop in files) {
+    for (const prop in files) {
       if (Object.prototype.hasOwnProperty.call(files, prop)) {
         formData.append('files[]', files[prop], files[prop].name);
       }
     }
 
-    return this.http.post(`${this.url}/upload/` + id, formData, {})
+    return this.http.post(`${this.url}/upload/` + id, formData, {});
   }
 
   getPortals() {
@@ -81,6 +81,6 @@ export class HomeService {
     const formData: FormData = new FormData();
     formData.append('files[]', file, file.name);
 
-    return this.http.post(`${this.url}/importproject/${projectName}`, formData, {})
+    return this.http.post(`${this.url}/importproject/${projectName}`, formData, {});
   }
 }

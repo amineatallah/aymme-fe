@@ -2,7 +2,7 @@ import { SpecificationsActions, SpecificationsActionTypes } from './specificatio
 
 export interface SpecificationsState {
     specifications: any[];
-    error: string
+    error: string;
 }
 
 export const initialState: SpecificationsState = {
@@ -51,7 +51,7 @@ export function reducer(state = initialState, action: SpecificationsActions): Sp
                 ...state,
                 specifications: [...state.specifications.map((specification) => {
                     if (specification._id === action.payload._id) {
-                        let updatedSpec = action.payload;
+                        const updatedSpec = action.payload;
                         updatedSpec.isOpen = true;
                         return updatedSpec;
                     }

@@ -62,7 +62,7 @@ export function reducer(state = initialState, action: ExperiencesActions): Exper
             newExperienceState = {
               ...experience,
               activePage: action.payload.newActivePage
-            }
+            };
           }
           return newExperienceState;
         })],
@@ -101,13 +101,12 @@ function processNewExperienceState(oldExperiences, updatedExperience) {
       if (experience.name === updatedExperience.name) {
         newExperienceState = {
           ...updatedExperience,
-        }
+        };
       }
 
       return newExperienceState;
     });
-  }
-  else {
-    return [...oldExperiences, { ...updatedExperience }]
+  } else {
+    return [...oldExperiences, { ...updatedExperience }];
   }
 }

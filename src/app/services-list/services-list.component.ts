@@ -55,7 +55,10 @@ export class ServicesListComponent implements OnInit {
 
   ngOnInit() {
     this.isImportingProject$ = this.store.pipe(select(servicesSelectors.isImportingProject));
-    this.isLoadingServices$ = this.store.pipe(select(servicesSelectors.isLoadingServices), delayWhen(isLoading => isLoading ? of(undefined) : interval(500)));
+    this.isLoadingServices$ = this.store.pipe(
+      select(servicesSelectors.isLoadingServices),
+      delayWhen(isLoading => isLoading ? of(undefined) : interval(500))
+    );
     this.projectName = this.activeRoute.snapshot.params.projectName;
     this.importProjectForm = this.formBuilder.group({
       importFiles: new FormControl(''),
@@ -64,7 +67,7 @@ export class ServicesListComponent implements OnInit {
   }
 
   loadServices(initializing: boolean) {
-    this.store.dispatch(new servicesActions.LoadServices({ projectName: this.projectName, initializing: initializing }));
+    this.store.dispatch(new servicesActions.LoadServices({ projectName: this.projectName, initializing }));
     this.allHidden = false;
     return false;
   }
@@ -72,7 +75,7 @@ export class ServicesListComponent implements OnInit {
   customFormat(endpoint: string, serviceName: string): string {
     return endpoint
       .replace('/gateway/api', '')
-      .replace(serviceName + '/', '')
+      .replace(serviceName + '/', '');
   }
 
   toggleAll(services: any[]) {
@@ -107,11 +110,10 @@ export class ServicesListComponent implements OnInit {
   }
 
   deleteService(serviceName: string) {
-    this.store.dispatch(new servicesActions.DeleteService({ projectName: this.projectName, serviceName: serviceName }));
+    this.store.dispatch(new servicesActions.DeleteService({ projectName: this.projectName, serviceName }));
   }
 
-  setSelectedEndpoint(projectName: String, endpoint: Endpoint) {
-
+  setSelectedEndpoint(projectName: string, endpoint: Endpoint) {
     this.store.dispatch(new servicesActions.LoadSelectedEndpoint({ projectName, endpoint }));
   }
 

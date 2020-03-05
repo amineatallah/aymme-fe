@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
-import { Actions, Effect, ofType } from "@ngrx/effects";
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 
-import * as servicesActions from "./services.actions";
-import { concatMap, map, catchError } from "rxjs/operators";
-import { of } from "rxjs";
-import { HomeService } from "../../shared/home.service";
+import * as servicesActions from './services.actions';
+import { concatMap, map, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { HomeService } from '../../shared/home.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
@@ -14,11 +14,10 @@ export class ServicesEffects {
   @Effect()
   loadServices$ = this.actions$.pipe(
     ofType(servicesActions.ServicesActionTypes.LOAD_SERVICES),
-    concatMap((action: servicesActions.LoadServices) =>
-    {
+    concatMap((action: servicesActions.LoadServices) => {
 
       console.log('actions', action);
-     return this.homeService.getServices(action.payload.projectName).pipe(
+      return this.homeService.getServices(action.payload.projectName).pipe(
         map(
           (services: any[]) => {
             if (!action.payload.initializing) {
@@ -30,10 +29,10 @@ export class ServicesEffects {
         catchError(
           err => {
             this.toastr.error(err.error.message, 'Unable to load services!');
-            return of(new servicesActions.LoadServicesFailure(err))
+            return of(new servicesActions.LoadServicesFailure(err));
           }
         )
-      )
+      );
     }
     )
   );
@@ -64,13 +63,13 @@ export class ServicesEffects {
         map(
           (result: any) => {
             this.toastr.success('', 'Service deleted successfully!');
-            return new servicesActions.DeleteServiceSuccess(action.payload.serviceName)
+            return new servicesActions.DeleteServiceSuccess(action.payload.serviceName);
           }
         ),
         catchError(
           err => {
             this.toastr.error(err.error.message, 'Unable to delete service!');
-            return of(new servicesActions.DeleteServiceFailure(err))
+            return of(new servicesActions.DeleteServiceFailure(err));
           }
         )
       )
@@ -91,7 +90,7 @@ export class ServicesEffects {
         catchError(
           err => {
             this.toastr.error(err.error.message, 'Unable to delete endpoint!');
-            return of(new servicesActions.DeleteEndpointFailure(err))
+            return of(new servicesActions.DeleteEndpointFailure(err));
           }
         )
       )
@@ -135,7 +134,7 @@ export class ServicesEffects {
           this.toastr.error(err.error.message, 'Unable to import services!');
           return of(new servicesActions.ImportProjectFailure(err));
         })
-      )
+      );
     })
   );
 }

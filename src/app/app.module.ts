@@ -90,7 +90,7 @@ import { ProjectFormDialogComponent } from './project-form-dialog/project-form-d
 
     StoreModule.forFeature('experiences', experiencesReducers),
     EffectsModule.forFeature([ExperiencesEffects]),
-    
+
     StoreModule.forFeature('projects', projectsReducers),
     EffectsModule.forFeature([ProjectsEffects]),
 

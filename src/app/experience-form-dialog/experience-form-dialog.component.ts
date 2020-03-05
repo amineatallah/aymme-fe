@@ -18,7 +18,7 @@ export class ExperienceFormDialogComponent implements OnInit, OnDestroy {
   destroyed$ = new Subject<boolean>();
   experienceData: any;
   experienceForm: FormGroup;
-  isEditing: boolean = false;
+  isEditing = false;
   isSyncingExperience$: Observable<boolean>;
 
   constructor(
@@ -29,7 +29,7 @@ export class ExperienceFormDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isSyncingExperience$ = this.store.pipe(select(experiencesSelectors.isSyncingExperience));
-    let experienceFormData = this.destructureExperienceDetail(this.experienceData);
+    const experienceFormData = this.destructureExperienceDetail(this.experienceData);
 
     if (this.experienceData.name) {
       this.isEditing = true;
@@ -58,38 +58,37 @@ export class ExperienceFormDialogComponent implements OnInit, OnDestroy {
   }
 
   destructureExperienceDetail(experienceData) {
-    let experienceFormData = {
+    const experienceFormData = {
       hostAddress: '',
       portNumber: '8080',
       experienceLoginUrl: '/gateway/api/auth/login',
       experienceModelUrl: '/gateway/api/portals'
-    }
+    };
 
-    let loginUrlRegexWithPort = /http?:\/\/?([-a-zA-Z0-9@:%._\+~#=]{1,256}):(\d*)(\/.*)/g;
-    let modelUrlRegexWithPort = /http?:\/\/?([-a-zA-Z0-9@:%._\+~#=]{1,256}):(\d*)(\/.*)/g;
-    let loginUrlRegexWithoutPort = /http?:\/\/?([-a-zA-Z0-9@:%._\+~#=]{1,256})(\/.*)/g;
-    let modelUrlRegexWithoutPort = /http?:\/\/?([-a-zA-Z0-9@:%._\+~#=]{1,256})(\/.*)/g;
+    const loginUrlRegexWithPort = /http?:\/\/?([-a-zA-Z0-9@:%._\+~#=]{1,256}):(\d*)(\/.*)/g;
+    const modelUrlRegexWithPort = /http?:\/\/?([-a-zA-Z0-9@:%._\+~#=]{1,256}):(\d*)(\/.*)/g;
+    const loginUrlRegexWithoutPort = /http?:\/\/?([-a-zA-Z0-9@:%._\+~#=]{1,256})(\/.*)/g;
+    const modelUrlRegexWithoutPort = /http?:\/\/?([-a-zA-Z0-9@:%._\+~#=]{1,256})(\/.*)/g;
 
     if (this.experienceData.loginUrl) {
 
-      let loginMatch = loginUrlRegexWithPort.exec(experienceData.loginUrl);
+      const loginMatch = loginUrlRegexWithPort.exec(experienceData.loginUrl);
 
       if (loginMatch) {
         experienceFormData.hostAddress = loginMatch[1];
-        experienceFormData.portNumber = loginMatch[2]
-        experienceFormData.experienceLoginUrl = loginMatch[3]
+        experienceFormData.portNumber = loginMatch[2];
+        experienceFormData.experienceLoginUrl = loginMatch[3];
 
-        let modelMatch = modelUrlRegexWithPort.exec(experienceData.host);
+        const modelMatch = modelUrlRegexWithPort.exec(experienceData.host);
         experienceFormData.experienceModelUrl = modelMatch[3];
-      }
-      else {
-        let loginWithoutPortMatch = loginUrlRegexWithoutPort.exec(experienceData.loginUrl);
+      } else {
+        const loginWithoutPortMatch = loginUrlRegexWithoutPort.exec(experienceData.loginUrl);
 
         if (loginWithoutPortMatch) {
           experienceFormData.hostAddress = loginMatch[1];
-          experienceFormData.experienceLoginUrl = loginMatch[2]
+          experienceFormData.experienceLoginUrl = loginMatch[2];
 
-          let modelMatch = modelUrlRegexWithoutPort.exec(experienceData.host);
+          const modelMatch = modelUrlRegexWithoutPort.exec(experienceData.host);
           experienceFormData.experienceModelUrl = modelMatch[2];
         }
       }
@@ -105,8 +104,10 @@ export class ExperienceFormDialogComponent implements OnInit, OnDestroy {
   }
 
   addExperience() {
-    let experienceFormValue = this.experienceForm.getRawValue();
-    let baseUrl = `http://${experienceFormValue.hostAddress}${experienceFormValue.portNumber ? ':' + experienceFormValue.portNumber : ''}`
+    const experienceFormValue = this.experienceForm.getRawValue();
+    const baseUrl = `http://${experienceFormValue.hostAddress}${experienceFormValue.portNumber
+      ? ':' + experienceFormValue.portNumber
+      : ''}`;
 
     this.store.dispatch(new experiencesActions.SyncExperience({
       portalName: experienceFormValue.experienceName,

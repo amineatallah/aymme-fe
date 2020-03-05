@@ -11,16 +11,16 @@ export class ProjectsService {
 
   constructor(private http: HttpClient) { }
 
-  getProjects(){
-    return this.http.get(`${this.url}/projects`)
+  getProjects() {
+    return this.http.get(`${this.url}/projects`);
   }
 
-  createProject(projectData){
-    return this.http.post(`${this.url}/projects`, projectData)
+  createProject(projectData) {
+    return this.http.post(`${this.url}/projects`, projectData);
   }
 
   deleteProject(projectName) {
     console.log('lol' + projectName);
-    return this.http.delete(`${this.url}/projects/${projectName}`)
+    return this.http.delete(`${this.url}/projects/${projectName}`);
   }
 }

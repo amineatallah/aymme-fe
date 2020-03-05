@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 import { Store, select } from '@ngrx/store';
 import * as experiencesSelectors from '../state/experiences/experiences.selectors';
-import * as experiencesActions from '../state/experiences/experiences.actions'
+import * as experiencesActions from '../state/experiences/experiences.actions';
 import { ActivatedRoute } from '@angular/router';
 import { tap, delayWhen } from 'rxjs/operators';
 import { Observable, of, interval } from 'rxjs';
@@ -22,9 +22,10 @@ export class ModelComponent implements OnInit {
   selectedExperienceName$: Observable<any>;
   isSyncingExperience$: Observable<any>;
   isUpdatingExperience$: Observable<any>;
-  
-  public options = new JsonEditorOptions;
-  @ViewChildren(JsonEditorComponent) editor: QueryList<JsonEditorComponent>
+
+  public options = new JsonEditorOptions();
+
+  @ViewChildren(JsonEditorComponent) editor: QueryList<JsonEditorComponent>;
   constructor(
     private route: ActivatedRoute,
     private store: Store<any>,
@@ -34,31 +35,37 @@ export class ModelComponent implements OnInit {
 
   ngOnInit() {
     this.isSyncingExperience$ = this.store.pipe(select(experiencesSelectors.isSyncingExperience));
-    this.isUpdatingExperience$ = this.store.pipe(select(experiencesSelectors.isUpdatingExperience), delayWhen(isLoading => isLoading ? of(undefined) : interval(500)));
-    
+    this.isUpdatingExperience$ = this.store.pipe(
+      select(experiencesSelectors.isUpdatingExperience),
+      delayWhen(isLoading => isLoading ? of(undefined) : interval(500))
+    );
+
     this.options.mode = 'code';
     this.options.modes = ['code', 'text', 'tree', 'view'];
     this.options.statusBar = true;
 
     this.selectedExperienceName$ = this.route.params.pipe(
       tap((params: any) => {
-        this.store.dispatch(new experiencesActions.LoadExperiences);
+        this.store.dispatch(new experiencesActions.LoadExperiences());
 
-        this.selectedExperience$ = this.store.select(experiencesSelectors.getExperienceByName, { name: params.experienceName }).pipe(tap((selectedExperience) => {
-          if (!selectedExperience) {
-            return;
-          }
+        this.selectedExperience$ = this.store.select(experiencesSelectors.getExperienceByName, { name: params.experienceName })
+          .pipe(tap((selectedExperience) => {
+            if (!selectedExperience) {
+              return;
+            }
 
-          this.selectedExperience = selectedExperience;
-
-          this.body = selectedExperience.pages.find(page => page.name === selectedExperience.activePage);
-        }))
+            this.selectedExperience = selectedExperience;
+            this.body = selectedExperience.pages.find(page => page.name === selectedExperience.activePage);
+        }));
       })
     );
   }
 
   selectPage(selectedActivePage) {
-    this.store.dispatch(new experiencesActions.SetActiveExperience({ selectedExperienceName: this.selectedExperience.name, newActivePage: selectedActivePage.name }));
+    this.store.dispatch(new experiencesActions.SetActiveExperience({
+      selectedExperienceName: this.selectedExperience.name,
+      newActivePage: selectedActivePage.name
+    }));
   }
 
   syncModel() {
@@ -70,8 +77,8 @@ export class ModelComponent implements OnInit {
   }
 
   updateModel() {
-    let editorData: any = this.editor.first.get();
-    let pages = this.selectedExperience.pages.map(page => {
+    const editorData: any = this.editor.first.get();
+    const pages = this.selectedExperience.pages.map(page => {
       if (page.name === editorData.name) {
         return editorData;
       } else {
@@ -83,7 +90,7 @@ export class ModelComponent implements OnInit {
       experienceName: this.selectedExperience.name,
       data: {
         activePage: this.selectedExperience.activePage,
-        pages: pages,
+        pages,
       }
     })
     );

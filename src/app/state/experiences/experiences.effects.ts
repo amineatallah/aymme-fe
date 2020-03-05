@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
-import { Actions, Effect, ofType } from "@ngrx/effects";
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 
-import * as experiencesActions from "./experiences.actions";
-import { concatMap, map, catchError } from "rxjs/operators";
-import { of } from "rxjs";
-import { HomeService } from "../../shared/home.service";
+import * as experiencesActions from './experiences.actions';
+import { concatMap, map, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { HomeService } from '../../shared/home.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class ExperiencesEffects {
     private toastr: ToastrService,
   ) { }
 
-  hasLoadedExperiences: boolean = false;
+  hasLoadedExperiences = false;
 
   @Effect()
   loadExperiences$ = this.actions$.pipe(
@@ -33,10 +33,10 @@ export class ExperiencesEffects {
         catchError(
           err => {
             this.toastr.error(err.error.message, 'Unable to load Experiences!');
-            return of(new experiencesActions.LoadExperiencesFailure(err))
+            return of(new experiencesActions.LoadExperiencesFailure(err));
           }
         )
-      )
+      );
     })
   );
 
@@ -47,14 +47,14 @@ export class ExperiencesEffects {
       this.homeService.syncModel(action.payload).pipe(
         map(
           (experience: any[]) => {
-            this.toastr.success('Experience synced successfully!', '')
+            this.toastr.success('Experience synced successfully!', '');
             return new experiencesActions.SyncExperienceSuccess(experience);
           }
         ),
         catchError(
           err => {
             this.toastr.error(err.error.message, 'Unable to sync Experience!');
-            return of(new experiencesActions.SyncExperienceFailure(err))
+            return of(new experiencesActions.SyncExperienceFailure(err));
           }
         )
       )
@@ -76,7 +76,7 @@ export class ExperiencesEffects {
         catchError(
           err => {
             this.toastr.error(err.error.message, 'Unable to update Experience!');
-            return of(new experiencesActions.UpdateExperienceFailure(err))
+            return of(new experiencesActions.UpdateExperienceFailure(err));
           }
         )
       )
@@ -97,7 +97,7 @@ export class ExperiencesEffects {
         catchError(
           err => {
             this.toastr.error(err.error.message, 'Unable to delete Experience!');
-            return of(new experiencesActions.DeleteExperienceFailure(err))
+            return of(new experiencesActions.DeleteExperienceFailure(err));
           }
         )
       )

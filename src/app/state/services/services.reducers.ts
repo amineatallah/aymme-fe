@@ -90,7 +90,7 @@ export function reducer(state = initialState, action: ServicesActions): Services
       return {
         ...state,
         isImportingProject: false,
-      }
+      };
     default:
       return state;
   }

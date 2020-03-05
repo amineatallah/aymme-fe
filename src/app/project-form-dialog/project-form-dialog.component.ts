@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store, select } from '@ngrx/store';
@@ -13,11 +13,11 @@ import { takeUntil, tap } from 'rxjs/operators';
   templateUrl: './project-form-dialog.component.html',
   styleUrls: ['./project-form-dialog.component.scss']
 })
-export class ProjectFormDialogComponent implements OnInit {
+export class ProjectFormDialogComponent implements OnInit, OnDestroy {
   destroyed$ = new Subject<boolean>();
-  isCreatingProject$ : Observable<boolean>;
+  isCreatingProject$: Observable<boolean>;
   projectForm: FormGroup;
-  
+
   constructor(
     public activeModal: NgbActiveModal,
     private store: Store<any>,
@@ -39,7 +39,7 @@ export class ProjectFormDialogComponent implements OnInit {
       })
     ).subscribe();
   }
-  
+
   ngOnDestroy() {
     this.destroyed$.next(true);
     this.destroyed$.complete();

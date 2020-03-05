@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
-import { Actions, Effect, ofType } from "@ngrx/effects";
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 
-import * as specificationsActions from "./specifications.actions";
-import { concatMap, map, catchError } from "rxjs/operators";
-import { of } from "rxjs";
-import { HomeService } from "../../shared/home.service";
+import * as specificationsActions from './specifications.actions';
+import { concatMap, map, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { HomeService } from '../../shared/home.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
@@ -26,7 +26,7 @@ export class SpecificationsEffects {
         catchError(
           err => {
             this.toastr.error(err.error.message, 'Unable to load specifications!');
-            return of(new specificationsActions.LoadSpecificationsFailure(err))
+            return of(new specificationsActions.LoadSpecificationsFailure(err));
           }
         )
       )
@@ -62,7 +62,7 @@ export class SpecificationsEffects {
         map(
           (specifications: any) => {
             this.toastr.success('', 'Specification deleted successfully!');
-            return new specificationsActions.DeleteSpecificationSuccess(action.payload)
+            return new specificationsActions.DeleteSpecificationSuccess(action.payload);
           }
         ),
         catchError(
@@ -89,7 +89,7 @@ export class SpecificationsEffects {
         catchError(
           err => {
             this.toastr.error(err.error.message, 'Unable to upload file!');
-            return of(new specificationsActions.CreateExampleFailure(err))
+            return of(new specificationsActions.CreateExampleFailure(err));
           }
         )
       )

@@ -1,18 +1,18 @@
-import { Action } from "@ngrx/store";
+import { Action } from '@ngrx/store';
 
 export enum SpecificationsActionTypes {
-    LOAD_SPECIFICATIONS = "[Specifications] Load",
-    LOAD_SPECIFICATIONS_SUCCESS = "[Specifications] Load Success",
-    LOAD_SPECIFICATIONS_FAILURE = "[Specifications] Load Failure",
-    CREATE_SPECIFICATION = "[Specifications] Create",
-    CREATE_SPECIFICATION_SUCCESS = "[Specifications] Create Specification Success",
-    CREATE_SPECIFICATION_FAILURE = "[Specifications] Create Specification Failure",
-    DELETE_SPECIFICATION = "[Specifications] Delete",
-    DELETE_SPECIFICATION_SUCCESS = "[Specifications] Delete Specification Success",
-    DELETE_SPECIFICATION_FAILURE = "[Specifications] Delete Specification Failure",
-    CREATE_EXAMPLE = "[Specifications] Create Example",
-    CREATE_EXAMPLE_SUCCESS = "[Specifications] Create Example Success",
-    CREATE_EXAMPLE_FAILURE = "[Specifications] Create Example Failure",
+    LOAD_SPECIFICATIONS = '[Specifications] Load',
+    LOAD_SPECIFICATIONS_SUCCESS = '[Specifications] Load Success',
+    LOAD_SPECIFICATIONS_FAILURE = '[Specifications] Load Failure',
+    CREATE_SPECIFICATION = '[Specifications] Create',
+    CREATE_SPECIFICATION_SUCCESS = '[Specifications] Create Specification Success',
+    CREATE_SPECIFICATION_FAILURE = '[Specifications] Create Specification Failure',
+    DELETE_SPECIFICATION = '[Specifications] Delete',
+    DELETE_SPECIFICATION_SUCCESS = '[Specifications] Delete Specification Success',
+    DELETE_SPECIFICATION_FAILURE = '[Specifications] Delete Specification Failure',
+    CREATE_EXAMPLE = '[Specifications] Create Example',
+    CREATE_EXAMPLE_SUCCESS = '[Specifications] Create Example Success',
+    CREATE_EXAMPLE_FAILURE = '[Specifications] Create Example Failure',
 }
 
 export class LoadSpecifications implements Action {

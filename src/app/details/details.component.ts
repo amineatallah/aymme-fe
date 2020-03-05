@@ -31,10 +31,10 @@ export class DetailsComponent implements OnInit {
   specs$: Observable<any>;
   responseCodes: string[] = ['200', '401', '404', '500'];
   form: FormGroup;
-  mocksVisible: boolean = false;
+  mocksVisible = false;
   filesToUpload: Array<File>;
   activeId: string;
-  listStaggerAnimation: boolean = false;
+  listStaggerAnimation = false;
   public selectedStatus: string;
   public options = new JsonEditorOptions();
   private editorHolder: ElementRef;
@@ -92,7 +92,7 @@ export class DetailsComponent implements OnInit {
         this.headers.clear();
 
         if (val.customHeaders) {
-          for (let [key, value] of Object.entries(val.customHeaders)) {
+          for (const [key, value] of Object.entries(val.customHeaders)) {
             this.addHeader(key, value as string);
           }
         }
@@ -100,8 +100,7 @@ export class DetailsComponent implements OnInit {
         this.listStaggerAnimation = false;
         setTimeout(() => {
           this.listStaggerAnimation = true;
-        })
-
+        });
       })
     );
 
@@ -138,7 +137,7 @@ export class DetailsComponent implements OnInit {
   }
 
   removeHeader(header: FormArray): boolean {
-    this.headers.removeAt(this.headers.value.findIndex(_header => _header === header));
+    this.headers.removeAt(this.headers.value.findIndex((item: FormArray) => item === header));
     return false;
   }
 
@@ -149,12 +148,12 @@ export class DetailsComponent implements OnInit {
       delay: parseInt(this.form.get('delay').value, 10),
       emptyArray: this.form.get('noData').value,
       forward: this.form.get('forward').value,
-      response: Object.assign({}, this.response.response, { [this.form.get('statusCode').value]:this.editor.first.get()}),
+      response: Object.assign({}, this.response.response, { [this.form.get('statusCode').value]: this.editor.first.get()}),
       customHeaders: this.arrayToObject(this.form.value.headers)
     };
 
 
-    this.store.dispatch(new ServicesActions.UpdateEndpoint({projectName: this.projectName, data: data}));
+    this.store.dispatch(new ServicesActions.UpdateEndpoint({projectName: this.projectName, data}));
   }
 
   arrayToObject(array) {

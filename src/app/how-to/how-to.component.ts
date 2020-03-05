@@ -54,7 +54,7 @@ export class HowToComponent implements OnInit {
       )
       .catch(function (err) {
           console.log('Fetch Error: Unable to retrieve Experience Model', err);
-      });`
+      });`;
 
   public angularJSONcode = `{
         "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
@@ -90,7 +90,7 @@ export class HowToComponent implements OnInit {
             }
           }
         }
-      }`
+      }`;
 
 
   public simplifiedModelScriptsCode = `"start:aymme": "ng serve --proxy-config=proxy.conf.aymme.json --configuration=aymme"`;

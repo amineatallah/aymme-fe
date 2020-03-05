@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
-import { Actions, Effect, ofType } from "@ngrx/effects";
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 
-import * as projectsActions from "./projects.actions";
-import { concatMap, map, catchError } from "rxjs/operators";
-import { of } from "rxjs";
-import { ProjectsService } from "../../shared/projects.service";
+import * as projectsActions from './projects.actions';
+import { concatMap, map, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { ProjectsService } from '../../shared/projects.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class ProjectsEffects {
     private actions$: Actions,
     private projectsService: ProjectsService,
     private toastr: ToastrService,
-  ) { }  
+  ) { }
 
   @Effect()
   loadExperiences$ = this.actions$.pipe(
@@ -27,10 +27,10 @@ export class ProjectsEffects {
         catchError(
           err => {
             this.toastr.error(err.error.message, 'Unable to load projects!');
-            return of(new projectsActions.LoadProjectsFailure(err))
+            return of(new projectsActions.LoadProjectsFailure(err));
           }
         )
-      )
+      );
     })
   );
 
@@ -41,14 +41,14 @@ export class ProjectsEffects {
       this.projectsService.createProject(action.payload).pipe(
         map(
           (experience: any[]) => {
-            this.toastr.success('Project created successfully!', '')
+            this.toastr.success('Project created successfully!', '');
             return new projectsActions.CreateProjectSuccess(experience);
           }
         ),
         catchError(
           err => {
             this.toastr.error(err.error.message, 'Unable to create project!');
-            return of(new projectsActions.CreateProjectFailure(err))
+            return of(new projectsActions.CreateProjectFailure(err));
           }
         )
       )
@@ -69,7 +69,7 @@ export class ProjectsEffects {
         catchError(
           err => {
             this.toastr.error(err.error.message, 'Unable to delete project!');
-            return of(new projectsActions.DeleteProjectFailure(err))
+            return of(new projectsActions.DeleteProjectFailure(err));
           }
         )
       )

@@ -5,4 +5,5 @@ const getSpecificationsFeatureState = createFeatureSelector<SpecificationsState>
 
 export const getSpecifications = createSelector(getSpecificationsFeatureState, state => state.specifications);
 
-export const hasExistingSpecification = createSelector(getSpecificationsFeatureState, (state, prop) => state.specifications.some((spec) => spec.name === prop.specName));
+export const hasExistingSpecification = createSelector(getSpecificationsFeatureState, (state, prop) =>
+  state.specifications.some((spec) => spec.name === prop.specName));

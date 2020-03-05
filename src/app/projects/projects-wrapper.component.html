@@ -15,7 +15,7 @@
         <ng-container *ngTemplateOutlet="projectsTemplate; context:{projects: projects}"></ng-container>
 
         <ng-template #projectsTemplate let-projects=projects>
-            <projects [projects]="projects"></projects>
+            <app-projects [projects]="projects"></app-projects>
         </ng-template>
     </ng-container>
 </ng-template>
