@@ -30,7 +30,7 @@ export class HomeService {
 
 
   createSpec(data: any) {
-    return this.http.post(`${this.url}/createspec`, data);
+    return this.http.post(`${this.url}/specs`, data);
   }
 
   getSpecs() {
@@ -54,33 +54,33 @@ export class HomeService {
       }
     }
 
-    return this.http.post(`${this.url}/upload/` + id, formData, {});
+    return this.http.post(`${this.url}/specs/upload/` + id, formData, {});
   }
 
   getPortals() {
-    return this.http.get(`${this.url}/getportals`);
+    return this.http.get(`${this.url}/portals`);
   }
 
   deleteExperience(experienceName) {
-    return this.http.delete(`${this.url}/portal/` + experienceName);
+    return this.http.delete(`${this.url}/portals/` + experienceName);
   }
 
   syncModel(data) {
-    return this.http.post(`${this.url}/syncmodel`, data);
+    return this.http.post(`${this.url}/portals/syncmodel`, data);
   }
 
   updateModel(portalName, data) {
-    return this.http.post(`${this.url}/updatemodel/` + portalName, data);
+    return this.http.post(`${this.url}/portals/updatemodel/` + portalName, data);
   }
 
   exportProject(projectName: string, fileName: string) {
-    fileSaver.saveAs(`${this.url}/exportproject/${projectName}`, `${fileName}`);
+    fileSaver.saveAs(`${this.url}/projects/export/${projectName}`, `${fileName}`);
   }
 
   importProject(projectName: string, file: File) {
     const formData: FormData = new FormData();
     formData.append('files[]', file, file.name);
 
-    return this.http.post(`${this.url}/importproject/${projectName}`, formData, {});
+    return this.http.post(`${this.url}/projects/import/${projectName}`, formData, {});
   }
 }
