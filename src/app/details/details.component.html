@@ -42,7 +42,7 @@
                   <label for="headers" class="cursor-pointer">Headers <span
                       class="badge badge-dark">{{form.get('headers').get('length')}}</span></label>
                   <div class="header-controls">
-                    <a href="#"><i (click)="addHeader()" class="fas fa-plus"></i></a>
+                    <a href="#"><i (click)="addHeader(null, null, $event)" class="fas fa-plus"></i></a>
                     <i class="fas fa-chevron-down ml-3" [ngClass]="{'fa-chevron-up': !showHeaders}"></i>
                   </div>
                 </header>

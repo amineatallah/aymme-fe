@@ -130,7 +130,8 @@ export class DetailsComponent implements OnInit {
     });
   }
 
-  addHeader(headerName: string = '', headerValue: string = ''): boolean {
+  addHeader(headerName: string = '', headerValue: string = '', $event: Event = null): boolean {
+    $event.stopPropagation();
     this.headers = this.form.get('headers') as FormArray;
     this.headers.push(this.createHeadersInput(headerName, headerValue));
     return false;
