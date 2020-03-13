@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChildren, QueryList, OnDestroy } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { JsonEditorOptions, JsonEditorComponent } from 'ang-jsoneditor';
-import { tap, take, debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { tap, take, debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import * as servicesSelectors from '../state/services/services.selectors';
@@ -9,9 +9,8 @@ import * as specificationsSelectors from '../state/specifications/specifications
 import * as specificationsActions from '../state/specifications/specifications.actions';
 import { SpecNameValidator } from './specNameValidator';
 import { collapseExpandAnimation, slideInOutAnimation, fadeInStaggerAnimation } from '../shared/animation';
-import { ToastrService } from 'ngx-toastr';
 import * as ServicesActions from '../state/services/services.actions';
-import { Actions } from '@ngrx/effects';
+import { Actions, ofType } from '@ngrx/effects';
 import { ModalService } from '../shared/modal.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -25,7 +24,8 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss']
 })
-export class DetailsComponent implements OnInit {
+export class DetailsComponent implements OnInit, OnDestroy {
+  destroyed$ = new Subject<boolean>();
   endpoint$: Observable<any>;
   endpointData: any;
   specs$: Observable<any>;
@@ -48,7 +48,7 @@ export class DetailsComponent implements OnInit {
   headers: FormArray;
   showHeaders: boolean;
   projectName: string;
-  
+
   @ViewChildren(JsonEditorComponent) editor: QueryList<JsonEditorComponent>;
 
   constructor(
@@ -56,7 +56,8 @@ export class DetailsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private specNameValidator: SpecNameValidator,
     private modalService: ModalService,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private actions$: Actions,
   ) { }
 
   ngOnInit() {
@@ -110,6 +111,13 @@ export class DetailsComponent implements OnInit {
       })
     );
 
+    this.actions$.pipe(
+      ofType(ServicesActions.ServicesActionTypes.UPDATE_ENDPOINT_SUCCESS),
+      takeUntil(this.destroyed$),
+      tap(() => {
+        this.form.markAsPristine();
+      })
+    ).subscribe();
 
     this.specForm = this.formBuilder.group({
       specName: [null,
@@ -123,6 +131,11 @@ export class DetailsComponent implements OnInit {
     this.specs$ = this.store.pipe(select(specificationsSelectors.getSpecifications)).pipe(tap(_ => this.specName.updateValueAndValidity()));
 
     this.filterText$ = this.specForm.get('specName').valueChanges;
+  }
+
+  ngOnDestroy() { 
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 
   get specName() {
@@ -160,6 +173,9 @@ export class DetailsComponent implements OnInit {
   }
 
   updateEndpoint(endpointId: string) {
+
+    const changedServiceName = this.form.get('serviceName').dirty;
+
     const data = {
       id: endpointId,
       statusCode: this.form.get('statusCode').value,
@@ -171,8 +187,7 @@ export class DetailsComponent implements OnInit {
       customHeaders: this.arrayToObject(this.form.value.headers)
     };
 
-
-    this.store.dispatch(new ServicesActions.UpdateEndpoint({ projectName: this.projectName, data }));
+    this.store.dispatch(new ServicesActions.UpdateEndpoint({ projectName: this.projectName, data, changedServiceName }));
   }
 
   arrayToObject(array) {

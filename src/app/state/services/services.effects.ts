@@ -110,7 +110,10 @@ export class ServicesEffects {
         map(
           (result: any) => {
             this.toastr.success('', 'Mocks updated successfully!');
-            this.store.dispatch(new servicesActions.LoadServices({projectName: action.payload.projectName, initializing: true }));
+            if (action.payload.changedServiceName) {
+              this.store.dispatch(new servicesActions.LoadServices({projectName: action.payload.projectName, initializing: true }));
+            }
+            
             return new servicesActions.UpdateEndpointSuccess(result);
           }
         ),

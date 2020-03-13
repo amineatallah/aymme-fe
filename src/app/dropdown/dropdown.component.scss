@@ -3,17 +3,6 @@
   z-index: 9;
   background-color: #444;
 
-  &.is-open {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
-  &:hover {
-    ul {
-      display: inline-block;
-    }
-  }
-
   header {
     border: 1px solid #222;
     padding: 6px 10px;
@@ -41,6 +30,10 @@
     border-top: 0;
     background-color: #222;
     box-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+
+    &.is-open {
+      display: inline-block;
+    }
 
     li {
       padding: 10px;
