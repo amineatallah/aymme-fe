@@ -1,8 +1,8 @@
 import { Component, OnInit, ElementRef, ViewChildren, QueryList, OnDestroy } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { JsonEditorOptions, JsonEditorComponent } from 'ang-jsoneditor';
-import { tap, take } from 'rxjs/operators';
-import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
+import { tap, take, debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import * as servicesSelectors from '../state/services/services.selectors';
 import * as specificationsSelectors from '../state/specifications/specifications.selectors';
@@ -29,6 +29,8 @@ export class DetailsComponent implements OnInit {
   endpoint$: Observable<any>;
   endpointData: any;
   specs$: Observable<any>;
+  servicesNameList: Array<string> = [];
+  servicesNameList$: Observable<any>;
   responseCodes: string[] = ['200', '401', '404', '500'];
   form: FormGroup;
   mocksVisible = false;
@@ -46,14 +48,13 @@ export class DetailsComponent implements OnInit {
   headers: FormArray;
   showHeaders: boolean;
   projectName: string;
+  
   @ViewChildren(JsonEditorComponent) editor: QueryList<JsonEditorComponent>;
 
   constructor(
     private store: Store<any>,
     private formBuilder: FormBuilder,
     private specNameValidator: SpecNameValidator,
-    private toastr: ToastrService,
-    private actions$: Actions,
     private modalService: ModalService,
     private activeRoute: ActivatedRoute
   ) { }
@@ -65,13 +66,18 @@ export class DetailsComponent implements OnInit {
 
     this.projectName = this.activeRoute.snapshot.params.projectName;
 
-    this.form = this.formBuilder.group({
-      delay: 0,
-      statusCode: '',
-      noData: false,
-      forward: false,
-      headers: this.formBuilder.array([this.createHeadersInput()])
+    this.form = new FormGroup({
+      delay: new FormControl(0, [Validators.required]),
+      statusCode: new FormControl('', [Validators.required]),
+      serviceName: new FormControl('', Validators.required),
+      noData: new FormControl(false),
+      forward: new FormControl(false),
+      headers: new FormArray([this.createHeadersInput()]),
     });
+
+    this.servicesNameList$ = this.store.pipe(select(servicesSelectors.getServicesList), tap((servicesList) => {
+      this.servicesNameList = servicesList;
+    }));
 
     this.endpoint$ = this.store.pipe(
       select(servicesSelectors.getSelectedEndpoint),
@@ -82,6 +88,7 @@ export class DetailsComponent implements OnInit {
         this.mockId = val.path.substring(val.path.lastIndexOf('/') + 1);
         this.form.get('statusCode').setValue(val.statusCode);
         this.form.get('delay').setValue(val.delay);
+        this.form.get('serviceName').setValue(val.serviceName);
         this.form.get('noData').setValue(val.emptyArray);
         this.response = val;
         // this.endpointData = val.response[val.statusCode].data.body;
@@ -129,6 +136,14 @@ export class DetailsComponent implements OnInit {
     });
   }
 
+  serviceNameSearch = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(120),
+      distinctUntilChanged(),
+      map(term => term.length < 2 ? []
+        : this.servicesNameList.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+    )
+
   addHeader(headerName: string = '', headerValue: string = '', $event: Event = null): boolean {
     if ($event) {
       $event.stopPropagation();
@@ -149,6 +164,7 @@ export class DetailsComponent implements OnInit {
       id: endpointId,
       statusCode: this.form.get('statusCode').value,
       delay: parseInt(this.form.get('delay').value, 10),
+      serviceName: this.form.get('serviceName').value,
       emptyArray: this.form.get('noData').value,
       forward: this.form.get('forward').value,
       response: Object.assign({}, this.response.response, { [this.form.get('statusCode').value]: this.editor.first.get() }),

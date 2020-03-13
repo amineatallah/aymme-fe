@@ -12,3 +12,5 @@ export const getSelectedEndpoint = createSelector(getServicesFeatureState, (stat
 export const isLoadingServices = createSelector(getServicesFeatureState, (state): any => state.isLoadingServices);
 
 export const isImportingProject = createSelector(getServicesFeatureState, (state): any => state.isImportingProject);
+
+export const getServicesList = createSelector(getServicesFeatureState, state => state.services.map(({serviceName}) => serviceName));

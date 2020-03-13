@@ -65,3 +65,15 @@
     }
   }
 }
+
+ngb-typeahead-window {
+  background-color: #444 !important;
+  .dropdown-item {
+    color: #d3d3d3;
+
+    &.active {
+      background-color: $primary-blue;
+    }
+  }
+  
+}

@@ -6,10 +6,16 @@ import { concatMap, map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { HomeService } from '../../shared/home.service';
 import { ToastrService } from 'ngx-toastr';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class ServicesEffects {
-  constructor(private actions$: Actions, private homeService: HomeService, private toastr: ToastrService) { }
+  constructor(
+    private actions$: Actions, 
+    private homeService: HomeService, 
+    private toastr: ToastrService,
+    private store: Store<any>,
+    ) { }
 
   @Effect()
   loadServices$ = this.actions$.pipe(
@@ -104,6 +110,7 @@ export class ServicesEffects {
         map(
           (result: any) => {
             this.toastr.success('', 'Mocks updated successfully!');
+            this.store.dispatch(new servicesActions.LoadServices({projectName: action.payload.projectName, initializing: true }));
             return new servicesActions.UpdateEndpointSuccess(result);
           }
         ),

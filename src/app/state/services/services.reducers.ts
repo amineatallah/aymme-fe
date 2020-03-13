@@ -85,7 +85,6 @@ export function reducer(state = initialState, action: ServicesActions): Services
         isImportingProject: false,
         error: '',
       };
-
     case ServicesActionTypes.IMPORT_PROJECT_FAILURE:
       return {
         ...state,
