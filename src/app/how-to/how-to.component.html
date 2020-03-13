@@ -56,20 +56,30 @@
       <br />
       <h5>Create a project</h5>
       <p>
-        1. Create your project in the <a href="#" routerLink="/projects">Projects</a> page.</p>
+        1. Create your project in the <a href="#" routerLink="/projects">Projects</a> page. Use a project name that is unique, this will be used when setting up configuration in your WA3 project.</p>
+      <br />
       <h5>Setup proxy configuration</h5>
       <p ngNonBindable>
         1. Start adding a proxy configuration in your
         current project.
         You can do this by using the default Angular Proxy Configuration when running "ng serve".
-        Create the a file in the project folder together with your package.json and name this "proxy.conf.aymme.json" to
-        avoid conflicts with other configurations. Then use the following snippet in this file and replace {{project-name}} with your project:</p>
+        Create the a file in the project folder together with your package.json and name this "proxy.conf.aymme.js" to
+        avoid conflicts with other configurations. Then use the following snippet in this file and replace PROJECT_NAME
+        with the name of your project:</p>
       <code>
         <pre innerHTML="{{code}}"></pre>
         <a href="#" (click)="copyCode(code)" ><i class="far fa-copy"></i></a>
       </code>
       <p>
-        2. For convenience, add the following to the "scripts" in package.json:
+        2. Create the a configuration to use the proxy configuration in angular.json:
+      </p>
+      <code>
+        <pre innerHTML="{{angularJSONServiceCode}}"></pre>
+        <a href="#" (click)="copyCode(angularJSONServiceCode)" ><i class="far fa-copy"></i></a>
+      </code>
+
+      <p>
+        3. For convenience, add the following to the "scripts" in package.json:
       </p>
       <code>
         <pre innerHTML="{{scriptsCode}}"></pre>
@@ -202,7 +212,7 @@
       </code>
 
       <p>
-        4. Replace the 'your-experience-name' string with your Experience name identifier.
+        4. Set the EXPERIENCE_NAME variable with the Experience name identifier that is created in your Experience Manager.
       </p>
 
       <p>
@@ -211,18 +221,18 @@
       </p>
 
       <code>
-        <pre innerHTML="{{angularJSONcode}}"></pre>
-        <a href="#" (click)="copyCode(angularJSONcode)" ><i class="far fa-copy"></i></a>
+        <pre innerHTML="{{angularJSONExperienceCode}}"></pre>
+        <a href="#" (click)="copyCode(angularJSONExperienceCode)" ><i class="far fa-copy"></i></a>
       </code>
 
       <p>
-        6. Finally, add the configuration to "scripts" in package.json. If you already have your proxy configuration for
-        AYMME, it would look like this:
+        6. Finally, if you didn't add the script in package.json for the configuration yet add the code snippet to
+        "scripts". This is to easily run the application with the configuration that was created:
       </p>
 
       <code>
-        <pre innerHTML="{{simplifiedModelScriptsCode}}"></pre>
-        <a href="#" (click)="copyCode(simplifiedModelScriptsCode)" ><i class="far fa-copy"></i></a>
+        <pre innerHTML="{{scriptsCode}}"></pre>
+        <a href="#" (click)="copyCode(scriptsCode)" ><i class="far fa-copy"></i></a>
       </code>
     </div>
   </div>

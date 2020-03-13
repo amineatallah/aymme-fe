@@ -8,19 +8,56 @@ import { Component, OnInit } from '@angular/core';
 export class HowToComponent implements OnInit {
 
   public code =
-    `{
-    "/gateway/api//*": {
-      "target": "http://0.0.0.0:3000/gateway/{{project_name}}/api",
-      "secure": false,
-      "logLevel": "debug",
-      "changeOrigin": true,
-      "pathRewrite": {
-        "^/gateway/api": ""
-      }
-    }
-}`;
+    `const PROJECT_NAME = 'peachtree';
 
-  public scriptsCode = `"start:aymme": "ng serve --proxy-config=proxy.conf.aymme.json"`;
+    const PROXY_CONFIG = {
+        "*": {
+            target: "http://0.0.0.0:3000/intercept",
+            pathRewrite: (path, req) => {
+                console.log('path', path);
+                if (path.indexOf('?') < 0) {
+                    path = path + '?' + 'projectName=' + PROJECT_NAME;
+                } else {
+                    path = path + '&' + 'projectName=' + PROJECT_NAME;
+                }
+                return path;
+            },
+            bypass: (req, res, proxyOptions) => {
+                console.log('bypass', req.url);
+                if (req.headers.accept.indexOf('text/html') >= 0) {
+                    return "/index.html";
+                }
+            },
+            secure: false,
+            logLevel: "debug",
+            changeOrigin: true
+        }
+    }
+    
+    module.exports = PROXY_CONFIG;`;
+
+    public angularJSONServiceCode = `{
+      "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+      "version": 1,
+      "newProjectRoot": "",
+      "projects": {
+            //...
+            "serve": {
+              //...
+              "configurations": {
+                //... ADD THE PROPERTY BELOW
+                "aymme": {
+                  "proxyConfig": "proxy.conf.aymme.js"
+                }
+              }
+            }
+          }
+        }
+      }
+    }`;
+
+
+  public scriptsCode = `"start:aymme": "ng serve --configuration=aymme"`;
 
   public terminalCode = `npm run start:aymme`;
 
@@ -29,16 +66,16 @@ export class HowToComponent implements OnInit {
   public environmentCode = `
   import { Environment } from './type';
   import { ExternalServices } from '@backbase/foundation-ang/start';
-
+  
   const services: ExternalServices = {};
-
+  
   export const environment: Environment = {
       production: false,
   };
-
-  let experienceName = 'your-experience-name';
-
-  fetch('http://localhost:3000/api/simpleModel/' + experienceName)
+  
+  const EXPERIENCE_NAME = 'peachtree';
+  
+  fetch('http://localhost:3000/api/portals/simpleModel/' + EXPERIENCE_NAME)
       .then(
           function (response) {
               if (response.status !== 200) {
@@ -54,9 +91,10 @@ export class HowToComponent implements OnInit {
       )
       .catch(function (err) {
           console.log('Fetch Error: Unable to retrieve Experience Model', err);
-      });`;
+      });
+  `;
 
-  public angularJSONcode = `{
+  public angularJSONExperienceCode = `{
         "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
         "version": 1,
         "newProjectRoot": "",
@@ -91,9 +129,6 @@ export class HowToComponent implements OnInit {
           }
         }
       }`;
-
-
-  public simplifiedModelScriptsCode = `"start:aymme": "ng serve --proxy-config=proxy.conf.aymme.json --configuration=aymme"`;
 
   constructor() { }
 
