@@ -180,9 +180,9 @@ export class DetailsComponent implements OnInit {
   toggleMocks() {
     this.mocksVisible = !this.mocksVisible;
 
-    this.specForm.patchValue({
-      specName: this.response.serviceName
-    });
+    // this.specForm.patchValue({
+    //   specName: this.response.serviceName
+    // });
 
     return false;
   }
