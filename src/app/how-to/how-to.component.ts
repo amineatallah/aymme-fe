@@ -8,53 +8,55 @@ import { Component, OnInit } from '@angular/core';
 export class HowToComponent implements OnInit {
 
   public code =
-    `const PROJECT_NAME = 'peachtree';
+    `
+  const PROJECT_NAME = 'peachtree';
 
-    const PROXY_CONFIG = {
-        "*": {
-            target: "http://0.0.0.0:3000/intercept",
-            pathRewrite: (path, req) => {
-                console.log('path', path);
-                if (path.indexOf('?') < 0) {
-                    path = path + '?' + 'projectName=' + PROJECT_NAME;
-                } else {
-                    path = path + '&' + 'projectName=' + PROJECT_NAME;
-                }
-                return path;
-            },
-            bypass: (req, res, proxyOptions) => {
-                console.log('bypass', req.url);
-                if (req.headers.accept.indexOf('text/html') >= 0) {
-                    return "/index.html";
-                }
-            },
-            secure: false,
-            logLevel: "debug",
-            changeOrigin: true
-        }
-    }
-    
-    module.exports = PROXY_CONFIG;`;
+  const PROXY_CONFIG = {
+      "*": {
+          target: "http://0.0.0.0:3000/intercept",
+          pathRewrite: (path, req) => {
+              console.log('path', path);
+              if (path.indexOf('?') < 0) {
+                  path = path + '?' + 'projectName=' + PROJECT_NAME;
+              } else {
+                  path = path + '&' + 'projectName=' + PROJECT_NAME;
+              }
+              return path;
+          },
+          bypass: (req, res, proxyOptions) => {
+              console.log('bypass', req.url);
+              if (req.headers.accept.indexOf('text/html') >= 0) {
+                  return "/index.html";
+              }
+          },
+          secure: false,
+          logLevel: "debug",
+          changeOrigin: true
+      }
+  }
+  
+  module.exports = PROXY_CONFIG;`;
 
-    public angularJSONServiceCode = `{
-      "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-      "version": 1,
-      "newProjectRoot": "",
-      "projects": {
+    public angularJSONServiceCode = `
+  {
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "version": 1,
+    "newProjectRoot": "",
+    "projects": {
+          //...
+          "serve": {
             //...
-            "serve": {
-              //...
-              "configurations": {
-                //... ADD THE PROPERTY BELOW
-                "aymme": {
-                  "proxyConfig": "proxy.conf.aymme.js"
-                }
+            "configurations": {
+              //... ADD THE PROPERTY BELOW
+              "aymme": {
+                "proxyConfig": "proxy.conf.aymme.js"
               }
             }
           }
         }
       }
-    }`;
+    }
+  }`;
 
 
   public scriptsCode = `"start:aymme": "ng serve --configuration=aymme"`;
@@ -94,41 +96,42 @@ export class HowToComponent implements OnInit {
       });
   `;
 
-  public angularJSONExperienceCode = `{
-        "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-        "version": 1,
-        "newProjectRoot": "",
-        "projects": {
-          "banking-app": {
-            //...
-            "architect": {
-              //...
-              "build": {
-                "configurations": {
-                  //... ADD THE PROPERTY BELOW
-                  "aymme": {
-                    "fileReplacements": [
-                      {
-                        "replace": "apps/your-app-name/src/environments/environment.ts",
-                        "with": "apps/your-app-name/src/environments/environment.aymme.ts"
-                      }
-                    ]
-                  },
-                }
-              },
-              "serve": {
-                //...
-                "configurations": {
-                  //... ADD THE PROPERTY BELOW
-                  "aymme": {
-                    "browserTarget": "your-app-name:build:aymme"
+  public angularJSONExperienceCode = `
+  {
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "version": 1,
+    "newProjectRoot": "",
+    "projects": {
+      "banking-app": {
+        //...
+        "architect": {
+          //...
+          "build": {
+            "configurations": {
+              //... ADD THE PROPERTY BELOW
+              "aymme": {
+                "fileReplacements": [
+                  {
+                    "replace": "apps/APP_NAME/src/environments/environment.ts",
+                    "with": "apps/APP_NAME/src/environments/environment.aymme.ts"
                   }
-                }
+                ]
+              },
+            }
+          },
+          "serve": {
+            //...
+            "configurations": {
+              //... ADD THE PROPERTY BELOW
+              "aymme": {
+                "browserTarget": "APP_NAME:build:aymme"
               }
             }
           }
         }
-      }`;
+      }
+    }
+  }`;
 
   constructor() { }
 
