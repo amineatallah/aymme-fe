@@ -113,7 +113,9 @@ export class ServicesEffects {
             if (action.payload.changedServiceName) {
               this.store.dispatch(new servicesActions.LoadServices({projectName: action.payload.projectName, initializing: true }));
             }
-            
+
+            //fetch updated data for the endpoint 
+            this.store.dispatch(new servicesActions.LoadSelectedEndpoint({ projectName:action.payload.projectName, endpoint: action.payload.data }));
             return new servicesActions.UpdateEndpointSuccess(result);
           }
         ),

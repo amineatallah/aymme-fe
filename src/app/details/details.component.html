@@ -39,18 +39,39 @@
 
               <div class="row form-group">
                 <div class="col-6">
-                  <label for="statusCode">Status Code</label>
-                  <app-dropdown [defaultHeader]="'Select one'" [items]="responseCodes" formControlName="statusCode"
-                    (setSelectedValue)="changeStatusCode($event)"></app-dropdown>
-                </div>
-
-                <div class="col-6">
                   <div class="row no-gutters">
                     <label for="delay">Delay</label>
                     <input formControlName="delay" type="text" class="form-control" placeholder="Delay">
                   </div>
                 </div>
+                <div class="col-6">
+                  <label for="statusCode">Status Code</label>
+                  <app-dropdown [defaultHeader]="'Select one'" [items]="responseCodes" formControlName="statusCode"></app-dropdown>
+                </div>
+              </div>
 
+              <div class="row form-group" [formGroupName]="'match'">
+
+                <div class="col-6">
+                  <div class="row no-gutters">
+                    <label for="key">key (match post body key and return different response)</label>
+                    <input formControlName="name" type="text" class="form-control" placeholder="key name">
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="row no-gutters">
+                    <label for="value">value</label>
+                    <input formControlName="value" type="text" class="form-control" placeholder="key value">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row form-group">
+                <div class="col-6">
+                  <label for="statusCode">Change Response data</label>
+                  <app-dropdown [defaultHeader]="'Select one'" [items]="responseCodes" formControlName="responseCode"
+                    (setSelectedValue)="changeStatusCode($event)"></app-dropdown>
+                </div>
               </div>
 
               <div class="row form-group">

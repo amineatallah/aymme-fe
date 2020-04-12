@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChildren, QueryList, OnDestroy } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { JsonEditorOptions, JsonEditorComponent } from 'ang-jsoneditor';
-import { tap, take, debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
+import { tap, take, debounceTime, distinctUntilChanged, map, takeUntil, filter } from 'rxjs/operators';
 import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import * as servicesSelectors from '../state/services/services.selectors';
@@ -31,7 +31,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   specs$: Observable<any>;
   servicesNameList: Array<string> = [];
   servicesNameList$: Observable<any>;
-  responseCodes: string[] = ['200', '401', '404', '500'];
+  responseCodes: string[] = ['200', '401', '404', '500', '666'];
   form: FormGroup;
   mocksVisible = false;
   filesToUpload: Array<File>;
@@ -70,10 +70,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.form = new FormGroup({
       delay: new FormControl(0, [Validators.required]),
       statusCode: new FormControl('', [Validators.required]),
+      responseCode: new FormControl('', [Validators.required]),
       serviceName: new FormControl('', Validators.required),
       noData: new FormControl(false),
       forward: new FormControl(false),
       headers: new FormArray([this.createHeadersInput()]),
+      match: new FormGroup({
+        name: new FormControl(''),
+        value: new FormControl('')
+      })
     });
 
     this.servicesNameList$ = this.store.pipe(select(servicesSelectors.getServicesList), tap((servicesList) => {
@@ -82,15 +87,16 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
     this.endpoint$ = this.store.pipe(
       select(servicesSelectors.getSelectedEndpoint),
+      filter(val => val),
       tap(val => {
-        if (!val) {
-          return;
-        }
         this.mockId = val.path.substring(val.path.lastIndexOf('/') + 1);
         this.form.get('statusCode').setValue(val.statusCode);
+        this.form.get('responseCode').setValue(val.statusCode);
         this.form.get('delay').setValue(val.delay);
         this.form.get('serviceName').setValue(val.serviceName);
         this.form.get('noData').setValue(val.emptyArray);
+        this.form.get('match.name').setValue(val.match && val.match.name);
+        this.form.get('match.value').setValue(val.match && val.match.value);
         this.response = val;
         // this.endpointData = val.response[val.statusCode].data.body;
         this.endpointData = val.response[val.statusCode];
@@ -183,10 +189,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
       serviceName: this.form.get('serviceName').value,
       emptyArray: this.form.get('noData').value,
       forward: this.form.get('forward').value,
-      response: Object.assign({}, this.response.response, { [this.form.get('statusCode').value]: this.editor.first.get() }),
+      match: this.form.get('match').value,
+      response: Object.assign({}, this.response.response, { [this.form.get('responseCode').value]: this.editor.first.get() }),
       customHeaders: this.arrayToObject(this.form.value.headers)
     };
-
     this.store.dispatch(new ServicesActions.UpdateEndpoint({ projectName: this.projectName, data, changedServiceName }));
   }
 
