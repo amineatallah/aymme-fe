@@ -13,3 +13,5 @@ COPY nginx.conf /etc/nginx/nginx.conf
 WORKDIR /usr/share/nginx/html
 
 COPY --from=base /usr/src/app/dist/mocks-server-ui/ .
+
+EXPOSE 80 3003
