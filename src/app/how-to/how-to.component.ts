@@ -13,7 +13,7 @@ export class HowToComponent implements OnInit {
 
   const PROXY_CONFIG = {
       "*": {
-          target: "http://0.0.0.0:3000/intercept",
+          target: "http://0.0.0.0:3003/",
           pathRewrite: (path, req) => {
               console.log('path', path);
               if (path.indexOf('?') < 0) {
