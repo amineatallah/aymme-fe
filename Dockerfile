@@ -1,12 +1,14 @@
 FROM node:12 as base
 
 WORKDIR /usr/src/app
-COPY ./ ./
+
+COPY package*.json ./
 RUN npm ci
+
+COPY . .
 RUN npm run build
 
 FROM nginx:stable-alpine as production
-LABEL version="1.0"
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
