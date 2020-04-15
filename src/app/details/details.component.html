@@ -46,7 +46,7 @@
                 </div>
                 <div class="col-6">
                   <label for="statusCode">Status Code</label>
-                  <app-dropdown [defaultHeader]="'Select one'" [items]="responseCodes" formControlName="statusCode"></app-dropdown>
+                  <app-dropdown [defaultHeader]="'Select one'" [items]="statusCodes" formControlName="statusCode" (setSelectedValue)="changeStatusCode($event)"></app-dropdown>
                 </div>
               </div>
 
@@ -70,7 +70,7 @@
                 <div class="col-6">
                   <label for="statusCode">Change Response data</label>
                   <app-dropdown [defaultHeader]="'Select one'" [items]="responseCodes" formControlName="responseCode"
-                    (setSelectedValue)="changeStatusCode($event)"></app-dropdown>
+                    (setSelectedValue)="changeResponseCode($event)"></app-dropdown>
                 </div>
               </div>
 

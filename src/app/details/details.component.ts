@@ -31,7 +31,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   specs$: Observable<any>;
   servicesNameList: Array<string> = [];
   servicesNameList$: Observable<any>;
-  responseCodes: string[] = ['200', '401', '404', '500', '666'];
+  statusCodes: string[] = ['200', '401', '404', '500'];
+  responseCodes: string[] = [...this.statusCodes, '666'];
   form: FormGroup;
   mocksVisible = false;
   filesToUpload: Array<File>;
@@ -205,8 +206,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }, {});
   }
 
-  changeStatusCode(event) {
+  changeResponseCode(event) {
     this.endpointData = this.response.response[event];
+  }
+
+  changeStatusCode(event) {
+    this.changeResponseCode(event);
+    this.form.get('responseCode').setValue(event);
   }
 
   useMocks(data) {

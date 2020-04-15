@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
@@ -68,7 +67,6 @@ import { ProjectFormDialogComponent } from './project-form-dialog/project-form-d
   ],
   imports: [
     BrowserModule,
-    FlexLayoutModule,
     NgbModule,
     AppRoutingModule,
     HttpClientModule,
