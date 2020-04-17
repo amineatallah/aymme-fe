@@ -9,7 +9,7 @@ export class HowToComponent implements OnInit {
 
   public code =
     `
-  const PROJECT_NAME = 'peachtree';
+  const PROJECT_NAME = 'YOUR_PROJECT_NAME';
 
   const PROXY_CONFIG = {
       "*": {
@@ -75,7 +75,7 @@ export class HowToComponent implements OnInit {
       production: false,
   };
   
-  const EXPERIENCE_NAME = 'peachtree';
+  const EXPERIENCE_NAME = 'YOUR_EXPERIENCE_NAME';
   
   fetch('http://localhost:3003/api/portals/simpleModel/' + EXPERIENCE_NAME)
       .then(
