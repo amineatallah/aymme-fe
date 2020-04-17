@@ -20,6 +20,7 @@ export class ProjectsWrapperComponent implements OnInit {
     this.store.dispatch(new projectsActions.LoadProjects());
     this.projects$ = this.store.pipe(select(projectsSelectors.getProjects));
     this.isLoading$ = this.store.pipe(select(projectsSelectors.isLoadingProjects));
+    
   }
 
 }

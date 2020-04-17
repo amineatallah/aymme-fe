@@ -9,4 +9,6 @@ export const hasProjects = createSelector(getProjectsFeatureState, state => stat
 
 export const isLoadingProjects = createSelector(getProjectsFeatureState, state => state.isLoadingProjects);
 
+export const errorLoadingProjects = createSelector(getProjectsFeatureState, state => state.error);
+
 export const isCreatingProject = createSelector(getProjectsFeatureState, state => state.isCreatingProject);

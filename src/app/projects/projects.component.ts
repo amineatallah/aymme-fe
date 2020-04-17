@@ -1,8 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalService } from '../shared/modal.service';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import * as projectActions from '../state/projects/projects.actions';
+import * as projectsSelectors from '../state/projects/projects.selectors';
 import { take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-projects',
@@ -12,12 +14,15 @@ import { take } from 'rxjs/operators';
 export class ProjectsComponent implements OnInit {
   @Input() projects: [] | undefined;
 
+  errorLoadingProjects$: Observable<any>;
+
   constructor(
     private modalService: ModalService,
     private store: Store<any>,
     ) {}
 
   ngOnInit(): void {
+    this.errorLoadingProjects$ = this.store.pipe(select(projectsSelectors.errorLoadingProjects));
   }
 
   openCreateProjectModal() {

@@ -2,6 +2,11 @@
 <ng-template #noProjects>
   <p>There are currently no projects created.</p>
 </ng-template>
+
+<ng-template #errorLoadingProjects>
+  <p>There is an error connecting to AYMME Backend Service.</p>
+</ng-template>
+
   
 <div class="container-fluid">
   <div class="row d-flex justify-content-center">
@@ -9,15 +14,16 @@
       <section class="aymme-header d-flex align-items-center mb-4">
         <h6 class="mb-0">Projects</h6>
         <button class="btn btn-sm ml-auto btn-primary" (click)="openCreateProjectModal()">Create Project</button>
-  
       </section>
-      <ul class="aymme-list p-0" *ngIf="projects.length > 0 else noProjects">
-        <li *ngFor="let project of projects" class="mb-2">
-          <h5 class="d-flex align-items-center text-uppercase" [routerLink]="project.name">{{project.name}}
-            <i class="fas fa-trash ml-auto" (click)="openConfirmDeleteProject(project.name, $event)"></i>
-          </h5>          
-        </li>
-      </ul>
+      <ng-container *ngIf="(errorLoadingProjects$ | async) === '' else errorLoadingProjects">
+        <ul class="aymme-list p-0" *ngIf="projects.length > 0 else noProjects">
+          <li *ngFor="let project of projects" class="mb-2">
+            <h5 class="d-flex align-items-center text-uppercase" [routerLink]="project.name">{{project.name}}
+              <i class="fas fa-trash ml-auto" (click)="openConfirmDeleteProject(project.name, $event)"></i>
+            </h5>          
+          </li>
+        </ul>
+      </ng-container>    
     </div> 
   </div>
 </div>

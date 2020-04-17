@@ -30,6 +30,13 @@ export function reducer(state = initialState, action: ProjectsActions): Projects
         isLoadingProjects: false,
         error: '',
       };
+
+    case ProjectsActionTypes.LOAD_PROJECTS_FAILURE:
+        return {
+          ...state,
+          isLoadingProjects: false,
+          error: action.payload,
+        };
     case ProjectsActionTypes.CREATE_PROJECT:
       return {
         ...state,
