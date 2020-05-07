@@ -1,0 +1,94 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Trebuchet MS", sans-serif;
+  background-color: #333;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  color: #d3d3d3;
+  font-size: 14px;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 100;
+}
+
+h2 {
+  font-size: 1.7rem;
+	font-weight: 300;
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin-bottom: 20px;
+}
+
+h4 {
+  font-size: 1.3rem;
+}
+
+h5 {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+h6 {
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  font-weight: 200;
+  color: #888;
+  text-transform: uppercase;
+}
+
+p {
+	font-size: 0.9rem;
+}
+
+ul {
+  list-style: none;
+}
+
+a, a:visited, a:hover, a:active {
+  color: white;
+}
+
+a:hover {
+  text-decoration: none;
+  color: darken(white, 20%);
+}
+
+pre {
+  color: white;
+}
+
+/*
+* Helpers:
+*/
+.cursor-pointer { cursor: pointer; }
+
+// resets position relative
+.no-relative { position: static; }
+
+pre {
+  border: 1px dashed #555;
+  line-height: 20px;
+  padding: 20px;
+  white-space: pre-wrap;
+  color: #d3d3d3;
+  overflow: visible;
+}
+
+hr {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+// force white background for editor
+table.jsoneditor-tree {
+  background-color: white;
+}

@@ -1,9 +1,12 @@
-import { Component, OnInit, ViewChildren, ElementRef, QueryList } from '@angular/core';
-import { HomeService } from '../home/home.service';
+import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
-import { FormGroup, FormControl } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { Store, select } from '@ngrx/store';
+import * as experiencesSelectors from '../state/experiences/experiences.selectors';
+import * as experiencesActions from '../state/experiences/experiences.actions';
+import { ActivatedRoute } from '@angular/router';
+import { tap, delayWhen } from 'rxjs/operators';
+import { Observable, of, interval } from 'rxjs';
+import { ModalService } from '../shared/modal.service';
 
 @Component({
   selector: 'app-model',
@@ -14,71 +17,86 @@ export class ModelComponent implements OnInit {
   body: any;
   data: any;
   portals: any;
-  selectedPortal: any;
-  portalForm: FormGroup;
-  pagesForm: FormGroup;
-  private editorHolder: ElementRef;
-  public options = new JsonEditorOptions;
-  @ViewChildren(JsonEditorComponent) editor: QueryList<JsonEditorComponent>
-  constructor(private modalService: NgbModal, private service: HomeService) { }
+  selectedExperience$: any;
+  selectedExperience: any;
+  selectedExperienceName$: Observable<any>;
+  isSyncingExperience$: Observable<any>;
+  isUpdatingExperience$: Observable<any>;
+
+  public options = new JsonEditorOptions();
+
+  @ViewChildren(JsonEditorComponent) editor: QueryList<JsonEditorComponent>;
+  constructor(
+    private route: ActivatedRoute,
+    private store: Store<any>,
+    private modalService: ModalService,
+  ) { }
+
 
   ngOnInit() {
+    this.isSyncingExperience$ = this.store.pipe(select(experiencesSelectors.isSyncingExperience));
+    this.isUpdatingExperience$ = this.store.pipe(
+      select(experiencesSelectors.isUpdatingExperience),
+      delayWhen(isLoading => isLoading ? of(undefined) : interval(500))
+    );
+
     this.options.mode = 'code';
     this.options.modes = ['code', 'text', 'tree', 'view'];
     this.options.statusBar = true;
 
-    this.portalForm = new FormGroup({
-      portalName: new FormControl(''),
-      portalUrl: new FormControl(''),
-      loginUrl: new FormControl('')
-    });
+    this.selectedExperienceName$ = this.route.params.pipe(
+      tap((params: any) => {
+        this.store.dispatch(new experiencesActions.LoadExperiences());
 
-    this.pagesForm = new FormGroup({
-      activePage: new FormControl('')
-    });
+        this.selectedExperience$ = this.store.select(experiencesSelectors.getExperienceByName, { name: params.experienceName })
+          .pipe(tap((selectedExperience) => {
+            if (!selectedExperience) {
+              return;
+            }
 
-    this.service.getPortals().subscribe((portals: any) => {
-      this.portals = portals;
-      this.selectedPortal = portals[0];
-      this.body = this.selectedPortal.pages.find(page => page.name === this.selectedPortal.activePage); 
-      this.pagesForm.get('activePage').setValue(this.body.name);
-    });
-
-
-  }
-  changePortal($event) {
-    this.selectedPortal = this.portals.find(portal => portal.name === $event.target.value);
-    this.body = this.selectedPortal.pages[0];
+            this.selectedExperience = selectedExperience;
+            this.body = selectedExperience.pages.find(page => page.name === selectedExperience.activePage);
+        }));
+      })
+    );
   }
 
-  changePage($event) {
-    let page = this.selectedPortal.pages.find(page => page.name === this.pagesForm.get('activePage').value);
-    this.body = page.children[0];
+  selectPage(selectedActivePage) {
+    this.store.dispatch(new experiencesActions.SetActiveExperience({
+      selectedExperienceName: this.selectedExperience.name,
+      newActivePage: selectedActivePage.name
+    }));
   }
 
   syncModel() {
-    this.service.syncModel({ portalName: this.selectedPortal.name, portalUrl: this.selectedPortal.host, loginUrl: this.selectedPortal.loginUrl }).subscribe((val: any) => {
-    })
+    this.store.dispatch(new experiencesActions.SyncExperience({
+      portalName: this.selectedExperience.name,
+      loginUrl: this.selectedExperience.loginUrl,
+      portalUrl: this.selectedExperience.host,
+    }));
   }
 
-  createPortal(){
-    this.service.syncModel(this.portalForm.value).subscribe();
-  }
-  openModal(content) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {}, (reason) => {
-    });
-  }
-
-  updateModel(){
-    let editorData: any = this.editor.first.get();
-    let pages = this.selectedPortal.pages.map(page => {
-      if(page.id === editorData.id){
+  updateModel() {
+    const editorData: any = this.editor.first.get();
+    const pages = this.selectedExperience.pages.map(page => {
+      if (page.name === editorData.name) {
         return editorData;
       } else {
         return page;
       }
-    })
+    });
 
-    this.service.updateModel(this.selectedPortal.name, {activePage: this.pagesForm.get('activePage').value, pages: JSON.stringify(pages)}).subscribe();
+    this.store.dispatch(new experiencesActions.UpdateExperience({
+      experienceName: this.selectedExperience.name,
+      data: {
+        activePage: this.selectedExperience.activePage,
+        pages,
+      }
+    })
+    );
+  }
+
+  editExperience() {
+    this.modalService.experienceFormModal(this.selectedExperience);
   }
 }

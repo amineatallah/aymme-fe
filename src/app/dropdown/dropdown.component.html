@@ -1,0 +1,9 @@
+<div class="dropdown" (mouseover)="isOpen=true" (mouseout)="isOpen=false">
+  <header class="d-flex align-items-center">
+    <span class="text-small px-2">{{selectedValue}}</span>
+    <i class="fas fa-angle-down"></i>
+  </header>
+  <ul class="list-unstyled" [class.is-open]="isOpen" >
+    <li *ngFor="let item of items" (click)="setSelectedValueOnParent(item); isOpen = false">{{item}}</li>
+  </ul>
+</div>

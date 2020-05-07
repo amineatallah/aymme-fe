@@ -1,0 +1,41 @@
+.btn {
+  &.btn-primary {
+    background-color: $primary-blue;
+    border-color: darken($primary-blue, 10%);
+    border-radius: 2px;
+
+    &:hover {
+      background-color: darken($primary-blue, 5%);
+    }
+  }
+
+  &.btn-outline-primary {
+    border-color: darken($primary-blue, 10%);
+    color: $primary-blue;
+
+    &:hover {
+      background-color: $primary-blue;
+      color: white;
+    }
+  }
+}
+
+.btn-file-upload {
+  position: relative;
+  cursor: pointer;
+
+  span {
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  input {
+    cursor: pointer;
+    height: 30px;
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}

@@ -1,0 +1,24 @@
+<form [formGroup]="projectForm" class="w-100" (ngSubmit)="createProject()">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Create Project</h4>
+        <a href="#" class="p-1" (click)="dismissModal()">
+            <i class="fas fa-times"></i>
+        </a>
+    </div>
+
+    <div class="modal-body">
+        <div class="form-group mb-0">
+            <label class="col-auto" for="projectName">Project Name</label>
+            <div class="col">
+                <input id="projectName" formControlName="projectName" type="text" class="form-control"
+                    placeholder="Project Name">
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" [disabled]="projectForm.invalid"> <span *ngIf="isCreatingProject$ |async" class="spinner-grow spinner-grow-sm mr-2" role="status" aria-hidden="true"></span>Create</button>
+    </div>
+
+</form>

@@ -1,0 +1,21 @@
+.toast-container {
+  &.toast-top-right {
+    width: 300px;
+    top: 20px;
+    right: 20px;
+  }
+
+  .ngx-toastr {
+    &.toast-success {
+      min-height: 80px;
+      width: 100%;
+      background-color: #04a508;
+      box-shadow: none;
+      display: flex;
+      justify-content: center;
+      background-position: 30px center;
+      margin: 0;
+      align-items: center;
+    }
+  }
+}

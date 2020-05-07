@@ -1,0 +1,79 @@
+.dotted-list {
+  border-radius: 2px;
+  display: inline-block;
+  width: 100%;
+
+  > li {
+    background-color: #333;
+    border: 1px dashed #555;
+    margin-bottom: 20px;
+  }
+
+  .dotted-list-header {
+    width: 100%;
+  }
+
+  .dotted-list-footer {
+    border-top: 1px solid #444;
+  }
+
+  .is-open {
+    .dotted-list-header {
+      border-bottom: 1px solid #444;
+    }
+  }
+}
+
+.aymme-list {
+  >li {
+    border-radius: 2px;
+    display: inline-block;
+    width: 100%;
+    font-size: 14px;
+    border: 1px dashed #555;
+    cursor: pointer;
+
+    &.is-open {
+      h5 {
+        margin-bottom: 10px;
+        border-bottom: 1px solid #444;
+
+        i.fa-chevron-down {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    h5 {
+      padding: 10px 20px;
+      margin-bottom: 0;
+
+      i {
+        font-size: 1rem;
+      }
+    }
+
+    li {
+      &.active a { color: $primary-blue; font-weight: 700; }
+      a {
+        color: #888;
+
+        &:hover {
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+ngb-typeahead-window {
+  background-color: #444 !important;
+  .dropdown-item {
+    color: #d3d3d3;
+
+    &.active {
+      background-color: $primary-blue;
+    }
+  }
+  
+}

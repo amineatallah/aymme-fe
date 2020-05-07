@@ -1,83 +1,68 @@
-<div class="row p-3 no-gutters justify-content-between">
-  <div class="col-10 pr-4">
-    <select class="form-control" (change)="changePortal($event)">
-      <option *ngFor="let portal of portals" value="{{portal.name}}">{{portal.name}}</option>
-    </select>
-  </div>
-  <div class="col-2" (click)="openModal(content)">
-    <button class="btn btn-primary w-100"> Add portal</button>
-  </div>
-</div>
-<ng-container *ngIf="selectedPortal">
-  <div class="row no-gutters justify-content-between p-3">
-    <div class="col-5 p-3">
-      <div class="form-group row no-gutters justify-content-between">
-        <label class="col-auto">Portal Name</label>
-        <div class="col-9">
-          {{selectedPortal.name}}
-        </div>
-      </div>
-      <div class="form-group row no-gutters justify-content-between">
-        <label class="col-auto">Portal Host</label>
-        <div class="col-9">
-          {{selectedPortal.host}}
-        </div>
-      </div>
-      <div class="form-group row no-gutters justify-content-between">
-        <label class="col-auto">Login Url</label>
-        <div class="col-9">
-          {{selectedPortal.loginUrl}}
-        </div>
-      </div>
+<ng-container *ngIf="selectedExperienceName$ | async">
+  <ng-container *ngIf="selectedExperience$ | async as selectedExperience">
 
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-4">
+
+          <header class="aymme-header d-flex align-items-center mb-4">
+            <h6 class="mb-0">Experience Details</h6>
+            <button class="btn btn-sm ml-auto btn-outline-primary" (click)="editExperience()">Edit Host</button>
+          </header>
+          <section class="aymme-border">
+            <div class="form-group row no-gutters justify-content-between my-2">
+              <label class="col-auto">Experience Name</label>
+              <div class="col-9 dark-label">
+                {{selectedExperience.name}}
+              </div>
+            </div>
+            <div class="form-group row no-gutters justify-content-between mt-2 mb-1">
+              <label class="col-auto">Login Endpoint</label>
+              <div class="col-9 dark-label">
+                {{selectedExperience.loginUrl}}
+              </div>
+            </div>
+            <div class="form-group row no-gutters justify-content-between my-2">
+              <label class="col-auto">Model Endpoint</label>
+              <div class="col-9 dark-label">
+                {{selectedExperience.host}}
+              </div>
+            </div>           
+          </section>
+
+          <label class="aymme-border mt-3 mb-0">Pages </label>
+          <ul class="p-0">
+            <li *ngFor="let page of selectedExperience.pages"
+              class="d-flex align-items-center aymme-border-item dark-label p-2 pl-4"
+              [ngClass]="{'active' : selectedExperience.activePage === page.name}" (click)="selectPage(page)">
+              {{page.properties.title}}
+            </li>
+          </ul>
+
+        </div>
+
+        <div class="col-8 no-relative">
+          <section class="aymme-header d-flex align-items-center mb-4">
+            <h6 class="mb-0">Experience Model</h6>
+          </section>
+          <json-editor [options]="options" style="min-height: 1000px;" [data]="body">
+          </json-editor>
+          <div class="row no-gutters mt-3 justify-content-end">
+            <button type="button" class="btn btn-danger px-3 col-auto mr-3" (click)="syncModel()">
+              <span *ngIf="isSyncingExperience$ |async" class="spinner-grow spinner-grow-sm mr-2" role="status"
+                aria-hidden="true"></span>
+              Sync Remote Model
+            </button>
+            <button type="button" class="btn btn-primary px-3 col-auto" (click)="updateModel()">
+              <span *ngIf="isUpdatingExperience$ |async" class="spinner-grow spinner-grow-sm mr-2" role="status"
+                aria-hidden="true"></span>
+              Update & Use Model
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="col-7 p-3">
-      <div class="row no-gutters justify-content-between mb-3">
-        <div class="col-12 pr-4">
-          <form [formGroup]="pagesForm" class="d-flex align-items-center">
-            <label class="m-0 pr-3">Pages: </label>
-            <select class="form-control" formControlName="activePage" (change)="changePage($event)">
-              <option *ngFor="let page of selectedPortal.pages" [ngValue]="page.name">{{page.name}}</option>
-            </select>
-          </form>
-        </div>
-      </div>
-      <json-editor [options]="options" style="min-height: 1000px;" [data]="body">
-      </json-editor>
-      <div class="row no-gutters mt-3 justify-content-end">
-        <button type="button" class="btn btn-danger px-3 col-auto mr-3" (click)="syncModel()">Sync Remote Model</button>
-        <button type="button" class="btn btn-primary px-3 col-auto" (click)="updateModel()">Update Model</button>
-      </div>
-    </div>
-  </div>
+  </ng-container>
 </ng-container>
-
-<ng-template #content let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Create Portal</h4>
-  </div>
-  <div class="modal-body">
-    <form [formGroup]="portalForm" class="w-100">
-      <div class="form-group row no-gutters justify-content-between">
-        <label class="col-auto" for="portalName">Portal Name</label>
-        <div class="col-8">
-          <input formControlName="portalName" type="text" class="form-control" placeholder="Portal Name">
-        </div>
-      </div>
-      <div class="form-group row no-gutters justify-content-between">
-        <label class="col-auto" for="portalHost">Login Url</label>
-        <div class="col-8">
-          <input formControlName="loginUrl" type="text" class="form-control" placeholder="Login Url">
-        </div>
-      </div>
-      <div class="form-group row no-gutters justify-content-between">
-        <label class="col-auto" for="portalUrl">Portal Url</label>
-        <div class="col-8">
-          <input formControlName="portalUrl" type="text" class="form-control" placeholder="Portal Url">
-        </div>
-      </div>
-      <button type="button" class="btn btn-primary" (click)="createPortal()">Sync Model</button>
-    </form>
-  </div>
-</ng-template>

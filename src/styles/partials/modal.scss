@@ -1,0 +1,24 @@
+.modal-content {
+    background-color: #333;
+    animation-name: modalAnimation;
+    animation-duration: 0.3s;
+}
+
+.modal-header {
+    border-bottom: 1px dashed #555;
+    color: #888;
+
+}
+
+.modal-footer {
+    border-top: 1px dashed #555;
+}
+
+.modal-details {
+    color: #888;
+}
+  
+@keyframes modalAnimation {
+    0%   {transform: translateY(-10px); opacity: 0;}
+    100% {transform: translateY(0px); opacity: 1;}
+}

@@ -3,9 +3,7 @@
 // @import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 @import '~jsoneditor/dist/jsoneditor.min.css';
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
-
+@import './styles/main.scss';
 
 .ace_editor.ace-jsoneditor {
     min-height: 500px;

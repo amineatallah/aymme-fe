@@ -1,0 +1,19 @@
+.aymme-border {
+    border-radius: 2px;
+    display: inline-block;
+    width: 100%;
+    font-size: 14px;
+    border: 1px dashed #555;
+    padding: 10px;
+}
+
+.aymme-border-item {
+    border-bottom: 1px dashed #555;
+    border-right: 1px dashed #555;
+    border-left: 1px dashed #555;
+    cursor: pointer;
+
+    &.active {
+        color: #1281AC;
+    }
+}

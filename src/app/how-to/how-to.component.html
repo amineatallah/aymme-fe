@@ -1,0 +1,247 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h4>What is AYMME?</h4>
+      <p>AYMME stands for <strong>"Are You Mocking ME?"</strong> and this tool that makes mocking data easier when using
+        "ng
+        serve". Angular CLI already covers the instant feedback when code changes,
+        but when you need to test multiple scenarios using different data or error responses or you need to change the
+        structure of your Experience.
+        AYMME is able to manage this for you by providing these functionalities:
+      </p>
+      <ul>
+        <li><a [routerLink]="['/howto']" fragment="mocking-back-end-services">Mocking Back-End Services</a></li>
+        <li><a [routerLink]="['/howto']" fragment="mocking-experience-model">Mocking Experience Model</a></li>
+      </ul>
+      <p>
+        Depending on the state of your project, it might not be needed to use these functionalities. Therefore, learn to
+        understand their use cases
+        and how to set everything up by going through this page.
+      </p>
+      <br id="mocking-back-end-services" />
+      <hr />
+      <br />
+      <h4>Mocking Back-End Services</h4>
+      <p>
+        Any Backbase widget that needs data, can be mocked locally using the mock providers of generated data modules
+        ("data-ang" for widget collections).
+        These are convenient if you need static data initially. However, if you want to try other scenarios like when it
+        returns an error from the server or
+        use other data. It cannot be easily changed.
+      </p>
+      <p>
+        AYMME allows you to change the response of each endpoint easily and simulate the live environment by providing
+        the data through an actual HTTP request.
+        Each request that your application is making, can be registered in AYMME by redirecting the requests to the
+        AYMME Back-End Service. From there, AYMME
+        will be registered and ready for mocking the response. AYMME is also able to manage your mock data, by uploading
+        multiple examples, to switch between
+        different mock data on the fly.
+
+      </p>
+      <br />
+      <h4>How to setup a mocked Back-End Services</h4>
+      <br />
+      <p>
+        <strong>Prerequisites:</strong>
+      </p>
+      <ul>
+        <li>Running AYMME Back-End Service</li>
+        <li>Widget Architecture 3 Project</li>
+        <ul>
+          <li>A widget that makes a HTTP request</li>
+          <li>The same widget part of the Simplified Model (to be rendered when using "ng serve")</li>
+        </ul>
+      </ul>
+      <br />
+      <h5>Create a project</h5>
+      <p>
+        1. Create your project in the <a href="#" routerLink="/projects">Projects</a> page. Use a project name that is
+        unique, this will be used when setting up configuration in your WA3 project.</p>
+      <br />
+      <h5>Setup proxy configuration</h5>
+      <p ngNonBindable>
+        1. Start adding a proxy configuration in your
+        current project.
+        You can do this by using the default Angular Proxy Configuration when running "ng serve".
+        Create the a file in the project folder together with your package.json and name this "proxy.conf.aymme.js" to
+        avoid conflicts with other configurations. Then use the following snippet in this file and replace PROJECT_NAME
+        with the name of your project:</p>
+      <code>
+        <pre innerHTML="{{code}}"></pre>
+        <a href="#" (click)="copyCode(code)" ><i class="far fa-copy"></i></a>
+      </code>
+      <p>
+        2. Create the a configuration to use the proxy configuration in angular.json:
+      </p>
+      <code>
+        <pre innerHTML="{{angularJSONServiceCode}}"></pre>
+        <a href="#" (click)="copyCode(angularJSONServiceCode)" ><i class="far fa-copy"></i></a>
+      </code>
+
+      <p>
+        3. For convenience, add the following to the "scripts" in package.json:
+      </p>
+      <code>
+        <pre innerHTML="{{scriptsCode}}"></pre>
+        <a href="#" (click)="copyCode(scriptsCode)" ><i class="far fa-copy"></i></a>
+      </code>
+
+      <h5>Run your project application</h5>
+      <p>
+        3. Now run the app using the created scripts using the command:
+      </p>
+
+      <code>
+        <pre innerHTML="{{terminalCode}}"></pre>
+        <a href="#" (click)="copyCode(terminalCode)" ><i class="far fa-copy"></i></a>
+      </code>
+      <p>
+        4. When your project application is running, disable the mocks to allow the requests to be directed to AYMME.
+        Use
+        this command in the console of your browser:
+      </p>
+
+      <code>
+        <pre innerHTML="{{disableMockCode}}"></pre>
+        <a href="#" (click)="copyCode(disableMockCode)" ><i class="far fa-copy"></i></a>
+      </code>
+      <p></p>
+      <h5>Start Mocking Me!</h5>
+      <p>
+        5. The widgets in your project should be making HTTP requests to AYMME now. To check this, select your project
+        in the AYMME web application page.
+        This will list all the requests made by your project application on the left side. When your application is
+        performing new requests, simply hit the refresh button to fetch the latest
+        endpoints. Now you can start mocking each requests by clicking on the endpoint and configure the response on the
+        right bar.
+      </p>
+      <br />
+      <h5>Managing Your Endpoints</h5>
+      <p>
+        Notice that you will have all requests with a service name called "default". To group your endpoints, update
+        each endpoint with the service name you want to group them by.
+      </p>
+      <br />
+      <h5>Managing Your Mock Data</h5>
+      <p>When configuring the response data, it might be handy to switch between multiple response. In order to manage
+        this, use the "Manage Mocks" button open the panel on the left.
+        By default, it will filter the specifications list by the selected service. To create a specifications, simply
+        click "Create Specification" button. Now expand the created specification
+        and start uploading JSON files to save your example data. These examples are found in the RAML specifications.
+      </p>
+
+      <br id="mocking-experience-model" />
+      <hr />
+      <br />
+      <h4>Mocking Experience Model</h4>
+      <p>
+        In Widget Architecture 3, you can creat the Simplified Model in the environment.ts to be used when using "ng
+        serve". As the structure of the Experience Model grows, it becomes difficult to maintain and apply changes to
+        this Simplified Model. It would require a lot of work to keep the Experience Model and Simplified Model in sync.
+      </p>
+      <p>
+        For this, AYMME can cache the Experience Model of a remote or local Experience Manager and convert/ provide the
+        Simplified Model to "ng serve". Each time you make a change in the Experience Model in Experience Manager,
+        simply synchronize this from AYMME to get the latest Simplified Model. Once AYMME cached the Simplified Model,
+        Experience Manager is no longer required to be run to save up resources and time required to run all the
+        services. AYMME also allows you to change the Experience Model on the fly, if you need to test different
+        scenarios using different values for properties of widgets, containers etc.
+      </p>
+      <br />
+      <h4>How to setup a mocked Experience Model</h4>
+      <p>
+        <strong>Prerequisites:</strong>
+      </p>
+      <ul>
+        <li>Running AYMME Back-End Service</li>
+        <li>Running Experience Manager (remote/ local)</li>
+        <ul>
+          <li>An Exprience using your Widget Architecture 3 Application</li>
+        </ul>
+        <li>Widget Architecture 3 Project</li>
+        <ul>
+          <li>Containers and widgets imported that are used in Experience Manager</li>
+        </ul>
+      </ul>
+      <br />
+      <h5>Add Experience</h5>
+      <p>
+        1. Go to <a href="#" routerLink="/experiences">Experiences</a> page and add the Experience to
+        AYMME by clicking on "Add Experience" and fill out the form to allow AYMME to retrieve the Experience Model from
+        your Experience Manager. For explanation of the fields:
+      </p>
+
+      <ul>
+        <li>
+          <strong>Experience Name:</strong> The identifier of your Experience, which is lower case and using dashes as
+          separators. To
+          find out, go to Page Management of the Experience. Then it should appear in the URL after the "@@"
+          characters. For example: http://localhost:8080/gateway/cxp-manager/pages@@retail-experience
+        </li>
+
+        <li>
+          <strong>Host Address:</strong> Provide AYMME with the address of the Experience Manager. For local Experience
+          Manager, you are required to provide your IP address. AYMME is running within Docker, thus using "localhost"
+          would point to the Docker Container itself. For remote Experience Manager, provide the domain of the
+          Experience Manager. For example: dev.backbase.com
+        </li>
+        <li>
+          <strong>Host Port Number:</strong> For local Experience Manager it is by default "8080". If there is no port
+          number for remote Experience Manager, empty the values.
+        </li>
+        <li>
+          <strong>Host Login Endpoint:</strong> This value is to configure AYMME to authenticate before getting the
+          Experience Model. It will use the default admin credentials. This only changes if the endpoint is changed by a
+          new CXS version or if Experience Manager is deployed on the remote server with a different API context URL.
+        </li>
+        <li>
+          <strong>Host Model Endpoint:</strong> This is the endpoint for getting the Experience Model. As the Host Login
+          Endpoint, can be changed for the same reasons as mentioned above.
+        </li>
+      </ul>
+
+      <p>
+        2. Once the Experiences has been added, click on the Experience from the list and select the page that you want
+        to mock.
+      </p>
+      <br />
+
+      <h5>Setup your project</h5>
+      <p>
+        3. Then you need to point your project to AYMME to receive the cached Simplfied Model. For this, create a new
+        file "environment.aymme.ts" and paste this code:
+      </p>
+
+      <code>
+        <pre innerHTML="{{environmentCode}}"></pre>
+        <a href="#" (click)="copyCode(environmentCode)" ><i class="far fa-copy"></i></a>
+      </code>
+
+      <p>
+        4. Set the EXPERIENCE_NAME variable with the Experience name identifier that is created in your Experience
+        Manager.
+      </p>
+
+      <p>
+        5. Create the configurations for the "build" and "serve" as shown below. Make sure you only add the "ADD THE
+        PROPERTY BELOW" and replace the APP_NAME with your Angular Application Name.
+      </p>
+
+      <code>
+        <pre innerHTML="{{angularJSONExperienceCode}}"></pre>
+        <a href="#" (click)="copyCode(angularJSONExperienceCode)" ><i class="far fa-copy"></i></a>
+      </code>
+
+      <p>
+        6. Finally, if you didn't add the script in package.json for the configuration yet add the code snippet to
+        "scripts". This is to easily run the application with the configuration that was created:
+      </p>
+
+      <code>
+        <pre innerHTML="{{scriptsCode}}"></pre>
+        <a href="#" (click)="copyCode(scriptsCode)" ><i class="far fa-copy"></i></a>
+      </code>
+    </div>
+  </div>
+</div>

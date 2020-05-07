@@ -1,0 +1,27 @@
+pre {
+  width: auto;
+  padding-right: 80px;
+}
+
+code {
+  display: inline-block;
+  position: relative;
+
+  a {
+    display: inline-block;
+    color: #888;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  i {
+    font-size: 20px;
+  }
+}
+
+ul {
+  list-style-type: disc !important;
+  padding-left:1em !important;
+  margin-left:1em;
+}

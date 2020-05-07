@@ -1,0 +1,33 @@
+<nav class="navbar navbar-dark fixed-top navbar-expand-lg mb-3 px-4" [ngClass]="{'scrolling': isScrollingDown}">
+  <div class="navbar-container">
+    <div class="row">
+      <div class="col">
+        <a class="navbar-brand" routerLink="">
+          <img width="160" class="navbar-brand-logo-full" alt="Backbase Logo"
+            src="assets/images/backbase-logo-white.svg">
+          <span class="navbar-brand-spacer color-backbase-primary"> / </span>
+          <span class="navbar-brand-text">AYMME?</span>
+        </a>
+      </div>
+
+      <div class="col text-right">
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item" routerLinkActive="active">
+              <a class="nav-link" routerLink="/howto">How To Use</a>
+            </li>
+            <li class="nav-item" routerLinkActive="active">
+              <a class="nav-link" routerLink="/projects">Projects</a>
+            </li>
+            <li class="nav-item" routerLinkActive="active">
+              <a class="nav-link" routerLink="/experiences">Experiences</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" href="http://community.backbase.com">Community</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
