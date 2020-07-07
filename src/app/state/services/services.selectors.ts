@@ -5,6 +5,8 @@ const getServicesFeatureState = createFeatureSelector<ServicesState>('services')
 
 export const getServices = createSelector(getServicesFeatureState, state => state.services);
 
+export const getConfig = createSelector(getServicesFeatureState, state => state.config);
+
 export const hasServices = createSelector(getServicesFeatureState, state => state.services.length > 0);
 
 export const getSelectedEndpoint = createSelector(getServicesFeatureState, (state): any => state.selectedEndpoint);

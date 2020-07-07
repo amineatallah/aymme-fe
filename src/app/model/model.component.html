@@ -4,13 +4,13 @@
 
     <div class="container-fluid">
       <div class="row">
-        <div class="col-4">
+        <div class="col-3">
 
           <header class="aymme-header d-flex align-items-center mb-4">
-            <h6 class="mb-0">Experience Details</h6>
-            <button class="btn btn-sm ml-auto btn-outline-primary" (click)="editExperience()">Edit Host</button>
+            <h4 class="mb-0 text-uppercase"><b>{{selectedExperience.name}}</b></h4>
+            <button class="btn btn-sm ml-auto btn-outline-primary" (click)="editExperience()">Edit</button>
           </header>
-          <section class="aymme-border">
+          <!-- <section class="aymme-border">
             <div class="form-group row no-gutters justify-content-between my-2">
               <label class="col-auto">Experience Name</label>
               <div class="col-9 dark-label">
@@ -29,9 +29,9 @@
                 {{selectedExperience.host}}
               </div>
             </div>           
-          </section>
+          </section> -->
 
-          <label class="aymme-border mt-3 mb-0">Pages </label>
+          <label class="aymme-border mt-0 mb-0">Pages </label>
           <ul class="p-0">
             <li *ngFor="let page of selectedExperience.pages"
               class="d-flex align-items-center aymme-border-item dark-label p-2 pl-4"
@@ -42,7 +42,7 @@
 
         </div>
 
-        <div class="col-8 no-relative">
+        <div class="col-9 no-relative">
           <section class="aymme-header d-flex align-items-center mb-4">
             <h6 class="mb-0">Experience Model</h6>
           </section>

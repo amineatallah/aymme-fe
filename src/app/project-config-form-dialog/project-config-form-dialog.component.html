@@ -1,6 +1,6 @@
-<form [formGroup]="experienceForm" (ngSubmit)="addExperience()">
+<form [formGroup]="configForm" (ngSubmit)="updateConfig()">
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">{{isEditing ? 'Edit Host' : 'Add Experience'}}</h4>
+    <h3 class="mb-0">{{projectData.projectName}} Config</h3>
     <a href="#" class="p-1" (click)="dismissModal()">
       <i class="fas fa-times"></i>
     </a>
@@ -25,13 +25,6 @@
     </div>
 
     <div class="form-group">
-      <label class="col-auto" for="experienceName">Experience Name</label>
-      <div class="col">
-        <input formControlName="experienceName" type="text" class="form-control"
-          placeholder="e.g. retail-experience, wealth-experience">
-      </div>
-    </div>
-    <div class="form-group">
       <label class="col-auto" for="host">Host Address + Port Number</label>
       <div class="col">
         <input formControlName="host" type="text" class="form-control"
@@ -51,7 +44,7 @@
       </label>
       <input class="mr-3" formControlName="useIdentity" type="checkbox" value="" id="defaultCheck1">
     </div>
-    <div class="form-group" *ngIf="experienceForm.get('useIdentity').value">
+    <div class="form-group" *ngIf="configForm.get('useIdentity').value">
       <label class="col-auto" for="identityLoginUrl">Identity Login Url</label>
       <div class="col">
         <input formControlName="identityLoginUrl" type="text" class="form-control"
@@ -61,24 +54,33 @@
     <div class="form-group">
       <label class="col-auto" for="loginUrl">Host Login URI</label>
       <div class="col">
-        <input formControlName="loginUrl" type="text" class="form-control"
+        <input formControlName="loginUri" type="text" class="form-control"
           placeholder="e.g. /api/auth/login">
       </div>
     </div>
     <div class="form-group">
-      <label class="col-auto" for="modelUrl">Host Model URI</label>
-      <div class="col">
-        <input formControlName="modelUrl" type="text" class="form-control"
-          placeholder="e.g. /api/portal/portals">
+      <label class="col-auto" for="whitelist">Query params whitelist</label>
+      <div class="col mb-3">
+        <div class="row no-gutters">
+          <input  class="form-control col px-3" formControlName="whitelist" type="text">
+          <button type="button" class="btn btn-primary" (click)="addParam()">Add</button>
+        </div>
       </div>
+      <ul class="col d-flex flex-wrap">
+        <li class="rounded border py-1 px-2 mr-2 mb-2" 
+          *ngFor="let key of whitelist; let i=index">
+          {{key}}
+          <button type="button" class="btn btn-sm text-white" (click)="removeParam(i)">
+            <i class="fas fa-times"></i> 
+          </button>
+        </li>
+      </ul>
     </div>
   </div>
 
   <div class="modal-footer">
-    <button type="submit" class="btn btn-primary float-right" [disabled]="experienceForm.invalid">
-      <span *ngIf="isSyncingExperience$ |async" class="spinner-grow spinner-grow-sm mr-2" role="status"
-        aria-hidden="true"></span>
-      Sync Model
+    <button type="submit" class="btn btn-primary float-right" [disabled]="false">
+      Update Config
     </button>
   </div>
 </form>

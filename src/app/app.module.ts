@@ -46,6 +46,7 @@ import { FooterComponent } from './footer/footer.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { ProjectsWrapperComponent } from './projects/projects-wrapper.component';
 import { ProjectFormDialogComponent } from './project-form-dialog/project-form-dialog.component';
+import { ProjectConfigFormDialogComponent } from './project-config-form-dialog/project-config-form-dialog.component';
 
 
 @NgModule({
@@ -64,6 +65,7 @@ import { ProjectFormDialogComponent } from './project-form-dialog/project-form-d
     ProjectsComponent,
     ProjectsWrapperComponent,
     ProjectFormDialogComponent,
+    ProjectConfigFormDialogComponent,
   ],
   imports: [
     BrowserModule,

@@ -7,10 +7,12 @@ export interface ServicesState {
   isImportingProject: boolean;
   isLoadingServices: boolean;
   error: string;
+  config: {}
 }
 
 export const initialState: ServicesState = {
   services: [],
+  config: {},
   selectedEndpoint: undefined,
   isImportingProject: false,
   isLoadingServices: false,
@@ -27,10 +29,16 @@ export function reducer(state = initialState, action: ServicesActions): Services
     case ServicesActionTypes.LOAD_SERVICES_SUCCESS:
       return {
         ...state,
-        services: [...action.payload],
+        services: [...action.payload.services],
+        config: action.payload.config,
         isLoadingServices: false,
         error: '',
       };
+    case ServicesActionTypes.UPDATE_PROJECT_CONFIG:
+      return {
+        ...state,
+        config: action.payload.data
+      }
     case ServicesActionTypes.LOAD_SERVICES_FAILURE:
       return {
         ...state,

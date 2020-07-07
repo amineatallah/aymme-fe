@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 
 import * as projectsActions from './projects.actions';
+import * as servicesActions from '../services/services.actions';
 import { concatMap, map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { ProjectsService } from '../../shared/projects.service';
@@ -73,6 +74,28 @@ export class ProjectsEffects {
           }
         )
       )
+    )
+  );
+
+  @Effect()
+  updateProjectConfig$ = this.actions$.pipe(
+    ofType(projectsActions.ProjectsActionTypes.UPDATE_PROJECT_CONFIG),
+    concatMap((action: projectsActions.UpdateProjectConfig) =>{
+      return this.projectsService.updateProjectConfig(action.payload).pipe(
+        map(
+          (experience: any[]) => {
+            this.toastr.success('Project Config Updated successfully!', '');
+            return new servicesActions.UpdateProjectConfigFromServices(action.payload);
+          }
+        ),
+        catchError(
+          err => {
+            this.toastr.error(err.error.message, 'Unable to update Project Config!');
+            return of(new projectsActions.UpdateProjectConfigFailure(err));
+          }
+        )
+      )
+        }
     )
   );
 }

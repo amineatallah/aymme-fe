@@ -23,6 +23,7 @@
 .btn-file-upload {
   position: relative;
   cursor: pointer;
+  overflow: hidden;
 
   span {
     display: inline-block;

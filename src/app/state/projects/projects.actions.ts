@@ -12,6 +12,26 @@ export enum ProjectsActionTypes {
   DELETE_PROJECT = '[Projects] Delete',
   DELETE_PROJECT_SUCCESS = '[Projects] Delete Success',
   DELETE_PROJECT_FAILURE = '[Projects] Delete Failure',
+
+  UPDATE_PROJECT_CONFIG = '[Projects] Update Config',
+  UPDATE_PROJECT_CONFIG_SUCCESS = '[Projects] Update Config Success',
+  UPDATE_PROJECT_CONFIG_FAILURE = '[Projects] Update Config Failure',
+}
+
+
+export class UpdateProjectConfig implements Action {
+  readonly type = ProjectsActionTypes.UPDATE_PROJECT_CONFIG;
+  constructor(public payload: any){}
+}
+
+export class UpdateProjectConfigSuccess implements Action {
+  readonly type = ProjectsActionTypes.UPDATE_PROJECT_CONFIG_SUCCESS;
+  constructor(public payload: any){}
+}
+
+export class UpdateProjectConfigFailure implements Action {
+  readonly type = ProjectsActionTypes.UPDATE_PROJECT_CONFIG_FAILURE;
+  constructor(public payload: any){}
 }
 
 export class LoadProjects implements Action {
@@ -20,7 +40,6 @@ export class LoadProjects implements Action {
 
 export class LoadProjectsSuccess implements Action {
   readonly type = ProjectsActionTypes.LOAD_PROJECTS_SUCCESS;
-
   constructor(public payload: any[]) { }
 }
 
@@ -71,4 +90,7 @@ export type ProjectsActions =
   | CreateProjectFailure
   | DeleteProject
   | DeleteProjectSuccess
-  | DeleteProjectFailure;
+  | DeleteProjectFailure
+  | UpdateProjectConfig
+  | UpdateProjectConfigSuccess
+  | UpdateProjectConfigFailure

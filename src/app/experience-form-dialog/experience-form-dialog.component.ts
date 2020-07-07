@@ -36,11 +36,14 @@ export class ExperienceFormDialogComponent implements OnInit, OnDestroy {
     }
 
     this.experienceForm = new FormGroup({
+      username: new FormControl(experienceFormData.username, [Validators.required]),
+      password: new FormControl(experienceFormData.password, [Validators.required]),
       experienceName: new FormControl({ value: this.experienceData.name, disabled: this.isEditing }, [Validators.required]),
-      hostAddress: new FormControl(experienceFormData.hostAddress, [Validators.required]),
-      portNumber: new FormControl(experienceFormData.portNumber),
-      experienceLoginUrl: new FormControl(experienceFormData.experienceLoginUrl, [Validators.required]),
-      experienceModelUrl: new FormControl(experienceFormData.experienceModelUrl, [Validators.required]),
+      host: new FormControl(experienceFormData.host, [Validators.required]),
+      loginUrl: new FormControl(experienceFormData.loginUrl, [Validators.required]),
+      identityLoginUrl: new FormControl(experienceFormData.identityLoginUrl),
+      useIdentity: new FormControl(experienceFormData.useIdentity),
+      modelUrl: new FormControl(experienceFormData.modelUrl, [Validators.required]),
     });
 
     this.actions$.pipe(
@@ -59,43 +62,16 @@ export class ExperienceFormDialogComponent implements OnInit, OnDestroy {
 
   destructureExperienceDetail(experienceData) {
     const experienceFormData = {
-      hostAddress: '',
-      portNumber: '8080',
-      experienceLoginUrl: '/gateway/api/auth/login',
-      experienceModelUrl: '/gateway/api/portals'
+      host: '',
+      username: '',
+      password: '',
+      loginUrl: '/api/auth/login',
+      identityLoginUrl: 'https://<HOST_and_PORT>/auth/realms/<REALM_NAME>/protocol/openid-connect/token',
+      modelUrl: '/api/portal/portals',
+      useIdentity: false
     };
 
-    const loginUrlRegexWithPort = /http?:\/\/?([-a-zA-Z0-9@:%._\+~#=]{1,256}):(\d*)(\/.*)/g;
-    const modelUrlRegexWithPort = /http?:\/\/?([-a-zA-Z0-9@:%._\+~#=]{1,256}):(\d*)(\/.*)/g;
-    const loginUrlRegexWithoutPort = /http?:\/\/?([-a-zA-Z0-9@:%._\+~#=]{1,256})(\/.*)/g;
-    const modelUrlRegexWithoutPort = /http?:\/\/?([-a-zA-Z0-9@:%._\+~#=]{1,256})(\/.*)/g;
-
-    if (this.experienceData.loginUrl) {
-
-      const loginMatch = loginUrlRegexWithPort.exec(experienceData.loginUrl);
-
-      if (loginMatch) {
-        experienceFormData.hostAddress = loginMatch[1];
-        experienceFormData.portNumber = loginMatch[2];
-        experienceFormData.experienceLoginUrl = loginMatch[3];
-
-        const modelMatch = modelUrlRegexWithPort.exec(experienceData.host);
-        experienceFormData.experienceModelUrl = modelMatch[3];
-      } else {
-        const loginWithoutPortMatch = loginUrlRegexWithoutPort.exec(experienceData.loginUrl);
-
-        if (loginWithoutPortMatch) {
-          experienceFormData.hostAddress = loginMatch[1];
-          experienceFormData.experienceLoginUrl = loginMatch[2];
-
-          const modelMatch = modelUrlRegexWithoutPort.exec(experienceData.host);
-          experienceFormData.experienceModelUrl = modelMatch[2];
-        }
-      }
-
-    }
-
-    return experienceFormData;
+    return {...experienceFormData, ...experienceData};
   }
 
   dismissModal() {
@@ -105,14 +81,6 @@ export class ExperienceFormDialogComponent implements OnInit, OnDestroy {
 
   addExperience() {
     const experienceFormValue = this.experienceForm.getRawValue();
-    const baseUrl = `http://${experienceFormValue.hostAddress}${experienceFormValue.portNumber
-      ? ':' + experienceFormValue.portNumber
-      : ''}`;
-
-    this.store.dispatch(new experiencesActions.SyncExperience({
-      portalName: experienceFormValue.experienceName,
-      loginUrl: baseUrl + experienceFormValue.experienceLoginUrl,
-      portalUrl: baseUrl + experienceFormValue.experienceModelUrl,
-    }));
+    this.store.dispatch(new experiencesActions.SyncExperience(experienceFormValue))
   }
 }

@@ -22,4 +22,8 @@ export class ProjectsService {
   deleteProject(projectName) {
     return this.http.delete(`${this.url}/projects/${projectName}`);
   }
+
+  updateProjectConfig({projectName, data}) {
+    return this.http.post(`${this.url}/projects/${projectName}/updateProjectConfig`, data);
+  }
 }

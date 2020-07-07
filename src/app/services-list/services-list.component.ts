@@ -26,6 +26,7 @@ export class ServicesListComponent implements OnInit {
   projectName: string;
   isImportingProject$: Observable<boolean>;
   isLoadingServices$: Observable<boolean>;
+  config: any;
 
   readonly services$: Observable<any> = this.store.pipe(
     select(servicesSelectors.getServices),
@@ -38,6 +39,9 @@ export class ServicesListComponent implements OnInit {
       this.isInitializing = false;
     })
   );
+
+
+
   readonly hasServices$: Observable<any> = this.store.pipe(
     select(servicesSelectors.hasServices)
   );
@@ -63,6 +67,13 @@ export class ServicesListComponent implements OnInit {
     this.importProjectForm = this.formBuilder.group({
       importFiles: new FormControl(''),
     });
+
+    this.store.pipe(
+      select(servicesSelectors.getConfig),
+      tap(config => {
+        this.config = config;
+      })
+    ).subscribe();
     this.loadServices(true);
   }
 
@@ -129,8 +140,11 @@ export class ServicesListComponent implements OnInit {
   exportProject() {
     const currentDate = new Date().toISOString();
     const fileName = `${this.projectName}-${currentDate}.json`;
-
     this.homeService.exportProject(this.projectName, fileName);
   }
 
+  editConfig() {
+    this.modalService.projectConfigFormModal({projectName: this.projectName, ...this.config});
+    return false;
+  }
 }

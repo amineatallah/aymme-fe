@@ -6,6 +6,7 @@
           <h6 class="mb-0">Details</h6>
           <!-- <button class="btn py-2 px-4 mr-3 btn-outline-primary" (click)="findMocks()">Feeling lucky</button> -->
           <button class="btn btn-sm mr-3 ml-auto btn-outline-primary" (click)="toggleMocks()"> Manage Mocks</button>
+          <button class="btn btn-sm mr-3 ml-auto btn-outline-primary" (click)="syncEndpoint()"> Get Remote Mocks</button>
           <button class="btn btn-sm btn-primary" [disabled]="form.invalid"
             (click)="updateEndpoint(endpoint.id)">Update</button>
         </div>
@@ -13,12 +14,14 @@
           <div class="col-12">
             <form [formGroup]="form" class="h-100 d-flex flex-column">
               <div class="row form-group">
-
                 <div class="col-6">
+                  <label for="statusCode">Status Code</label>
+                  <app-dropdown [defaultHeader]="'Select one'" [items]="statusCodes" formControlName="statusCode" (setSelectedValue)="changeStatusCode($event)"></app-dropdown>
+                </div>
+                <div class="col-4">
                   <div class="row no-gutters">
-                    <label for="delay">Service name</label>
-                    <input formControlName="serviceName" type="text" class="form-control" placeholder="Service name"
-                      [ngbTypeahead]="serviceNameSearch">
+                    <label for="delay">Delay</label>
+                    <input formControlName="delay" type="text" class="form-control" placeholder="Delay">
                   </div>
                 </div>
 
@@ -28,25 +31,22 @@
                     <input class="form-control form-check" formControlName="noData" type="checkbox" id="noData">
                   </div>
                 </div>
-
-                <div class="col-2">
-                  <div class="row">
-                    <label for="forward">Forward</label>
-                    <input class="form-control form-check" formControlName="forward" type="checkbox" id="forward">
-                  </div>
-                </div>
               </div>
+              <ng-container *ngIf="showMoreOptions">
 
               <div class="row form-group">
+
                 <div class="col-6">
                   <div class="row no-gutters">
-                    <label for="delay">Delay</label>
-                    <input formControlName="delay" type="text" class="form-control" placeholder="Delay">
+                    <label for="delay">Service name</label>
+                    <input formControlName="serviceName" type="text" class="form-control" placeholder="Service name"
+                      [ngbTypeahead]="serviceNameSearch">
                   </div>
                 </div>
                 <div class="col-6">
-                  <label for="statusCode">Status Code</label>
-                  <app-dropdown [defaultHeader]="'Select one'" [items]="statusCodes" formControlName="statusCode" (setSelectedValue)="changeStatusCode($event)"></app-dropdown>
+                  <label for="statusCode">Change Response data</label>
+                  <app-dropdown [defaultHeader]="'Select one'" [items]="responseCodes" formControlName="responseCode"
+                    (setSelectedValue)="changeResponseCode($event)"></app-dropdown>
                 </div>
               </div>
 
@@ -63,14 +63,6 @@
                     <label for="value">value</label>
                     <input formControlName="value" type="text" class="form-control" placeholder="key value">
                   </div>
-                </div>
-              </div>
-
-              <div class="row form-group">
-                <div class="col-6">
-                  <label for="statusCode">Change Response data</label>
-                  <app-dropdown [defaultHeader]="'Select one'" [items]="responseCodes" formControlName="responseCode"
-                    (setSelectedValue)="changeResponseCode($event)"></app-dropdown>
                 </div>
               </div>
 
@@ -103,6 +95,10 @@
                     </div>
                   </div>
                 </div>
+              </div>
+              </ng-container>
+              <div>
+                <button type="button" class="btn btn-block btn-sm btn-outline-secondary" (click)="toggleOptions()">Toggle options</button>
               </div>
             </form>
           </div>

@@ -129,6 +129,26 @@ export class ServicesEffects {
   );
 
   @Effect()
+  syncEndpoint$ = this.actions$.pipe(
+    ofType(servicesActions.ServicesActionTypes.SYNC_ENDPOINT),
+    concatMap((action: servicesActions.UpdateEndpoint) =>
+      this.homeService.syncEndpoint(action.payload.projectName, action.payload.path).pipe(
+        map(
+          (result: any) => {
+            this.toastr.success('', 'Mocks updated successfully!');
+            return new servicesActions.SyncEndpointSuccess(result);
+          }
+        ),
+        catchError(
+          err => {
+            this.toastr.error(err.error.message, 'Unable to update mocks!');
+            return of(new servicesActions.UpdateEndpointFailure(err));
+          })
+      )
+    )
+  );
+
+  @Effect()
   exportServices$ = this.actions$.pipe(
     ofType(servicesActions.ServicesActionTypes.IMPORT_PROJECT),
     concatMap((action: servicesActions.ImportProject) => {

@@ -13,6 +13,8 @@ import * as ServicesActions from '../state/services/services.actions';
 import { Actions, ofType } from '@ngrx/effects';
 import { ModalService } from '../shared/modal.service';
 import { ActivatedRoute } from '@angular/router';
+import { HomeService } from '../shared/home.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-details',
@@ -49,6 +51,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   headers: FormArray;
   showHeaders: boolean;
   projectName: string;
+  showMoreOptions: boolean = false;
 
   @ViewChildren(JsonEditorComponent) editor: QueryList<JsonEditorComponent>;
 
@@ -59,6 +62,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private activeRoute: ActivatedRoute,
     private actions$: Actions,
+    private dataService: HomeService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit() {
@@ -179,6 +184,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
     return false;
   }
 
+  syncEndpoint(){
+    this.dataService.syncEndpoint(this.projectName, encodeURIComponent(this.response.path)).subscribe(val => {
+      this.endpointData = val;
+      this.toastr.success('Data Fetched Successfully');
+    }, error => {
+      this.toastr.error(error.error.message);
+    })
+  }
+
   updateEndpoint(endpointId: string) {
 
     const changedServiceName = this.form.get('serviceName').dirty;
@@ -268,5 +282,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
   deleteSpecs(id: string) {
     this.store.dispatch(new specificationsActions.DeleteSpecification(id));
     return false;
+  }
+
+  toggleOptions() {
+    this.showMoreOptions = !this.showMoreOptions;
   }
 }

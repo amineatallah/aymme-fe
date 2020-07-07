@@ -24,6 +24,10 @@ export class HomeService {
     return this.http.post(`${this.url}/projects/${projectName}/endpoints/${id}`, data, {});
   }
 
+  syncEndpoint(projectName, path) {
+    return this.http.get(`${this.url}/projects/${projectName}/syncEndpoint?path=` + path);
+  }
+
   deleteSpecs(id: string) {
     return this.http.delete(`${this.url}/specs/` + id);
   }
