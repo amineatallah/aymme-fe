@@ -56,9 +56,11 @@ export class ModelComponent implements OnInit {
 
             this.selectedExperience = selectedExperience;
             this.body = selectedExperience.pages.find(page => page.name === selectedExperience.activePage);
+            console.log(this.selectedExperience);
         }));
       })
     );
+
   }
 
   selectPage(selectedActivePage) {
@@ -70,9 +72,14 @@ export class ModelComponent implements OnInit {
 
   syncModel() {
     this.store.dispatch(new experiencesActions.SyncExperience({
-      portalName: this.selectedExperience.name,
+      host: this.selectedExperience.host,
+      username: this.selectedExperience.username,
+      password: this.selectedExperience.password,
       loginUrl: this.selectedExperience.loginUrl,
-      portalUrl: this.selectedExperience.host,
+      identityLoginUrl: this.selectedExperience.identityLoginUrl,
+      modelUrl: this.selectedExperience.modelUrl,
+      useIdentity: this.selectedExperience.useIdentity,
+      experienceName: this.selectedExperience.name
     }));
   }
 
