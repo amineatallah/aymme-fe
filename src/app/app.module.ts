@@ -34,7 +34,7 @@ import { reducer as projectsReducers } from './state/projects/projects.reducers'
 import { ProjectsEffects } from './state/projects/projects.effects';
 
 import { ToastrModule } from 'ngx-toastr';
-import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { StoreRouterConnectingModule, RouterState } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
 import { ServicesListComponent } from './services-list/services-list.component';
@@ -78,7 +78,13 @@ import { ProjectConfigFormDialogComponent } from './project-config-form-dialog/p
     FormsModule,
     BrowserAnimationsModule,
 
-    StoreModule.forRoot(rootReducers, {}),
+    StoreModule.forRoot(rootReducers, {
+      // this is a bug from ngrx/angular9/10 need to double check later if fixed
+      runtimeChecks: {
+        strictActionImmutability: false,
+        strictStateImmutability: false
+      }
+    }),
     StoreRouterConnectingModule.forRoot({serializer: CustomSerializer}),
     EffectsModule.forRoot([]),
 
