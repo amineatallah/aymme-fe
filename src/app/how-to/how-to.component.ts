@@ -77,7 +77,7 @@ export class HowToComponent implements OnInit {
   
   const EXPERIENCE_NAME = 'YOUR_EXPERIENCE_NAME';
   
-  fetch('http://localhost:3003/api/portals/simpleModel/' + EXPERIENCE_NAME)
+  fetch('http://localhost:3003/v1/_api/portals/simpleModel/' + EXPERIENCE_NAME)
       .then(
           function (response) {
               if (response.status !== 200) {
