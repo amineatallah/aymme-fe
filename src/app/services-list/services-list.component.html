@@ -36,14 +36,17 @@
           <ng-template #loadedServices>
             <ul class="services-list p-0" *ngIf="context.hasServices else noServices">
               <li *ngFor="let service of services" class="mb-2" [ngClass]="{'is-open': !service.hidden}">
-                <h5 class="d-flex align-items-center text-uppercase" (click)="service.hidden = !service.hidden">{{service.serviceName}}
-
+                <h5 class="d-flex align-items-center text-uppercase" (click)="service.hidden = !service.hidden">
+                    <p class="mb-0">{{service.serviceName}}
+                      <span class="mb-0 ml-1 small text-muted">({{getRootUri(service.serviceName, service.endpoints[0].path)}})</span> 
+                    </p>
                   <i class="fas fa-trash ml-auto" (click)="openConfirmDeleteService(service, $event)"></i>
                   <i class="fas fa-chevron-down ml-3"></i></h5>
                 <ul *ngIf="!service.hidden" [@collapseExpand]>
                   <li *ngFor="let endpoint of service.endpoints"
-                    class="d-flex align-items-center mb-2 show-on-hover-trigger"
+                    class="d-flex align-items-start mb-3 show-on-hover-trigger"
                     [ngClass]="{'active' : context.selectedEndpoint ? endpoint.id === context.selectedEndpoint.id : false}">
+                    <span class="mr-3 px-2 py-1 badge badge-primary text-uppercase">{{endpoint.method}}</span> 
                     <a (click)="setSelectedEndpoint(projectName, endpoint)"
                       class="my-auto">{{customFormat(endpoint.path, service.serviceName)}}</a>
 

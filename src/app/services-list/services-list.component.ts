@@ -41,7 +41,6 @@ export class ServicesListComponent implements OnInit {
   );
 
 
-
   readonly hasServices$: Observable<any> = this.store.pipe(
     select(servicesSelectors.hasServices)
   );
@@ -84,9 +83,24 @@ export class ServicesListComponent implements OnInit {
   }
 
   customFormat(endpoint: string, serviceName: string): string {
-    return endpoint;
-      // .replace('/gateway', '')
-      // .replace(serviceName + '/', '');
+    //move those to pipes or loop of the data once 
+    if(endpoint.includes(serviceName)){
+      return endpoint.substring(endpoint.indexOf(serviceName) + serviceName.length)
+        .replace('/client-api', '')
+        .replace('/v2', '');
+    } else {
+      return endpoint;
+    }
+  }
+
+  getRootUri(serviceName: string, endpoint): string {
+    //move those to pipes or loop of the data once 
+    if(endpoint.includes(serviceName)){
+      return endpoint.substring(0, endpoint.indexOf(serviceName) + serviceName.length);
+    } else {
+      return '';
+    }
+
   }
 
   toggleAll(services: any[]) {
