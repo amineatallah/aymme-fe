@@ -38,6 +38,8 @@ export class ProjectConfigFormDialogComponent implements OnInit, OnDestroy {
       loginUri: new FormControl(this.projectData.loginUri, [Validators.required]),
       identityLoginUrl: new FormControl(this.projectData.identityLoginUrl),
       useIdentity: new FormControl(this.projectData.useIdentity),
+      grant_type: new FormControl(this.projectData.grant_type || 'password', [Validators.required]),
+      client_id: new FormControl(this.projectData.client_id || 'bb-tooling-client', [Validators.required]),
       whitelist: new FormControl('')
     });
 
@@ -59,6 +61,8 @@ export class ProjectConfigFormDialogComponent implements OnInit, OnDestroy {
       loginUri: this.configForm.value.loginUri,
       identityLoginUrl: this.configForm.value.identityLoginUrl,
       useIdentity: this.configForm.value.useIdentity,
+      grant_type: this.configForm.value.grant_type,
+      client_id: this.configForm.value.client_id,
       whitelist_params: this.whitelist,
       regex: ''
     };

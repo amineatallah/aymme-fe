@@ -44,13 +44,36 @@
       </label>
       <input class="mr-3" formControlName="useIdentity" type="checkbox" value="" id="defaultCheck1">
     </div>
-    <div class="form-group" *ngIf="configForm.get('useIdentity').value">
+
+    <ng-container *ngIf="configForm.get('useIdentity').value">
+
+    <div class="form-group" >
       <label class="col-auto" for="identityLoginUrl">Identity Login Url</label>
       <div class="col">
         <input formControlName="identityLoginUrl" type="text" class="form-control"
           placeholder="Identity Login Url">
       </div>
     </div>
+
+    <div class="row no-gutters mb-3">
+      <div class="col-6">
+        <label class="col-auto" for="grant_type">Grant Type</label>
+        <div class="col">
+          <input formControlName="grant_type" type="text" class="form-control"
+            placeholder="Grant Type">
+        </div>
+      </div>
+      <div class="col-6">
+        <label class="col-auto" for="client_id">Client id</label>
+        <div class="col">
+          <input formControlName="client_id" type="text" class="form-control"
+            placeholder="Client id">
+        </div>
+      </div>
+    </div>
+    </ng-container>
+
+
     <div class="form-group">
       <label class="col-auto" for="loginUrl">Host Login URI</label>
       <div class="col">

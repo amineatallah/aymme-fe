@@ -44,6 +44,8 @@ export class ExperienceFormDialogComponent implements OnInit, OnDestroy {
       identityLoginUrl: new FormControl(experienceFormData.identityLoginUrl),
       useIdentity: new FormControl(experienceFormData.useIdentity),
       modelUrl: new FormControl(experienceFormData.modelUrl, [Validators.required]),
+      grant_type: new FormControl(experienceFormData.grant_type, [Validators.required]),
+      client_id: new FormControl(experienceFormData.client_id, [Validators.required])
     });
 
     this.actions$.pipe(
@@ -68,7 +70,9 @@ export class ExperienceFormDialogComponent implements OnInit, OnDestroy {
       loginUrl: '/api/auth/login',
       identityLoginUrl: 'https://<HOST_and_PORT>/auth/realms/<REALM_NAME>/protocol/openid-connect/token',
       modelUrl: '/api/portal/portals',
-      useIdentity: false
+      useIdentity: false,
+      grant_type: 'password',
+      client_id: 'bb-tooling-client'
     };
 
     return {...experienceFormData, ...experienceData};
