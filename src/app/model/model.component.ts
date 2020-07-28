@@ -79,7 +79,9 @@ export class ModelComponent implements OnInit {
       identityLoginUrl: this.selectedExperience.identityLoginUrl,
       modelUrl: this.selectedExperience.modelUrl,
       useIdentity: this.selectedExperience.useIdentity,
-      experienceName: this.selectedExperience.name
+      experienceName: this.selectedExperience.name,
+      grant_type: this.selectedExperience.grant_type,
+      client_id: this.selectedExperience.client_id
     }));
   }
 
